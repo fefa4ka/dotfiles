@@ -7,3 +7,9 @@
 [submodule "zsh/plugins/oh-my-zsh"]
 	path = zsh/plugins/oh-my-zsh
 	url = https://github.com/robbyrussell/oh-my-zsh.git
+[submodule "vim/bundle/ctrlp.vim"]
+	path = vim/bundle/ctrlp.vim
+	url = https://github.com/kien/ctrlp.vim/
+[submodule "vim/bundle/comfortable-motion.vim"]
+	path = vim/bundle/comfortable-motion.vim
+	url = https://github.com/yuttie/comfortable-motion.vim
