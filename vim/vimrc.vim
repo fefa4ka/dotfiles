@@ -178,27 +178,47 @@ let g:netrw_browse_split = 4
 let g:netrw_altv = 1
 let g:netrw_winsize = 25
 let g:netrw_chgwin = 1
-" Toggle Vexplore with Ctrl-E
-function! ToggleVExplorer()
-  if exists("t:expl_buf_num")
-      let expl_win_num = bufwinnr(t:expl_buf_num)
-      if expl_win_num != -1
-          let cur_win_nr = winnr()
-          exec expl_win_num . 'wincmd w'
-          close
-          exec cur_win_nr . 'wincmd w'
-          unlet t:expl_buf_num
-      else
-          unlet t:expl_buf_num
-      endif
-  else
-      exec '1wincmd w'
-      Vexplore
-      let t:expl_buf_num = bufnr("%")
+let g:netrw_list_hide= '.git'
+" sort is affecting only: directories on the top, files below
+let g:netrw_sort_sequence = '[\/]$,*'
+" Change directory to the current buffer when opening files.
+set autochdir
+
+let g:netrw_hide=1
+let g:netrw_list_hide= '*/\.git,*/\.DS_Store$'
+let g:netrw_sizestyle="h"
+
+com!  -nargs=* -bar -bang -complete=dir  Lexplore  call netrw#Lexplore(<q-args>, <bang>0)
+
+fun! Lexplore(dir, right)
+  if exists("t:netrw_lexbufnr")
+  " close down netrw explorer window
+  let lexwinnr = bufwinnr(t:netrw_lexbufnr)
+  if lexwinnr != -1
+    let curwin = winnr()
+    exe lexwinnr."wincmd w"
+    close
+    exe curwin."wincmd w"
   endif
-endfunction
+  unlet t:netrw_lexbufnr
+
+  else
+    " open netrw explorer window in the dir of current file
+    " (even on remote files)
+    let path = substitute(exists("b:netrw_curdir")? b:netrw_curdir : expand("%:p"), '^\(.*[/\\]\)[^/\\]*$','\1','e')
+    exe (a:right? "botright" : "topleft")." vertical ".((g:netrw_winsize > 0)? (g:netrw_winsize*winwidth(0))/100 : -g:netrw_winsize) . " new"
+    if a:dir != ""
+      exe "Explore ".a:dir
+    else
+      exe "Explore ".path
+    endif
+    setlocal winfixwidth
+    let t:netrw_lexbufnr = bufnr("%")
+  endif
+endfun
+
 " toggle Explorer
-map <silent> <C-E> :call ToggleVExplorer()<CR>
+map <silent> <C-E> :call Lexplore("", "")<CR>
 " open in new tab
 nmap <silent> <C-CR> t :rightbelow 20vs<CR>:e .<CR>:wincmd h<CR>
 
@@ -268,3 +288,6 @@ function! HasPaste()
     endif
     return ''
 endfunction
+
+let g:netrw_list_hide = netrw_gitignore#Hide()
+
