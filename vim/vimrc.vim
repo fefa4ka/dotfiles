@@ -181,8 +181,6 @@ let g:netrw_chgwin = 1
 let g:netrw_list_hide= '.git'
 " sort is affecting only: directories on the top, files below
 let g:netrw_sort_sequence = '[\/]$,*'
-" Change directory to the current buffer when opening files.
-set autochdir
 
 let g:netrw_hide=1
 let g:netrw_list_hide= '*/\.git,*/\.DS_Store$'
@@ -260,6 +258,7 @@ call pathogen#helptags()
 let g:ctrlp_match_window = 'bottom,order:ttb'
 let g:ctrlp_switch_buffer = 0
 let g:ctrlp_working_path_mode = 0
+let g:ctrlp_root_markers = ['.ctrlp']
 let g:ctrlp_custom_ignore = '^\.env/|node_modules/|target/|^\.git\|\.(o|swp|pyc|egg|.DS_Store)$'
 let g:ctrlp_map = '<c-f>'
 map <c-b> :CtrlPBuffer<cr>
@@ -290,4 +289,15 @@ function! HasPaste()
 endfunction
 
 let g:netrw_list_hide = netrw_gitignore#Hide()
+
+
+" Commenting blocks of code.
+autocmd FileType c,cpp,java,js,scala let b:comment_leader = '// '
+autocmd FileType sh,ruby,python   let b:comment_leader = '# '
+autocmd FileType conf,fstab       let b:comment_leader = '# '
+autocmd FileType tex              let b:comment_leader = '% '
+autocmd FileType mail             let b:comment_leader = '> '
+autocmd FileType vim              let b:comment_leader = '" '
+noremap <silent> ,cc :<C-B>silent <C-E>s/^/<C-R>=escape(b:comment_leader,'\/')<CR>/<CR>:nohlsearch<CR>
+noremap <silent> ,cu :<C-B>silent <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:nohlsearch<CR>
 
