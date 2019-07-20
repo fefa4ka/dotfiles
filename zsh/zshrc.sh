@@ -5,15 +5,21 @@
 	setopt share_history # setopt inc_append_history
 
 # Aliases
-	alias v="vim -p"
-	
+	alias v="nvim -p"
+	alias vi="nvim -p"
+	alias vim="nvim -p"
+	alias h='function hdi(){ howdoi $* -c -n 5; }; hdi'
+    eval $(thefuck --alias)
+
 	# This is currently causing problems (fails when you run it anywhere that isn't a git project's root directory)
 	# alias vs="v `git status --porcelain | sed -ne 's/^ M //p'`"
 
 # Settings
-	export VISUAL=vim
+	export VISUAL=nvim
+	export EDITOR=nvim
 
 source ~/dotfiles/zsh/plugins/fixls.zsh
+source ~/dotfiles/tmux/tmuxinator.zsh
 
 #Functions
 	# Custom cd
@@ -48,6 +54,7 @@ if [[ "${terminfo[kcud1]}" != "" ]]; then
 	bindkey "${terminfo[kcud1]}" down-line-or-beginning-search
 fi
 
+source $(brew --prefix autoenv)/activate.sh
 source ~/dotfiles/zsh/prompt.sh
 transfer() { if [ $# -eq 0 ]; then echo -e "No arguments specified. Usage:\necho transfer /tmp/test.md\ncat /tmp/test.md | transfer test.md"; return 1; fi 
   tmpfile=$( mktemp -t transferXXX ); if tty -s; then basefile=$(basename "$1" | sed -e 's/[^a-zA-Z0-9._-]/-/g'); curl --progress-bar --upload-file "$1" "https://transfer.sh/$basefile" >> $tmpfile; else curl --progress-bar --upload-file "-" "https://transfer.sh/$1" >> $tmpfile ; fi; cat $tmpfile; rm -f $tmpfile; } 
