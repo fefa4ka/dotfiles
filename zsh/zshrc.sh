@@ -15,6 +15,8 @@
 	# alias vs="v `git status --porcelain | sed -ne 's/^ M //p'`"
 
 # Settings
+    export LC_ALL=en_US.UTF-8
+
 	export VISUAL=nvim
 	export EDITOR=nvim
 
