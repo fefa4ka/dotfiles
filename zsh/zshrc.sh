@@ -20,6 +20,7 @@ export DYLD_LIBRARY_PATH=/usr/local/Cellar/libngspice/28/lib/
     alias console='ssh $VM'
     alias tty='ssh $VC'
     eval $(thefuck --alias)
+    alias cat="bat --theme=\$(defaults read -globalDomain AppleInterfaceStyle &> /dev/null && echo default || echo GitHub)"
 
 	# This is currently causing problems (fails when you run it anywhere that isn't a git project's root directory)
 	# alias vs="v `git status --porcelain | sed -ne 's/^ M //p'`"
@@ -67,6 +68,7 @@ if [[ "${terminfo[kcud1]}" != "" ]]; then
 fi
 
 source $(brew --prefix autoenv)/activate.sh
+
 source ~/dotfiles/zsh/prompt.sh
 transfer() { if [ $# -eq 0 ]; then echo -e "No arguments specified. Usage:\necho transfer /tmp/test.md\ncat /tmp/test.md | transfer test.md"; return 1; fi 
   tmpfile=$( mktemp -t transferXXX ); if tty -s; then basefile=$(basename "$1" | sed -e 's/[^a-zA-Z0-9._-]/-/g'); curl --progress-bar --upload-file "$1" "https://transfer.sh/$basefile" >> $tmpfile; else curl --progress-bar --upload-file "-" "https://transfer.sh/$1" >> $tmpfile ; fi; cat $tmpfile; rm -f $tmpfile; } 

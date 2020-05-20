@@ -8,8 +8,8 @@ Plug 'rizzatti/dash.vim'
 Plug 'majutsushi/tagbar'
 
 " Filesystem
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-Plug '/usr/local/opt/fzf'
 
 " LSP
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
