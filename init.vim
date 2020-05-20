@@ -24,6 +24,7 @@ Plug 'rizzatti/dash.vim'
 
 " Git
 Plug 'airblade/vim-gitgutter'
+Plug 'zivyangll/git-blame.vim'
 
 " Tmux
 Plug 'benmills/vimux'
@@ -71,16 +72,15 @@ function! ToggleNetrw()
       let g:NetrwIsOpen=0
   else
       let g:NetrwIsOpen=1
-      silent Lexplore
+      silent Lexplore %:h
   endif
 endfunction
 " Add your own mapping. For example
 
-let $FZF_DEFAULT_COMMAND = 'ag -g ""'
 noremap <silent> <C-E> :call ToggleNetrw()<CR><Paste>
 nmap <C-p> :GFiles<CR>
 nmap <C-o> :Files<CR>
-nmap <C-r> :Buffers<CR>
+nmap <C-b> :Buffers<CR>
 nmap <C-t> :TagbarToggle<CR>
 
 
@@ -88,6 +88,8 @@ nmap <C-t> :TagbarToggle<CR>
 let mapleader = ","
 let g:mapleader = ","
 
+" Undo Redo
+map <C-r> :redo<CR>
 
 " Smart way to move between windows
 map <C-_> <C-W>S
@@ -147,6 +149,9 @@ let g:coc_global_extensions = [
   \ 'coc-python',
   \ ]
 
+" Formatter
+let g:prettier#config#tab_width = '4'
+
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
 inoremap <silent><expr> <TAB>
@@ -163,7 +168,7 @@ endfunction
 " Use <c-space> to trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()
 
-" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
+" Use <cr> to confirm completion, `<C-g>u` means break do chain at current position.
 " Coc only does snippet and additional edit on confirm.
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 " Or use `complete_info` if your vim support it, like:
@@ -225,7 +230,7 @@ command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organize
 
 " Using CocList
 " Show all diagnostics
-nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+nnoremap <silent> <space>e  :<C-u>CocList diagnostics<cr>
 " Show commands
 nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
 
@@ -236,4 +241,8 @@ nmap <silent> <leader>d <Plug>DashSearch
 map <Leader>c :VimuxPromptCommand<CR>
 map <Leader>rr :VimuxRunLastCommand<CR>
 
+" fzf recursive git ignore with bat preview
 let $FZF_DEFAULT_COMMAND="ag `ls */.gitignore | awk '{ print \"-p \" $1 }' ORS=' '` -g ''"
+command! -bang -nargs=? -complete=dir Files
+    \ call fzf#vim#files(<q-args>, {'options': ['--layout=reverse', '--info=inline', '--preview', 'bat --style=numbers --color=always {}']}, <bang>0)
+nnoremap <Leader>i :<C-u>call gitblame#echo()<CR> 
