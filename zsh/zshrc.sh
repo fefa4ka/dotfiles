@@ -1,14 +1,24 @@
 # Vars
 	HISTFILE=~/.zsh_history
 	SAVEHIST=1000 
+    VM=fefa4ka@fefa4ka.sas.yp-c.yandex.net
+    VC=alexander@192.168.1.154
 	setopt inc_append_history # To save every command before it is executed 
 	setopt share_history # setopt inc_append_history
+
+export KISYSMOD=/Library/Application\ Support/kicad/modules
+export KICAD_SYMBOL_DIR=/Library/Application\ Support/kicad/library
+
+# Path where is libngspice.dylib placed
+export DYLD_LIBRARY_PATH=/usr/local/Cellar/libngspice/28/lib/
 
 # Aliases
 	alias v="nvim -p"
 	alias vi="nvim -p"
 	alias vim="nvim -p"
 	alias h='function hdi(){ howdoi $* -c -n 5; }; hdi'
+    alias console='ssh $VM'
+    alias tty='ssh $VC'
     eval $(thefuck --alias)
 
 	# This is currently causing problems (fails when you run it anywhere that isn't a git project's root directory)
