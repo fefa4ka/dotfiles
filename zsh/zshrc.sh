@@ -1,10 +1,10 @@
 # Vars
-	HISTFILE=~/.zsh_history
-	SAVEHIST=1000 
-    VM=fefa4ka@fefa4ka.sas.yp-c.yandex.net
-    VC=alexander@192.168.1.154
-	setopt inc_append_history # To save every command before it is executed 
-	setopt share_history # setopt inc_append_history
+HISTFILE=~/notes/.zsh_history
+SAVEHIST=1000 
+VM=fefa4ka@fefa4ka.sas.yp-c.yandex.net
+VC=alexander@192.168.1.154
+setopt inc_append_history # To save every command before it is executed 
+setopt share_history # setopt inc_append_history
 
 export KISYSMOD=/Library/Application\ Support/kicad/modules
 export KICAD_SYMBOL_DIR=/Library/Application\ Support/kicad/library
@@ -70,5 +70,62 @@ fi
 source $(brew --prefix autoenv)/activate.sh
 
 source ~/dotfiles/zsh/prompt.sh
-transfer() { if [ $# -eq 0 ]; then echo -e "No arguments specified. Usage:\necho transfer /tmp/test.md\ncat /tmp/test.md | transfer test.md"; return 1; fi 
-  tmpfile=$( mktemp -t transferXXX ); if tty -s; then basefile=$(basename "$1" | sed -e 's/[^a-zA-Z0-9._-]/-/g'); curl --progress-bar --upload-file "$1" "https://transfer.sh/$basefile" >> $tmpfile; else curl --progress-bar --upload-file "-" "https://transfer.sh/$1" >> $tmpfile ; fi; cat $tmpfile; rm -f $tmpfile; } 
+
+
+# Notes
+dash_comment() { notes add "$*" }
+alias @="remind"
+alias \#="dash_comment"
+alias \#\#="dash_comment _"
+alias \#~="notes ag"
+
+  plugins=(… zsh-completions)
+  autoload -U compinit && compinit
+
+
+# Tmux
+tm() {
+  [[ -n "$TMUX" ]] && change="switch-client" || change="attach-session"
+  if [ $1 ]; then
+    tmux $change -t "$1" 2>/dev/null || (tmux new-session -d -s $1 && tmux $change -t "$1"); return
+  fi
+  session=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf --exit-0) &&  tmux $change -t "$session" || echo "No sessions found."
+}
+
+# Brew
+install() {
+    local token
+    token=$(brew search --casks | fzf-tmux --query="$1" +m --preview 'brew cask info {}')
+
+    if [ "x$token" != "x" ]
+    then
+        echo "(I)nstall or open the (h)omepage of $token"
+        read input
+        if [ $input = "i" ] || [ $input = "I" ]; then
+            brew cask install $token
+        fi
+        if [ $input = "h" ] || [ $input = "H" ]; then
+            brew cask home $token
+        fi
+    fi
+}
+
+# Uninstall or open the webpage for the selected application 
+# using brew list as input source (all brew cask installed applications) 
+# and display a info quickview window for the currently marked application
+uninstall() {
+    local token
+    token=$(brew cask list | fzf-tmux --query="$1" +m --preview 'brew cask info {}')
+
+    if [ "x$token" != "x" ]
+    then
+        echo "(U)ninstall or open the (h)omepage of $token"
+        read input
+        if [ $input = "u" ] || [ $input = "U" ]; then
+            brew cask uninstall $token
+        fi
+        if [ $input = "h" ] || [ $token = "h" ]; then
+            brew cask home $token
+        fi
+    fi
+}

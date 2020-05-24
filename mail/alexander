@@ -1,0 +1,8 @@
+set imap_user = "alex@nder.work"
+set imap_pass = `security find-generic-password -a ${USER} -s alexander_work -w`
+set folder = "imaps://imap.yandex.ru:993"
+set smtp_url = "smtp://$imap_user@smtp.yandex.ru:587"
+set smtp_pass="$imap_pass"
+set from="alex@nder.work"
+set realname="Alexander Kondratev"
+set signature="~/dotfiles/mail/alexander.signature"
