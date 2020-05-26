@@ -35,7 +35,6 @@ call plug#end()
 
 " UX
 colorscheme gruvbox 
-set guifont=Fira\ Code\ 10
 set number relativenumber
 set mouse=a
 set clipboard=unnamed

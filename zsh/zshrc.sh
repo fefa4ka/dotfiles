@@ -1,13 +1,15 @@
 # Vars
 HISTFILE=~/notes/.zsh_history
 SAVEHIST=1000 
+Q1=pi@192.168.1.190
 VM=fefa4ka@fefa4ka.sas.yp-c.yandex.net
-VC=alexander@192.168.1.154
+VC=alexander@192.168.1.153
 setopt inc_append_history # To save every command before it is executed 
 setopt share_history # setopt inc_append_history
 
 export KISYSMOD=/Library/Application\ Support/kicad/modules
 export KICAD_SYMBOL_DIR=/Library/Application\ Support/kicad/library
+
 
 # Path where is libngspice.dylib placed
 export DYLD_LIBRARY_PATH=/usr/local/Cellar/libngspice/28/lib/
@@ -16,11 +18,23 @@ export DYLD_LIBRARY_PATH=/usr/local/Cellar/libngspice/28/lib/
 	alias v="nvim -p"
 	alias vi="nvim -p"
 	alias vim="nvim -p"
+    alias mutt="neomutt"
 	alias h='function hdi(){ howdoi $* -c -n 5; }; hdi'
     alias console='ssh $VM'
     alias tty='ssh $VC'
+    alias cam='ssh $Q1'
     eval $(thefuck --alias)
     alias cat="bat --theme=\$(defaults read -globalDomain AppleInterfaceStyle &> /dev/null && echo default || echo GitHub)"
+
+# Config
+    alias cfz="vi ~/dotfiles/zsh/zshrc.sh"
+    alias cfb="vi ~/dotfiles/bashrc"
+    alias cfv="vi ~/.config/nvim/init.vim"
+    alias cft="vi ~/dotfiles/tmux/tmux.conf"
+    alias cfm="vi ~/.mutt/muttrc"
+    alias cfr="vi ~/.config/ranger/"
+    alias cfk="vi ~/.config/skhd/skhdrc"
+    alias cfy="vi ~/.config/yabai/yabairc"
 
 	# This is currently causing problems (fails when you run it anywhere that isn't a git project's root directory)
 	# alias vs="v `git status --porcelain | sed -ne 's/^ M //p'`"
@@ -31,9 +45,9 @@ export DYLD_LIBRARY_PATH=/usr/local/Cellar/libngspice/28/lib/
 	export VISUAL=nvim
 	export EDITOR=nvim
 
+
 source ~/dotfiles/zsh/plugins/fixls.zsh
 source ~/dotfiles/tmux/tmuxinator.zsh
-
 #Functions
 	# Custom cd
 	c() {
@@ -67,20 +81,22 @@ if [[ "${terminfo[kcud1]}" != "" ]]; then
 	bindkey "${terminfo[kcud1]}" down-line-or-beginning-search
 fi
 
-source $(brew --prefix autoenv)/activate.sh
+#source $(brew --prefix autoenv)/activate.sh
 
 source ~/dotfiles/zsh/prompt.sh
 
 
 # Notes
 dash_comment() { notes add "$*" }
+dash_todo() { notes add "- [ ] $*" }
 alias @="remind"
 alias \#="dash_comment"
+alias \#!="dash_todo"
 alias \#\#="dash_comment _"
 alias \#~="notes ag"
 
-  plugins=(… zsh-completions)
-  autoload -U compinit && compinit
+plugins=(… zsh-completions)
+autoload -U compinit && compinit
 
 
 # Tmux
@@ -92,40 +108,3 @@ tm() {
   session=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf --exit-0) &&  tmux $change -t "$session" || echo "No sessions found."
 }
 
-# Brew
-install() {
-    local token
-    token=$(brew search --casks | fzf-tmux --query="$1" +m --preview 'brew cask info {}')
-
-    if [ "x$token" != "x" ]
-    then
-        echo "(I)nstall or open the (h)omepage of $token"
-        read input
-        if [ $input = "i" ] || [ $input = "I" ]; then
-            brew cask install $token
-        fi
-        if [ $input = "h" ] || [ $input = "H" ]; then
-            brew cask home $token
-        fi
-    fi
-}
-
-# Uninstall or open the webpage for the selected application 
-# using brew list as input source (all brew cask installed applications) 
-# and display a info quickview window for the currently marked application
-uninstall() {
-    local token
-    token=$(brew cask list | fzf-tmux --query="$1" +m --preview 'brew cask info {}')
-
-    if [ "x$token" != "x" ]
-    then
-        echo "(U)ninstall or open the (h)omepage of $token"
-        read input
-        if [ $input = "u" ] || [ $input = "U" ]; then
-            brew cask uninstall $token
-        fi
-        if [ $input = "h" ] || [ $token = "h" ]; then
-            brew cask home $token
-        fi
-    fi
-}
