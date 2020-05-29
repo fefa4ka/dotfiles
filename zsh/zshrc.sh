@@ -7,6 +7,9 @@ VC=alexander@192.168.1.153
 setopt inc_append_history # To save every command before it is executed 
 setopt share_history # setopt inc_append_history
 
+export LC_ALL=en_US.UTF-8  
+export LANG=en_US.UTF-8
+
 export KISYSMOD=/Library/Application\ Support/kicad/modules
 export KICAD_SYMBOL_DIR=/Library/Application\ Support/kicad/library
 
@@ -30,6 +33,7 @@ export DYLD_LIBRARY_PATH=/usr/local/Cellar/libngspice/28/lib/
     alias cfz="vi ~/dotfiles/zsh/zshrc.sh"
     alias cfb="vi ~/dotfiles/bashrc"
     alias cfv="vi ~/.config/nvim/init.vim"
+    alias cfa="vi ~/.alacritty.yml"
     alias cft="vi ~/dotfiles/tmux/tmux.conf"
     alias cfm="vi ~/.mutt/muttrc"
     alias cfr="vi ~/.config/ranger/"
