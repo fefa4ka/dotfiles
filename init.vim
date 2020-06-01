@@ -6,10 +6,11 @@ Plug 'morhetz/gruvbox'
 " Docs
 Plug 'rizzatti/dash.vim'
 Plug 'majutsushi/tagbar'
+Plug 'rhysd/vim-gfm-syntax'
 
 " Filesystem
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+Plug '/usr/local/opt/fzf'
 
 " LSP
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -19,8 +20,6 @@ Plug 'sheerun/vim-polyglot'
 " Debug
 Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh \| UpdateRemotePlugins' }
 
-" Docs
-Plug 'rizzatti/dash.vim'
 
 " Git
 Plug 'airblade/vim-gitgutter'
@@ -28,6 +27,9 @@ Plug 'zivyangll/git-blame.vim'
 
 " Tmux
 Plug 'benmills/vimux'
+
+" Zen
+Plug 'junegunn/goyo.vim'
 
 
 call plug#end()
@@ -89,6 +91,17 @@ let g:mapleader = ","
 
 " Undo Redo
 map <C-r> :redo<CR>
+" Less keystrokes
+nnoremap ; :
+vnoremap ; :
+nnoremap U <C-r>
+
+" Remove search highlights  http://vimbits.com/bits/21
+nnoremap <silent> <CR> :nohlsearch<CR>
+
+" Folds
+nnoremap <Space> za
+vnoremap <Space> za
 
 " Smart way to move between windows
 map <C-_> <C-W>S
@@ -103,6 +116,8 @@ map <C-l> <C-W>l
 " move to beginning/end of line
 nnoremap B ^
 nnoremap E $
+
+nnoremap #
 
 " if hidden is not set, TextEdit might fail.
 set hidden
@@ -245,3 +260,105 @@ let $FZF_DEFAULT_COMMAND="ag `ls */.gitignore | awk '{ print \"-p \" $1 }' ORS='
 command! -bang -nargs=? -complete=dir Files
     \ call fzf#vim#files(<q-args>, {'options': ['--layout=reverse', '--info=inline', '--preview', 'bat --style=numbers --color=always {}']}, <bang>0)
 nnoremap <Leader>i :<C-u>call gitblame#echo()<CR> 
+
+
+" Notes
+"
+map # :NotesPromptCommand<CR>
+command -nargs=? NotesPromptCommand :call NotesPromptCommand(<args>)
+function! NotesPromptCommand(...)
+    let command = a:0 == 1 ? a:1 : ""
+    let l:command = input(_NotesOption("g:NotesPromptString", "Note: "), command)
+
+    silent execute '!notes add_to' '"'.expand("%:p").':'.line('.').'"' '"'.escape(l:command, '\"$`').'"'
+endfunction
+
+function! _NotesOption(option, default)
+  if exists(a:option)
+    return eval(a:option)
+  else
+    return a:default
+  endif
+endfunction
+
+
+" Russian map
+map ё `
+map й q
+map ц w
+map у e
+map к r
+map е t
+map н y
+map г u
+map ш i
+map щ o
+map з p
+map х [
+map ъ ]
+map ф a
+map ы s
+map в d
+map а f
+map п g
+map р h
+map о j
+map л k
+map д l
+map ж ;
+map э '
+map я z
+map ч x
+map с c
+map м v
+map и b
+map т n
+map ь m
+map б ,
+map ю .
+map Ё ~
+map Й Q
+map Ц W
+map У E
+map К R
+map Е T
+map Н Y
+map Г U
+map Ш I
+map Щ O
+map З P
+map Х {
+map Ъ }
+map Ф A
+map Ы S
+map В D
+map А F
+map П G
+map Р H
+map О J
+map Л K
+map Д L
+map Ж :
+map Э "
+map Я Z
+map Ч X
+map С C
+map М V
+map И B
+map Т N
+map Ь M
+map Б <
+map Ю >
+
+cnoreabbrev W w
+cnoreabbrev ц w
+cnoreabbrev Ц w
+
+cnoreabbrev X x
+cnoreabbrev ч x
+cnoreabbrev ч x
+
+command Q qa!
+cnoreabbrev Й Q 
+cnoreabbrev й q 
+

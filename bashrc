@@ -1,4 +1,6 @@
 # Tmux
+export EDITOR=nvim
+export VISUAL=nvim
 # ftpane - switch pane (@george-b)
 ftpane() {
   local panes current_window current_pane target target_window target_pane

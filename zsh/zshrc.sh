@@ -7,6 +7,8 @@ VC=alexander@192.168.1.153
 setopt inc_append_history # To save every command before it is executed 
 setopt share_history # setopt inc_append_history
 
+export EDITOR=nvim
+export VISUAL=nvim
 export LC_ALL=en_US.UTF-8  
 export LANG=en_US.UTF-8
 
@@ -18,6 +20,7 @@ export KICAD_SYMBOL_DIR=/Library/Application\ Support/kicad/library
 export DYLD_LIBRARY_PATH=/usr/local/Cellar/libngspice/28/lib/
 
 # Aliases
+    alias g="lazygit"
 	alias v="nvim -p"
 	alias vi="nvim -p"
 	alias vim="nvim -p"
@@ -27,12 +30,15 @@ export DYLD_LIBRARY_PATH=/usr/local/Cellar/libngspice/28/lib/
     alias tty='ssh $VC'
     alias cam='ssh $Q1'
     eval $(thefuck --alias)
+    if hash bat; then
     alias cat="bat --theme=\$(defaults read -globalDomain AppleInterfaceStyle &> /dev/null && echo default || echo GitHub)"
+    fi
+    alias ls="exa"
 
 # Config
     alias cfz="vi ~/dotfiles/zsh/zshrc.sh"
     alias cfb="vi ~/dotfiles/bashrc"
-    alias cfv="vi ~/.config/nvim/init.vim"
+    alias cfv="vi ~/dotfiles/init.vim"
     alias cfa="vi ~/.alacritty.yml"
     alias cft="vi ~/dotfiles/tmux/tmux.conf"
     alias cfm="vi ~/.mutt/muttrc"
@@ -50,7 +56,6 @@ export DYLD_LIBRARY_PATH=/usr/local/Cellar/libngspice/28/lib/
 	export EDITOR=nvim
 
 
-source ~/dotfiles/zsh/plugins/fixls.zsh
 source ~/dotfiles/tmux/tmuxinator.zsh
 #Functions
 	# Custom cd
@@ -112,5 +117,13 @@ tm() {
   session=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf --exit-0) &&  tmux $change -t "$session" || echo "No sessions found."
 }
 
+# nnn
+alias nnn='NNN_FIFO="$(mktemp -u)" nnn'
+
+# Image frameless preview
+# https://github.com/DrabWeb/macfeh
+function macfeh() {
+    open -b "drabweb.macfeh" "$@"
+}
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
