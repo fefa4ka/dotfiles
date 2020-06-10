@@ -1,0 +1,331 @@
+# Docs
+# fn
+
+# cmd
+# lcmd
+# rcmd
+# 
+# shift
+# lshift
+# rshift
+# 
+# alt
+# lalt
+# ralt
+# 
+# ctrl
+# lctrl
+# rctrl
+
+# "return"     (kVK_Return)
+# "tab"        (kVK_Tab)
+# "space"      (kVK_Space)
+# "backspace"  (kVK_Delete)
+# "escape"     (kVK_Escape)
+# 
+# The following keys can not be used with the fn-modifier:
+# 
+# "delete"     (kVK_ForwardDelete)
+# "home"       (kVK_Home)
+# "end"        (kVK_End)
+# "pageup"     (kVK_PageUp)
+# "pagedown"   (kVK_PageDown)
+# "insert"     (kVK_Help)
+# "left"       (kVK_LeftArrow)
+# "right"      (kVK_RightArrow)
+# "up"         (kVK_UpArrow)
+# "down"       (kVK_DownArrow)
+# "f1"         (kVK_F1)
+# "f2"         (kVK_F2)
+# "f3"         (kVK_F3)
+# "f4"         (kVK_F4)
+# "f5"         (kVK_F5)
+# "f6"         (kVK_F6)
+# "f7"         (kVK_F7)
+# "f8"         (kVK_F8)
+# "f9"         (kVK_F9)
+# "f10"        (kVK_F10)
+# "f11"        (kVK_F11)
+# "f12"        (kVK_F12)
+# "f13"        (kVK_F13)
+# "f14"        (kVK_F14)
+# "f15"        (kVK_F15)
+# "f16"        (kVK_F16)
+# "f17"        (kVK_F17)
+# "f18"        (kVK_F18)
+# "f19"        (kVK_F19)
+# "f20"        (kVK_F20)
+#  
+# "sound_up"          (NX_KEYTYPE_SOUND_UP)
+# "sound_down"        (NX_KEYTYPE_SOUND_DOWN)
+# "mute"              (NX_KEYTYPE_MUTE)
+# "play"              (NX_KEYTYPE_PLAY)            
+# "previous"          (NX_KEYTYPE_PREVIOUS)        
+# "next"              (NX_KEYTYPE_NEXT)
+# "rewind"            (NX_KEYTYPE_REWIND)          
+# "fast"              (NX_KEYTYPE_FAST)            
+# "brightness_up"     (NX_KEYTYPE_BRIGHTNESS_UP)
+# "brightness_down"   (NX_KEYTYPE_BRIGHTNESS_DOWN)
+# "illumination_up"   (NX_KEYTYPE_ILLUMINATION_UP) 
+# "illumination_down" (NX_KEYTYPE_ILLUMINATION_DOWN)
+# hyper (cmd + shift + alt + ctrl)
+# 
+# meh (shift + alt + ctrl)
+#
+# Keycodes https://cloud.githubusercontent.com/assets/6175959/18551554/35137fc6-7b59-11e6-81a0-bef19ed5db5e.png
+.blacklist [
+    "SketchUp"
+]
+
+# Fullscreen
+alt - f              : yabai -m window --toggle zoom-parent
+alt + shift - f      : yabai -m window --toggle zoom-fullscreen
+
+# Reload 
+cmd + shift - r : launchctl kickstart -k "gui/${UID}/homebrew.mxcl.yabai" \
+                    && launchctl kickstart -k "gui/${UID}/homebrew.mxcl.skhd"  && launchctl kickstart -k "gui/${UID}/homebrew.mxcl.spacebar" \
+                        && killall limelight &> /dev/null; \
+                            nohup limelight &> /dev/null &
+
+# Applications
+cmd - return         : WITHOUT_TMUX=true alacritty 
+cmd + alt - return   : WITHOUT_TMUX=true alacritty -e sh
+cmd + shift - v      : vimr
+cmd + shift - s      : screencapture -P -i
+cmd + shift - m      : ~/.local/bin/xmenutmux 
+cmd + shift - f      : LC_ALL=en_US.UTF-8 WITHOUT_TMUX=true alacritty --title "Finder" -e "zsh" -c 'NNN_FIFO="$(mktemp -u)" NNN_PLUG="d:diffs;c:fzcd;q:-_|qlmanage -p $nnn" VISUAL=nvim EDITOR=nvim vifm'
+cmd + shift - y      : lc_all=en_us.utf-8 without_tmux=true alacritty --title "yandex vm" -e "zsh" -c "ssh fefa4ka@fefa4ka.sas.yp-c.yandex.net"
+cmd - m              : LC_ALL=en_US.UTF-8 WITHOUT_TMUX=true alacritty --title "Mail" -e "zsh" -c "neomutt"
+cmd + shift - return : /Applications/Chromium.app/Contents/MacOS/Chromium --app=file:///Users/fefa4ka/Development/tab/index.html
+cmd + shift - p      : /Applications/Chromium.app/Contents/MacOS/Chromium --app=file:///Users/fefa4ka/Development/tab/index.html
+cmd - d              : xmenu_combined_run -fn "FiraCode Nerd Font" -p "run:"
+cmd - e              : LC_ALL=en_US.UTF-8 ~/.local/bin/xmenuunicode
+cmd + shift - u      : ~/.local/bin/xmenutty
+cmd - g              : ~/.local/bin/xmenubrowse
+cmd - 3              : ~/.local/bin/xmenunotes
+cmd - 2              : ~/.local/bin/xmenuat
+
+
+# Windows 
+    ## balance size of windows
+    shift + alt - 0 : yabai -m space --balance
+    
+    # Navigation
+    alt - h              : yabai -m window --focus west 
+    alt - left           : yabai -m window --focus west 
+    alt - right          : yabai -m window --focus east 
+    alt - l              : yabai -m window --focus east 
+    alt - up             : yabai -m window --focus north 
+    alt - j              : yabai -m window --focus north 
+    alt - k              : yabai -m window --focus south 
+    alt - down           : yabai -m window --focus south 
+
+    # Moving
+    lshift + alt - h      : yabai -m window --move rel:-50:0 || yabai -m window --swap west 
+    lshift + alt - left   : yabai -m window --move rel:-50:0 || yabai -m window --swap west 
+    lshift + alt - l      :  yabai -m window --move rel:50:0 || yabai -m window --swap east 
+    lshift + alt - right  : yabai -m window --move rel:50:0 || yabai -m window --swap east 
+
+    lshift + alt - j      :  yabai -m window --move rel:0:-50 || yabai -m window --swap north 
+    lshift + alt - up     : yabai -m window --move rel:0:-50 || yabai -m window --swap north 
+    lshift + alt - k      : yabai -m window --move rel:0:50 || yabai -m window --swap south 
+    lshift + alt - down   : yabai -m window --move rel:0:50 || yabai -m window --swap south 
+
+    # Resize
+    alt + cmd - up            : yabai -m window --resize top:0:-50 || \
+                                    yabai -m window --resize bottom:0:-50 || \
+                                        yabai -m window --resize bottom:0:-50
+    alt + cmd - down          : yabai -m window --resize top:0:50 || \
+                                    yabai -m window --resize bottom:0:50 || \
+                                    yabai -m window --resize rel:0:50
+    alt + cmd - right         : yabai -m window --resize left:50:0 || \
+                                    yabai -m window --resize right:50:0 
+    alt + cmd - left          : yabai -m window --resize left:-50:0 || \
+                                    yabai -m window --resize right:-50:0 
+
+    alt + cmd - j            : yabai -m window --resize top:0:-50 || \
+                                    yabai -m window --resize bottom:0:-50 || \
+                                        yabai -m window --resize bottom:0:-50
+    alt + cmd - k          : yabai -m window --resize top:0:50 || \
+                                    yabai -m window --resize bottom:0:50 || \
+                                    yabai -m window --resize rel:0:50
+    alt + cmd - l         : yabai -m window --resize left:50:0 || \
+                                    yabai -m window --resize right:50:0 
+    alt + cmd - h          : yabai -m window --resize left:-50:0 || \
+                                    yabai -m window --resize right:-50:0 
+    # Rotation
+    alt - r                  : yabai -m space --rotate 90
+
+    # Warp
+    alt + rshift - left       : yabai -m window --warp west
+    alt + rshift - right      : yabai -m window --warp east
+    alt + rshift - up         : yabai -m window --warp north 
+    alt + rshift - down       : yabai -m window --warp south 
+
+    alt + rshift - h          : yabai -m window --warp west
+    alt + rshift - l          : yabai -m window --warp east
+    alt + rshift - j          : yabai -m window --warp north 
+    alt + rshift - k          : yabai -m window --warp south 
+
+    # Toggle Float
+    alt + shift - space : yabai -m window --toggle float && \
+                          yabai -m window --grid 8:8:1:1:6:6
+    # Toggle Stick
+    alt - s             : yabai -m window --toggle sticky
+
+    # Toggle sticky (+float), topmost, picture-in-picture
+    alt - p             :  yabai -m window --toggle sticky;\
+                           yabai -m window --toggle topmost;\
+                           yabai -m window --toggle pip
+
+# Displays 
+    # Navigation
+    ctrl + cmd - left   : yabai -m display --focus prev || yabai -m display --focus last
+    ctrl + cmd - right  : yabai -m display --focus next || yabai -m display --focus first
+    ctrl + cmd - q      : yabai -m display --focus prev || yabai -m display --focus last
+    ctrl + cmd - w      : yabai -m display --focus next || yabai -m display --focus first
+
+    # Move space to display
+    shift + ctrl + cmd - left : yabai -m space --display prev || yabai -m space --display last
+    shift + ctrl + cmd - right: yabai -m space --display next || yabai -m space --display first
+    shift + ctrl + cmd - q    : yabai -m space --display prev || yabai -m space --display last
+    shift + ctrl + cmd - w    : yabai -m space --display next || yabai -m space --display first
+
+    lshift + cmd - d          : yabai -m space --display prev || yabai -m space --display last
+    rshift + cmd - d          : yabai -m space --display next || yabai -m space --display first
+
+    # Move window to display
+    shift + alt + cmd - left  : (yabai -m window --display prev && yabai -m display --focus prev || yabai -m window --display last && yabai -m display --focus next) 
+    shift + alt + cmd - right : (yabai -m window --display next && yabai -m display --focus next || yabai -m window --display first && yabai -m display --focus prev) 
+    shift + alt + cmd - q     : (yabai -m window --display prev && yabai -m display --focus prev || yabai -m window --display last && yabai -m display --focus next) 
+    shift + alt + cmd - w     : (yabai -m window --display next && yabai -m display --focus next || yabai -m window --display first && yabai -m display --focus prev) 
+
+# Spaces
+    # Spaces:  Alt + [NUM]
+    alt - 1 : yabai -m space --focus 1
+    alt - 2 : yabai -m space --focus 2
+    alt - 3 : yabai -m space --focus 3
+    alt - 4 : yabai -m space --focus 4
+    alt - 5 : yabai -m space --focus 5
+    alt - 6 : yabai -m space --focus 6
+    alt - 7 : yabai -m space --focus 7
+    alt - 8 : yabai -m space --focus 8
+
+    # Navigation
+    alt - tab                : yabai -m space --focus recent
+    alt - q                  : yabai -m space --focus prev
+    alt - w                  : yabai -m space --focus next 
+    # Gaps
+    ctrl - g                  : yabai -m space --toggle gap
+
+    # Move space
+    ctrl + shift - left       : yabai -m space --move prev || yabai -m space --move last
+    ctrl + shift - right      : yabai -m space --move next || yabai -m space --move first
+
+    ctrl + shift - h          : yabai -m space --move prev || yabai -m space --move last
+    ctrl + shift - l          : yabai -m space --move next || yabai -m space --move first
+
+    ctrl + shift - q          : yabai -m space --move prev || yabai -m space --move last
+    ctrl + shift - w          : yabai -m space --move next || yabai -m space --move first
+
+    # Window to space
+    alt + shift - q            : yabai -m window --space prev
+    alt + shift - w            : yabai -m window --space next 
+
+    # Create, destroy
+    cmd + shift - w           : yabai -m space --destroy
+
+    shift + alt - n           : yabai -m space --create && \
+                                index="$(yabai -m query --spaces --display | jq 'map(select(."native-fullscreen" == 0))[-1].index')" && \
+                                yabai -m window --space "${index}" && \
+                                yabai -m space --focus "${index}"
+
+    shift + cmd - n           : yabai -m space --create && \
+                                index="$(yabai -m query --spaces --display | jq 'map(select(."native-fullscreen" == 0))[-1].index')" && \
+                                yabai -m space --focus "${index}"
+
+    # Mirror
+    alt - x                   : yabai -m space --mirror x-axis
+    alt - y                   : yabai -m space --mirror y-axis
+    alt - o                   : yabai -m window --toggle split
+
+
+    # Sends Window to Space and shifts focus
+    # Send: Shift + Cmd + [NUM]
+    shift + alt - 1   : yabai -m window --space  1; yabai -m space --focus 1
+    shift + alt - 2   : yabai -m window --space  2; yabai -m space --focus 2
+    shift + alt - 3   : yabai -m window --space  3; yabai -m space --focus 3
+    shift + alt - 4   : yabai -m window --space  4; yabai -m space --focus 4
+    shift + alt - 5   : yabai -m window --space  5; yabai -m space --focus 5
+    shift + alt - 6   : yabai -m window --space  6; yabai -m space --focus 6
+    shift + alt - 7   : yabai -m window --space  7; yabai -m space --focus 7
+    shift + alt - 8   : yabai -m window --space  8; yabai -m space --focus 8   # Move window to workspace
+    alt + shift - tab : yabai -m window --display recent; yabai -m display --focus recent
+
+
+
+# focus window
+# alt - h : yabai -m window --focus west
+
+# swap managed window
+# shift + alt - h : yabai -m window --swap north
+
+
+# move managed window
+# shift + cmd - h : yabai -m window --warp east
+
+
+
+# make floating window fill screen
+# shift + alt - up     : yabai -m window --grid 1:1:0:0:1:1
+
+# make floating window fill left-half of screen
+# shift + alt - left   : yabai -m window --grid 1:2:0:0:1:1
+
+# create desktop, move window and follow focus - uses jq for parsing json (brew install jq)
+# shift + cmd - n : yabai -m space --create && \
+#                   index="$(yabai -m query --spaces --display | jq 'map(select(."native-fullscreen" == 0))[-1].index')" && \
+#                   yabai -m window --space "${index}" && \
+#                   yabai -m space --focus "${index}"
+
+# fast focus desktop
+# cmd + alt - x : yabai -m space --focus recent
+# cmd + alt - 1 : yabai -m space --focus 1
+
+# send window to desktop and follow focus
+#shift + cmd - z : yabai -m window --space next; yabai -m space --focus next
+#shift + cmd - 2 : yabai -m window --space  2; yabai -m space --focus 2
+
+# focus monitor
+# ctrl + alt - z  : yabai -m display --focus prev
+# ctrl + alt - 3  : yabai -m display --focus 3
+
+# send window to monitor and follow focus
+#ctrl + cmd - c  : yabai -m window --display next; yabai -m display --focus next
+#ctrl + cmd - 1  : yabai -m window --display 1; yabai -m display --focus 1
+
+# move floating window
+# shift + ctrl - a : yabai -m window --move rel:-20:0
+# shift + ctrl - s : yabai -m window --move rel:0:20
+
+# increase window size
+
+# decrease window size
+# shift + cmd - s : yabai -m window --resize bottom:0:-20
+# shift + cmd - w : yabai -m window --resize top:0:20
+
+# set insertion point in focused container
+# ctrl + alt - h : yabai -m window --insert west
+
+# toggle window zoom
+#alt - d : yabai -m window --toggle zoom-parent
+#alt - f : yabai -m window --toggle zoom-fullscreen
+
+# toggle window split type
+# alt - e : yabai -m window --toggle split
+
+# float / unfloat window and center on screen
+# alt - t : yabai -m window --toggle float;\
+#           yabai -m window --grid 4:4:1:1:2:2
+
+
