@@ -1,4 +1,6 @@
+
 call plug#begin('~/.config/nvim/plugged')
+
 " Color
 Plug 'danilo-augusto/vim-afterglow'
 Plug 'morhetz/gruvbox'
@@ -6,7 +8,6 @@ Plug 'morhetz/gruvbox'
 " Docs
 Plug 'rizzatti/dash.vim'
 Plug 'majutsushi/tagbar'
-Plug 'rhysd/vim-gfm-syntax'
 
 " Filesystem
 Plug 'junegunn/fzf.vim'
@@ -16,16 +17,16 @@ Plug '/usr/local/opt/fzf'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'jackguo380/vim-lsp-cxx-highlight'
 Plug 'sheerun/vim-polyglot'
+Plug 'rhysd/vim-gfm-syntax'
 
 " Debug
 Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh \| UpdateRemotePlugins' }
-
 
 " Git
 Plug 'airblade/vim-gitgutter'
 Plug 'zivyangll/git-blame.vim'
 
-" Tmux
+" WM and Tmux
 Plug 'benmills/vimux'
 
 " Zen
@@ -41,6 +42,10 @@ set number relativenumber
 set mouse=a
 set clipboard=unnamed
 set nowrap
+
+
+" Search down into subfolders
+set path+=**
 
 " Netrw
 let g:netrw_banner = 0
@@ -79,8 +84,8 @@ endfunction
 " Add your own mapping. For example
 
 noremap <silent> <C-E> :call ToggleNetrw()<CR><Paste>
-nmap <C-p> :GFiles<CR>
-nmap <C-o> :Files<CR>
+nmap <C-g> :GFiles<CR>
+nmap <C-p> :Files<CR>
 nmap <C-b> :Buffers<CR>
 nmap <C-t> :TagbarToggle<CR>
 
@@ -95,9 +100,6 @@ map <C-r> :redo<CR>
 nnoremap ; :
 vnoremap ; :
 nnoremap U <C-r>
-
-" Remove search highlights  http://vimbits.com/bits/21
-nnoremap <silent> <CR> :nohlsearch<CR>
 
 " Folds
 nnoremap <Space> za
@@ -116,8 +118,6 @@ map <C-l> <C-W>l
 " move to beginning/end of line
 nnoremap B ^
 nnoremap E $
-
-nnoremap #
 
 " if hidden is not set, TextEdit might fail.
 set hidden
@@ -153,7 +153,6 @@ set signcolumn=yes
 
 " coc config
 let g:coc_global_extensions = [
-  \ 'coc-snippets',
   \ 'coc-pairs',
   \ 'coc-tsserver',
   \ 'coc-eslint', 
@@ -165,6 +164,9 @@ let g:coc_global_extensions = [
 
 " Formatter
 let g:prettier#config#tab_width = '4'
+autocmd FileType c,cpp setlocal equalprg=clang-format
+map <C-K> :pyf /usr/local/Cellar/clang-format/10.0.0/share/clang/clang-format.py<cr>
+imap <C-K> <c-o>:pyf /usr/local/Cellar/clang-format/10.0.0/share/clang/clang-format.py<cr>
 
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
@@ -210,6 +212,8 @@ function! s:show_documentation()
 endfunction
 
 " Highlight symbol under cursor on CursorHold
+set cursorline
+hi CursorLine term=bold cterm=bold guibg=Grey40
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " Remap for rename current word
@@ -361,4 +365,6 @@ cnoreabbrev ч x
 command Q qa!
 cnoreabbrev Й Q 
 cnoreabbrev й q 
+
+
 

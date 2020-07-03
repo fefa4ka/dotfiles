@@ -1,23 +1,29 @@
 # Vars
 HISTFILE=~/notes/.zsh_history
 SAVEHIST=1000 
+
+# Hosts
 Q1=pi@192.168.1.190
 VM=fefa4ka@fefa4ka.sas.yp-c.yandex.net
 VC=alexander@192.168.1.153
+
 setopt inc_append_history # To save every command before it is executed 
 setopt share_history # setopt inc_append_history
 
+# Editor
 export EDITOR=nvim
 export VISUAL=nvim
+
+# Locale
 export LC_ALL=en_US.UTF-8  
 export LANG=en_US.UTF-8
 
+# KiCad and NGSpice
 export KISYSMOD=/Library/Application\ Support/kicad/modules
 export KICAD_SYMBOL_DIR=/Library/Application\ Support/kicad/library
-
-
 # Path where is libngspice.dylib placed
 export DYLD_LIBRARY_PATH=/usr/local/Cellar/libngspice/28/lib/
+
 
 # Aliases
     alias g="lazygit"
@@ -57,6 +63,7 @@ export DYLD_LIBRARY_PATH=/usr/local/Cellar/libngspice/28/lib/
 
 
 source ~/dotfiles/tmux/tmuxinator.zsh
+
 #Functions
 	# Custom cd
 	c() {
@@ -122,7 +129,7 @@ alias nnn='NNN_FIFO="$(mktemp -u)" nnn'
 
 # Image frameless preview
 # https://github.com/DrabWeb/macfeh
-function macfeh() {
+function feh() {
     open -b "drabweb.macfeh" "$@"
 }
 
