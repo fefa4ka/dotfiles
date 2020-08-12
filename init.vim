@@ -4,8 +4,10 @@ call plug#begin('~/.config/nvim/plugged')
 " Color
 Plug 'danilo-augusto/vim-afterglow'
 Plug 'morhetz/gruvbox'
+Plug 'yuttie/comfortable-motion.vim'
 
 " Docs
+Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
 Plug 'rizzatti/dash.vim'
 Plug 'majutsushi/tagbar'
 
@@ -36,16 +38,28 @@ Plug 'junegunn/goyo.vim'
 call plug#end()
 
 
+set timeoutlen=500
+
 " UX
+if exists('+termguicolors')
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+  set termguicolors
+endif
 colorscheme gruvbox 
 set number relativenumber
 set mouse=a
 set clipboard=unnamed
 set nowrap
 
+let g:comfortable_motion_no_default_key_mappings = 1
+nnoremap <silent> <C-d> :call comfortable_motion#flick(200)<CR>
+nnoremap <silent> <C-u> :call comfortable_motion#flick(-200)<CR>
 
 " Search down into subfolders
 set path+=**
+
+nnoremap '.  :exe ":FZF " . expand("%:h")<CR>
 
 " Netrw
 let g:netrw_banner = 0
@@ -91,8 +105,10 @@ nmap <C-t> :TagbarToggle<CR>
 
 
 " Leader ,
-let mapleader = ","
-let g:mapleader = ","
+let g:mapleader = "\<Space>"
+let g:maplocalleader = ','
+nnoremap <silent> <leader>      :<c-u>WhichKey '<Space>'<CR>
+nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
 
 " Undo Redo
 map <C-r> :redo<CR>
@@ -101,9 +117,7 @@ nnoremap ; :
 vnoremap ; :
 nnoremap U <C-r>
 
-" Folds
-nnoremap <Space> za
-vnoremap <Space> za
+
 
 " Smart way to move between windows
 map <C-_> <C-W>S
@@ -263,6 +277,8 @@ map <Leader>rr :VimuxRunLastCommand<CR>
 let $FZF_DEFAULT_COMMAND="ag `ls */.gitignore | awk '{ print \"-p \" $1 }' ORS=' '` -g ''"
 command! -bang -nargs=? -complete=dir Files
     \ call fzf#vim#files(<q-args>, {'options': ['--layout=reverse', '--info=inline', '--preview', 'bat --style=numbers --color=always {}']}, <bang>0)
+
+" Git blame info
 nnoremap <Leader>i :<C-u>call gitblame#echo()<CR> 
 
 
@@ -285,6 +301,24 @@ function! _NotesOption(option, default)
   endif
 endfunction
 
+" Reminder 
+"
+map @ :ReminderPromptCommand<CR>
+command -nargs=? ReminderPromptCommand :call ReminderPromptCommand(<args>)
+function! ReminderPromptCommand(...)
+    let command = a:0 == 1 ? a:1 : ""
+    let l:command = input(_NotesOption("g:NotesPromptString", "Remind: "), command)
+
+    silent execute '!remind' '"'.escape(l:command, '\"$`').'"' '"'.expand("%:p").':'.line('.').'"'
+endfunction
+
+function! _NotesOption(option, default)
+  if exists(a:option)
+    return eval(a:option)
+  else
+    return a:default
+  endif
+endfunction
 
 " Russian map
 map ё `
