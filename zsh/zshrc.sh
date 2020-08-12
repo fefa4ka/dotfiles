@@ -45,10 +45,11 @@ export DYLD_LIBRARY_PATH=/usr/local/Cellar/libngspice/28/lib/
     alias cfz="vi ~/dotfiles/zsh/zshrc.sh"
     alias cfb="vi ~/dotfiles/bashrc"
     alias cfv="vi ~/dotfiles/init.vim"
-    alias cfa="vi ~/.alacritty.yml"
+    alias cfa="vi ~/.config/alacritty/alacritty.yml"
     alias cft="vi ~/dotfiles/tmux/tmux.conf"
     alias cfm="vi ~/.mutt/muttrc"
     alias cfr="vi ~/.config/ranger/"
+    alias cff="vi ~/.config/vifm/vifmrc"
     alias cfk="vi ~/.config/skhd/skhdrc"
     alias cfy="vi ~/.config/yabai/yabairc"
 
@@ -122,6 +123,10 @@ tm() {
     tmux $change -t "$1" 2>/dev/null || (tmux new-session -d -s $1 && tmux $change -t "$1"); return
   fi
   session=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf --exit-0) &&  tmux $change -t "$session" || echo "No sessions found."
+}
+
+cd_with_fzf() {
+    cd $HOME && cd "$(fd -t d | fzf --preview="tree -L 1 {}" --bind="space:toggle-preview" --preview-window=:hidden)"
 }
 
 # nnn
