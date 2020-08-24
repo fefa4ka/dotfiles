@@ -12,6 +12,8 @@ Plug 'rizzatti/dash.vim'
 Plug 'majutsushi/tagbar'
 
 " Filesystem
+Plug 'dyng/ctrlsf.vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug '/usr/local/opt/fzf'
 
@@ -38,7 +40,7 @@ Plug 'junegunn/goyo.vim'
 call plug#end()
 
 
-set timeoutlen=500
+set timeoutlen=20
 
 " UX
 if exists('+termguicolors')
@@ -116,6 +118,8 @@ map <C-r> :redo<CR>
 nnoremap ; :
 vnoremap ; :
 nnoremap U <C-r>
+
+
 
 
 
@@ -264,7 +268,7 @@ command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organize
 " Show all diagnostics
 nnoremap <silent> <space>e  :<C-u>CocList diagnostics<cr>
 " Show commands
-nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+nnoremap <silent> <space>a  :<C-u>CocList commands<cr>
 
 
 nmap <silent> <leader>d <Plug>DashSearch
@@ -274,6 +278,7 @@ map <Leader>c :VimuxPromptCommand<CR>
 map <Leader>rr :VimuxRunLastCommand<CR>
 
 " fzf recursive git ignore with bat preview
+let $FZF_DEFAULT_OPTS="--color=dark --layout=reverse --margin=1,1 --color=fg:15,bg:-1,hl:1,fg+:#ffffff,bg+:0,hl+:1 --color=info:0,pointer:12,marker:4,spinner:11,header:-1"
 let $FZF_DEFAULT_COMMAND="ag `ls */.gitignore | awk '{ print \"-p \" $1 }' ORS=' '` -g ''"
 command! -bang -nargs=? -complete=dir Files
     \ call fzf#vim#files(<q-args>, {'options': ['--layout=reverse', '--info=inline', '--preview', 'bat --style=numbers --color=always {}']}, <bang>0)
@@ -285,7 +290,7 @@ nnoremap <Leader>i :<C-u>call gitblame#echo()<CR>
 " Notes
 "
 map # :NotesPromptCommand<CR>
-command -nargs=? NotesPromptCommand :call NotesPromptCommand(<args>)
+command! -nargs=? NotesPromptCommand :call NotesPromptCommand(<args>)
 function! NotesPromptCommand(...)
     let command = a:0 == 1 ? a:1 : ""
     let l:command = input(_NotesOption("g:NotesPromptString", "Note: "), command)
@@ -304,7 +309,7 @@ endfunction
 " Reminder 
 "
 map @ :ReminderPromptCommand<CR>
-command -nargs=? ReminderPromptCommand :call ReminderPromptCommand(<args>)
+command! -nargs=? ReminderPromptCommand :call ReminderPromptCommand(<args>)
 function! ReminderPromptCommand(...)
     let command = a:0 == 1 ? a:1 : ""
     let l:command = input(_NotesOption("g:NotesPromptString", "Remind: "), command)
@@ -396,9 +401,7 @@ cnoreabbrev X x
 cnoreabbrev ч x
 cnoreabbrev ч x
 
-command Q qa!
+command! Q qa!
 cnoreabbrev Й Q 
 cnoreabbrev й q 
-
-
 
