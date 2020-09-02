@@ -79,14 +79,14 @@
     
 # Vim
     open_editor() {
-        $EDITOR
+        fd -t f -H -I | fzf -m --preview="([[ -f {} ]] && (bat --style=numbers --color=always {} || cat {})) || ([[ -d {} ]] && (tree -C {} | less)) || echo {} 2> /dev/null | head -200" | xargs $EDITOR
     }
 	zle -N open_editor
 	bindkey "^v" open_editor
 
 # Notes
     open_notes() {
-        cd ~/notes && tree --charset=o -f | fzf --query "$LBUFFER" --delimiter='\./' --preview='([[ -f {2} ]] && (mdv {2} || cat {2})) || ([[ -d {2} ]] && (tree -C {2} | less)) || echo {2} 2> /dev/null | head -200' | tr -d '\||`|-' | xargs -0 -I echo notes add_to {} _
+        cd ~/notes && tree --charset=o -f | fzf --query "$LBUFFER" --delimiter='\./' --preview='([[ -f {2} ]] && (mdv {2} || cat {2})) || ([[ -d {2} ]] && (tree -C {2} | less)) || echo {2} 2> /dev/null | head -200' | awk '{split($0, a, "- ."); print a[2]}' | xargs -n1 -I{} notes add_to "~{}" _
     }
     zle -N open_notes
     bindkey "^n" open_notes

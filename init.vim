@@ -4,7 +4,6 @@ call plug#begin('~/.config/nvim/plugged')
 " Color
 Plug 'danilo-augusto/vim-afterglow'
 Plug 'morhetz/gruvbox'
-Plug 'yuttie/comfortable-motion.vim'
 
 " Docs
 Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
@@ -13,7 +12,6 @@ Plug 'majutsushi/tagbar'
 
 " Filesystem
 Plug 'dyng/ctrlsf.vim'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug '/usr/local/opt/fzf'
 
@@ -50,14 +48,12 @@ if exists('+termguicolors')
 endif
 colorscheme gruvbox 
 set number relativenumber
+ 
+set list lcs=trail:·,tab:»·
+
 set mouse=a
 set clipboard=unnamed
 set nowrap
-
-let g:comfortable_motion_no_default_key_mappings = 1
-nnoremap <silent> <C-d> :call comfortable_motion#flick(200)<CR>
-nnoremap <silent> <C-u> :call comfortable_motion#flick(-200)<CR>
-
 " Search down into subfolders
 set path+=**
 
@@ -273,6 +269,9 @@ nnoremap <silent> <space>a  :<C-u>CocList commands<cr>
 
 nmap <silent> <leader>d <Plug>DashSearch
 
+nmap <silent> <leader>f <Plug>CtrlSFPrompt
+nmap <silent> <leader>w <Plug>CtrlSFCwordPath 
+
 " Prompt for a command to run
 map <Leader>c :VimuxPromptCommand<CR>
 map <Leader>rr :VimuxRunLastCommand<CR>
@@ -405,3 +404,8 @@ command! Q qa!
 cnoreabbrev Й Q 
 cnoreabbrev й q 
 
+
+" Fold
+set foldmethod=syntax
+set foldnestmax=2
+autocmd BufReadPost *.py :set foldmethod=indent
