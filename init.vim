@@ -1,6 +1,9 @@
 
 call plug#begin('~/.config/nvim/plugged')
 
+" Sandbox
+Plug 'jupyter-vim/jupyter-vim'
+
 " Color
 Plug 'danilo-augusto/vim-afterglow'
 Plug 'morhetz/gruvbox'
@@ -41,6 +44,8 @@ call plug#end()
 set timeoutlen=20
 
 " UX
+
+
 if exists('+termguicolors')
   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
@@ -272,6 +277,24 @@ nmap <silent> <leader>d <Plug>DashSearch
 nmap <silent> <leader>f <Plug>CtrlSFPrompt
 nmap <silent> <leader>w <Plug>CtrlSFCwordPath 
 
+" Jupyter
+let g:jupyter_mapkeys = 0 
+
+nnoremap <silent> <leader>jc :JupyterConnect<CR>
+
+" Debugging maps
+nnoremap <silent> <leader>jb :PythonSetBreak<CR>
+
+nnoremap <silent> <leader>jr :JupyterRunFile<cr>
+nnoremap <silent> <leader>ji :PythonImportThisFile<CR>
+
+" Change to directory of current file
+nnoremap <silent> <leader>jd :JupyterCd %:p:h<CR>
+
+" Send a selection of lines
+nnoremap <silent> <leader>g :JupyterSendCell<CR>
+nnoremap <silent> <leader>x :JupyterSendRange<CR>
+
 " Prompt for a command to run
 map <Leader>c :VimuxPromptCommand<CR>
 map <Leader>rr :VimuxRunLastCommand<CR>
@@ -409,3 +432,8 @@ cnoreabbrev й q
 set foldmethod=syntax
 set foldnestmax=2
 autocmd BufReadPost *.py :set foldmethod=indent
+
+
+" Transparency
+set termguicolors
+hi Normal guibg=NONE ctermbg=NONE
