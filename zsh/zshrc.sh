@@ -26,10 +26,18 @@ export DYLD_LIBRARY_PATH=/usr/local/Cellar/libngspice/28/lib/
 
 
 # Aliases
+    alias ..="cd .."
+    alias ...="cd .. && cd .."
+    alias .3="cd .. && cd .. && cd .."
+    alias .4="cd .. && cd .. && cd .. && cd .."
+    alias .5="cd .. && cd .. && cd .. && cd .. && cd .."
+    alias grep='grep --color=auto'
     alias g="lazygit"
+    if hash nvim; then
 	alias v="nvim -p"
 	alias vi="nvim -p"
 	alias vim="nvim -p"
+    fi
     alias mutt="neomutt"
 	alias h='function hdi(){ howdoi $* -c -n 5; }; hdi'
     alias console='ssh $VM'
@@ -39,7 +47,12 @@ export DYLD_LIBRARY_PATH=/usr/local/Cellar/libngspice/28/lib/
     if hash bat; then
     alias cat="bat --theme=\$(defaults read -globalDomain AppleInterfaceStyle &> /dev/null && echo default || echo GitHub)"
     fi
-    alias ls="exa"
+    if hash exa; then
+    alias ls="exa -al --color=always --group-directories-first"
+    alias la="exa -a --color=always --group-directories-first"
+    alias ll="exa -l --color=always --group-directories-first"
+    alias lt="exa -aT --color=always --group-directories-first"
+    fi
 
 # Config
     alias cfz="vi ~/dotfiles/zsh/zshrc.sh"
@@ -138,4 +151,16 @@ function feh() {
     open -b "drabweb.macfeh" "$@"
 }
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# Setup fzf
+# ---------
+if [[ ! "$PATH" == */usr/local/opt/fzf/bin* ]]; then
+  export PATH="${PATH:+${PATH}:}/usr/local/opt/fzf/bin"
+fi
+
+# Auto-completion
+# ---------------
+[[ $- == *i* ]] && source "/usr/local/opt/fzf/shell/completion.zsh" 2> /dev/null
+
+# Key bindings
+# ------------
+source "/usr/local/opt/fzf/shell/key-bindings.zsh"

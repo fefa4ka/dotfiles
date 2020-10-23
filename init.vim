@@ -1,10 +1,12 @@
 
 call plug#begin('~/.config/nvim/plugged')
 
+" Sandbox
+Plug 'jupyter-vim/jupyter-vim'
+
 " Color
 Plug 'danilo-augusto/vim-afterglow'
 Plug 'morhetz/gruvbox'
-Plug 'yuttie/comfortable-motion.vim'
 
 " Docs
 Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
@@ -13,7 +15,6 @@ Plug 'majutsushi/tagbar'
 
 " Filesystem
 Plug 'dyng/ctrlsf.vim'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug '/usr/local/opt/fzf'
 
@@ -43,6 +44,8 @@ call plug#end()
 set timeoutlen=20
 
 " UX
+
+
 if exists('+termguicolors')
   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
@@ -50,14 +53,12 @@ if exists('+termguicolors')
 endif
 colorscheme gruvbox 
 set number relativenumber
+ 
+set list lcs=trail:·,tab:»·
+
 set mouse=a
 set clipboard=unnamed
 set nowrap
-
-let g:comfortable_motion_no_default_key_mappings = 1
-nnoremap <silent> <C-d> :call comfortable_motion#flick(200)<CR>
-nnoremap <silent> <C-u> :call comfortable_motion#flick(-200)<CR>
-
 " Search down into subfolders
 set path+=**
 
@@ -273,6 +274,27 @@ nnoremap <silent> <space>a  :<C-u>CocList commands<cr>
 
 nmap <silent> <leader>d <Plug>DashSearch
 
+nmap <silent> <leader>f <Plug>CtrlSFPrompt
+nmap <silent> <leader>w <Plug>CtrlSFCwordPath 
+
+" Jupyter
+let g:jupyter_mapkeys = 0 
+
+nnoremap <silent> <leader>jc :JupyterConnect<CR>
+
+" Debugging maps
+nnoremap <silent> <leader>jb :PythonSetBreak<CR>
+
+nnoremap <silent> <leader>jr :JupyterRunFile<cr>
+nnoremap <silent> <leader>ji :PythonImportThisFile<CR>
+
+" Change to directory of current file
+nnoremap <silent> <leader>jd :JupyterCd %:p:h<CR>
+
+" Send a selection of lines
+nnoremap <silent> <leader>g :JupyterSendCell<CR>
+nnoremap <silent> <leader>x :JupyterSendRange<CR>
+
 " Prompt for a command to run
 map <Leader>c :VimuxPromptCommand<CR>
 map <Leader>rr :VimuxRunLastCommand<CR>
@@ -405,3 +427,13 @@ command! Q qa!
 cnoreabbrev Й Q 
 cnoreabbrev й q 
 
+
+" Fold
+set foldmethod=syntax
+set foldnestmax=2
+autocmd BufReadPost *.py :set foldmethod=indent
+
+
+" Transparency
+set termguicolors
+hi Normal guibg=NONE ctermbg=NONE
