@@ -31,22 +31,6 @@ set findprg='find %s %a -print ,
 
 " don't display file user/group on Windows
 
-    let &statusline = ''
-    if $SL_PREFIX != ''
-        let &statusline = '%2*'.$SL_PREFIX.'%4*'
-    endif
-    let &statusline .= '%1*'           " left separator
-    let &statusline .= ' %t '          " file name
-    let &statusline .= ''             " left separator
-    let &statusline .= '%='            " fill the whole status line
-    let &statusline .= ''             " right separator
-    let &statusline .= ' %A '          " file attributes
-    let &statusline .= '%4*%2*'       " right separator
-    let &statusline .= ' '.$RIGHTS.' ' " user and group owners of the file
-    let &statusline .= '%3*%1*'       " right separator
-    let &statusline .= ' %5E '         " human readable cumulative file size
-    let &statusline .= '%4*%2*'       " right separator
-    let &statusline .= ' %d '          " file modification date and time
 
    " file types
     set classify=' :dir:/, :exe:, :reg:, :link:'
@@ -90,3 +74,5 @@ nnoremap q :!qlmanage -p %f > /dev/null 2>&1<cr>
 
 filetype * opener %c > /dev/null 2>&1
 
+" SSH fs
+:filetype *.ssh FUSE_MOUNT2|sshfs %PARAM %DESTINATION_DIR
