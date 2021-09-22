@@ -1,28 +1,30 @@
 # Vars
 HISTFILE=~/notes/.zsh_history
-SAVEHIST=1000 
+SAVEHIST=1000
 
 # Hosts
 Q1=pi@192.168.1.190
 VM=fefa4ka@fefa4ka.sas.yp-c.yandex.net
 VC=alexander@192.168.1.153
 
-setopt inc_append_history # To save every command before it is executed 
+setopt inc_append_history # To save every command before it is executed
 setopt share_history # setopt inc_append_history
+
+export PATH="${PATH:+${PATH}:}/Users/fefa4ka/.local/bin"
 
 # Editor
 export EDITOR=nvim
 export VISUAL=nvim
 
 # Locale
-export LC_ALL=en_US.UTF-8  
+export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
 # KiCad and NGSpice
 export KISYSMOD=/Library/Application\ Support/kicad/modules
 export KICAD_SYMBOL_DIR=/Library/Application\ Support/kicad/library
 # Path where is libngspice.dylib placed
-export DYLD_LIBRARY_PATH=/usr/local/Cellar/libngspice/28/lib/
+export DYLD_LIBRARY_PATH=/usr/local/Cellar/libngspice/32/lib/
 
 
 # Aliases
@@ -69,6 +71,10 @@ export DYLD_LIBRARY_PATH=/usr/local/Cellar/libngspice/28/lib/
 	# This is currently causing problems (fails when you run it anywhere that isn't a git project's root directory)
 	# alias vs="v `git status --porcelain | sed -ne 's/^ M //p'`"
 
+# SignalQ alias
+    alias qt="/Volumes/SignalQ/signalq.sh"
+    alias qa="/Volumes/SignalQ/q"
+
 # Settings
     export LC_ALL=en_US.UTF-8
 
@@ -86,7 +92,7 @@ source ~/dotfiles/tmux/tmuxinator.zsh
 	}
 	alias cd="c"
 
-# For vim mappings: 
+# For vim mappings:
 	stty -ixon
 
 source ~/dotfiles/zsh/plugins/oh-my-zsh/lib/history.zsh
@@ -164,3 +170,15 @@ fi
 # Key bindings
 # ------------
 source "/usr/local/opt/fzf/shell/key-bindings.zsh"
+
+# NVM
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
+  [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
+
+# color for less and man
+export MANPAGER='less -s -M +Gg'
+export LESS="--RAW-CONTROL-CHARS"
+lesscolors=$HOME/bin/.LESS_TERMCAP
+[[ -f $lesscolors ]] && . $lesscolors

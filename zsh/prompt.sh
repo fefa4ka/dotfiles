@@ -39,9 +39,9 @@ git_info() {
     FLAGS+=( "$MERGING" )
   fi
 
-  if [[ -n $(git ls-files --other --exclude-standard 2> /dev/null) ]]; then
-    FLAGS+=( "$UNTRACKED" )
-  fi
+#  if [[ -n $(git ls-files --other --exclude-standard 2> /dev/null) ]]; then
+#    FLAGS+=( "$UNTRACKED" )
+#  fi
 
   if ! git diff --quiet 2> /dev/null; then
     FLAGS+=( "$MODIFIED" )
