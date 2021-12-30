@@ -32,6 +32,8 @@ Plug 'jackguo380/vim-lsp-cxx-highlight'
 Plug 'sheerun/vim-polyglot'
 Plug 'rhysd/vim-gfm-syntax'
 Plug 'z0mbix/vim-shfmt'
+Plug 'jupyter-vim/jupyter-vim'
+Plug 'github/copilot.vim'
 
 " Debuglug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh \| UpdateRemotePlugins' }
 
@@ -44,6 +46,8 @@ Plug 'benmills/vimux'
 
 " Zen
 Plug 'junegunn/goyo.vim'
+
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
 
 
 call plug#end()

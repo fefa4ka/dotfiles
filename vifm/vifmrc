@@ -72,7 +72,7 @@ nnoremap yf :!printf %c:p | pbcopy<cr>
 " View preview in Quick Look
 nnoremap q :!qlmanage -p %f > /dev/null 2>&1<cr>
 
-filetype * opener %c > /dev/null 2>&1
+filetype * opener "%c" > /dev/null 2>&1
 
 " SSH fs
 :filetype *.ssh FUSE_MOUNT2|sshfs %PARAM %DESTINATION_DIR
