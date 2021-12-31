@@ -14,7 +14,7 @@ One of the key features is that this implementation stays in sync across all you
 -   Mild Customization: [Fork]() this repo, and clone your own fork. Keep an eye on this repo for bugfixes and other improvements that you'd like to incorporate into your fork. Then jump to [Installation](#installation).
 -   Most Customization: Building your own dotfiles from scratch! Read through these docs, watch the video above, star this repo, and create your own dotfiles! You can add this repository as a [git module](https://git-scm.com/book/en/v2/Git-Tools-Submodules) and source the parts you like.
 
-If you're unsure, just read the docs, watch the video, clone this repository, and jump to [Installation](#installation).
+    If you're unsure, just read the docs, watch the video, clone this repository, and jump to [Installation](#installation).
 
 ## Installation
 
@@ -68,30 +68,36 @@ Each plugin is sensitive to where you are and what you're doing, they reveal the
 
 | Key Stroke         | What It Does                                               |
 | ------------------ | ---------------------------------------------------------- |
-| Ctrl-H             | Runs `cd ~/`                                               |
-| Ctrl-K             | Runs `cd ..`                                               |
-| Ctrl-G             | Runs `git add -A; git commit -v && git push`               |
-| Ctrl-V             | Runs `fc`. Takes last command and puts it in a vim buffer. |
-| Ctrl-S             | Add's `sudo` to the beginning of the buffer.               |
-| Ctrl-L             | Run's `ls`.                                                |
-| Ctrl-O             | Equivalent to hitting `Enter`.                             |
-| -----------------  | ---------------------------------------------------------- |
-| Window Management  |                                                            |
-| -----------------  | ---------------------------------------------------------- |
-| Alt[-Shift]-Z      | Fullscreen / Section fullscreen                            |
-| Alt-Shift-R        | Reload yabai, skhd, spacebar                               |
+| Ctrl-Alt-Shift     | Meh                                                        |
+| Ctrl-o             | Open some file                                             |
+| Ctrl-u             | Runs `cd ..`                                               |
+| Ctrl-g             | Go to folder                                               |
+| Ctrl-p             | Edit file in editor                                        |
+| Ctrl-s             | Add's `sudo` to the beginning of the buffer.               |
+| Ctrl-n             | Open notes                                                 |
 | -----------------  | ---------------------------------------------------------- |
 | Apps               |                                                            |
 | -----------------  | ---------------------------------------------------------- |
-| Cmd - return       | Shell                                                      |
-| Cmd-Alt-return     | Sh                                                         |
-| Cmd-Shift-return   | Browser                                                    |
-| Cmd-Shift-p        | Private Browser                                            |
-| Cmd-M              | Mail                                                       |
-| Cmd-Shift-v        | Vimr                                                       |
-| Cmd-Shift-s        | Screenshot                                                 |
-| Cmd-Shift-m        | Tmux sessions                                              |
-| Cmd-Shift-y        | Yandex VM                                                  |
+| Cmd-Return         | Shell                                                      |
+| Cmd-Shift-Return   | Browser                                                    |
+| Cmd-V              | Vimr                                                       |
+| Cmd-V              | File Manager - Vifm                                        |
+| -----------------  | ---------------------------------------------------------- |
+| Helpers            |                                                            |
+| -----------------  | ---------------------------------------------------------- |
+| Cmd-G              | Browse or play Youtube                                     |
+| Cmd-U              | Serial ports                                               |
+| Cmd-M              | Tmux sessions                                              |
+| Cmd-Y              | Y.VM                                                       |
+| Cmd-H              | How Do I                                                   |
+| Cmd-@              | Remind                                                     |
+| Cmd-#              | Note                                                       |
+| -----------------  | ---------------------------------------------------------- |
+| Window Management  |                                                            |
+| -----------------  | ---------------------------------------------------------- |
+| Alt-[Zz]           | Fullscreen / Section fullscreen                            |
+| Alt-b              | Toggle bar                                                 |
+| Ctrl-Alt-R         | Reload yabai, skhd, spacebar                               |
 | -----------------  | ---------------------------------------------------------- |
 | Vim                |                                                            |
 | -----------------  | ---------------------------------------------------------- |
@@ -123,7 +129,7 @@ Each plugin is sensitive to where you are and what you're doing, they reveal the
 
 ## [Vim](<https://en.wikipedia.org/wiki/Vim_(text_editor)>)
 
--   Leader key has ben remapped to `,`
+-   Leader key has ben remapped to `<space>`
 
 ## [Tmux](https://en.wikipedia.org/wiki/Tmux)
 

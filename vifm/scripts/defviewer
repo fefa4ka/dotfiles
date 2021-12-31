@@ -18,7 +18,15 @@ info=$(head -$nlines "$1" | file --mime -)
 charset=${info#*=}
 
 if [ "x$charset" == "xbinary" ]; then
+    descr=$(file "$1" | cut -f2 -d: | xargs)
+    echo $descr
+    otool -L "$1" | tail -n +2
+
+    if echo $descr | grep -qE "ELF"; then
+        readelf -h "$1"
+    fi
+    echo ''
     hexdump -e '"%08_ax: "' -e '8/1 "%02x " "  " 8/1 "%02x "' -e '" |" 16/1 "%_p"' -e '"\n"' -v -n $nbytes "$1"
 else
-    cat "$1"
+    highlight -O xterm256 -s dante "$1"
 fi

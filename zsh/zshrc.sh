@@ -1,3 +1,6 @@
+# For vim mappings:
+stty -ixon
+
 source ~/dotfiles/.env
 
 source ~/dotfiles/zsh/alias.sh
@@ -7,8 +10,6 @@ source ~/dotfiles/zsh/toolchain.sh
 
 source ~/dotfiles/tmux/tmuxinator.zsh
 
-# For vim mappings:
-stty -ixon
 
 source ~/dotfiles/zsh/plugins/oh-my-zsh/lib/history.zsh
 source ~/dotfiles/zsh/plugins/oh-my-zsh/lib/key-bindings.zsh

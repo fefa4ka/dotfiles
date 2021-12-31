@@ -1,5 +1,3 @@
-
-
 # Connection
 alias console='ssh $VM'
 alias tty='ssh $VC'
@@ -11,7 +9,7 @@ alias grep='grep --color=auto'
 alias g="lazygit"
 if hash nvim; then
     alias v="nvim -p"
-    alias vi="nvim -p"li
+    alias vi="nvim -p"
     alias vim="nvim -p"
 fi
 alias mutt="neomutt"

@@ -61,6 +61,7 @@ set findprg='find %s %a -print ,
     set classify+=' ::*.doc,,*.docx::, ::*.xls,,*.xls[mx]::'
     set classify+=' ::*.pptx,,*.ppt::'
 
+" Resize panes
 nnoremap < <c-w><
 nnoremap > <c-w>>
 
@@ -72,9 +73,17 @@ nnoremap yf :!printf %c:p | pbcopy<cr>
 " View preview in Quick Look
 nnoremap q :!qlmanage -p %f > /dev/null 2>&1<cr>
 
-filetype * opener "%c" > /dev/null 2>&1
+filetype * opener "%c:p" > /dev/null 2>&1
 
 " SSH fs
 :filetype *.ssh FUSE_MOUNT2|sshfs %PARAM %DESTINATION_DIR
 
+" Tree preview
+fileview */ exa -aT -L 1 --color=always --group-directories-first %c
+
+" Markdown
+fileview */ mdv %c
+
 fileview * defviewer %c
+
+view
