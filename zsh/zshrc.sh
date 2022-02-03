@@ -57,8 +57,6 @@ tm() {
     session=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf --exit-0) &&  tmux $change -t "$session" || echo "No sessions found."
 }
 
-# nnn
-alias nnn='NNN_FIFO="$(mktemp -u)" nnn'
 
 # Image frameless preview
 # https://github.com/DrabWeb/macfeh

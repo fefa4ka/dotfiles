@@ -13,7 +13,6 @@ Plug 'jbyuki/venn.nvim'
 
 " Color
 Plug 'folke/twilight.nvim'
-Plug 'danilo-augusto/vim-afterglow'
 Plug 'morhetz/gruvbox'
 
 " Docs
@@ -28,6 +27,7 @@ Plug 'junegunn/fzf.vim'
 Plug '/usr/local/opt/fzf'
 
 " LSP
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
 Plug 'michaelb/sniprun', {'do': 'bash install.sh'}
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'jackguo380/vim-lsp-cxx-highlight'
@@ -35,7 +35,6 @@ Plug 'sheerun/vim-polyglot'
 Plug 'rhysd/vim-gfm-syntax'
 Plug 'z0mbix/vim-shfmt'
 Plug 'jupyter-vim/jupyter-vim'
-Plug 'github/copilot.vim'
 
 " Debuglug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh \| UpdateRemotePlugins' }
 
@@ -44,6 +43,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'zivyangll/git-blame.vim'
 
 " WM and Tmux
+Plug 'gcmt/taboo.vim'
 Plug 'benmills/vimux'
 
 " Zen
@@ -69,15 +69,17 @@ let g:coc_global_extensions = [
 " Config
 source ~/dotfiles/nvim/netrw.vim
 source ~/dotfiles/nvim/routines.vim
-source ~/dotfiles/nvim/layout.vim
 source ~/dotfiles/nvim/formatter.vim
 source ~/dotfiles/nvim/keybindings.vim
+source ~/dotfiles/nvim/layout.vim
+source ~/dotfiles/nvim/autocomplete.vim
 
-
-
-set timeoutlen=20
+set timeoutlen=100
 
 " UX
+" Theme
+source ~/.config/theme
+hi normal guibg=none ctermbg=none
 if exists('+termguicolors')
     let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
     let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
@@ -85,6 +87,23 @@ if exists('+termguicolors')
 endif
 colorscheme gruvbox
 set number relativenumber
+
+lua << EOF
+
+require("twilight").setup {
+    {
+            dimming = {
+                alpha = 0.25,
+                -- we try to get the foreground from the highlight groups or fallback color
+                color = { "Normal", "#ffffff" },
+                inactive = true, -- when true, other windows will be fully dimmed (unless they contain the same buffer)
+            }
+    }
+}
+EOF
+
+lua require'hop'.setup { keys = 'etovxqpdygfblzhckisuran', jump_on_sole_occurrence = false }
+
 
 " Highlight spaces and tabs
 set list lcs=trail:·,tab:»·
@@ -100,9 +119,17 @@ nnoremap '.  :exe ":FZF " . expand("%:h")<CR>
 " if hidden is not set, TextEdit might fail.
 set hidden
 
+" Fold
+set foldmethod=syntax
+set foldnestmax=2
+autocmd BufReadPost *.py :set foldmethod=indent
+
+
+" Transparency
+set termguicolors
+hi normal guibg=none ctermbg=none
 
 " Tabs
-filetype plugin indent on
 " show existing tab with 4 spaces width
 set tabstop=4
 autocmd Filetype tsx setlocal tabstop=2 shiftwidth=2
@@ -117,6 +144,7 @@ set expandtab
 set nobackup
 set nowritebackup
 
+
 " Better display for messages
 set cmdheight=2
 
@@ -127,8 +155,13 @@ set updatetime=200
 set shortmess+=c
 
 " always show signcolumns
-set signcolumn=yes
+set signcolumn=number
 
+" Draw Vienn Boxes
+set ve=all
+
+" Ignore case
+set ignorecase
 
 " Highlight symbol under cursor on CursorHold
 set cursorline
@@ -140,10 +173,6 @@ command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 
 " use `:OR` for organize import of current buffer
 command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
-
-
-
-
 
 
 " Jupyter
@@ -178,38 +207,6 @@ command! -bang -nargs=? -complete=dir Files
             \ call fzf#vim#files(<q-args>, {'options': ['--layout=reverse', '--info=inline', '--preview', 'bat --style=numbers --color=always {}']}, <bang>0)
 
 
-
-" Fold
-set foldmethod=syntax
-set foldnestmax=2
-autocmd BufReadPost *.py :set foldmethod=indent
-
-
-" Transparency
-set termguicolors
-hi normal guibg=none ctermbg=none
-
-
-
-
-
-
-
-" Scroll
-set breakindent
-set breakindentopt=sbr
-" I use a unicode curly array with a <backslash><space>
-set showbreak=↪>\
-
-
-
-
-
-" Theme
-source ~/.config/theme
-hi normal guibg=none ctermbg=none
-
-
 " Strip trailing spaces
 autocmd BufWritePre * :%s/\s\+$//e
 
@@ -218,42 +215,11 @@ autocmd BufWritePre * :%s/\s\+$//e
 autocmd VimEnter * silent !tmux set status on
 autocmd VimEnter * silent !tmux list-panes -F '\#F' | grep -q Z && tmux resize-pane -Z
 
-" Custom cwd for tabs
-"below is reload GTAGS, ctags demo code.
-function! TabReloadCGtag()
-    "reload GTAGS in current directory
-    cs kill 0
-    "gnu global produce GTAGS, more useful than cscope
-    cs add GTAGS
-    "reload tags in current directory
-    set tags=tags
-endfunction
-
-"some action when enter a tab
-function! TabEnterTag(nr)
-    "echo "tab ". a:nr . " enter"
-    call TabReloadCGtag()
-endfunction
-
-" some action when leave a tab
-function! TabLeaveTag(nr)
-    "echo "tab ". a:nr . " leaves"
-    "nothing
-endfunction
-
-"don't care about pattern field for now
-let g:TabTagTrigger = {'name':'TabTagTriger','pattern':"", 'enter_callback':"TabEnterTag", 'leave_callback':"TabLeaveTag" }
 
 call which_key#register('<Space>', "g:which_key_map")
 
-
 " Navigation
 let g:any_jump_disable_default_keybindings = 1
-
-
-" Draw Vienn Boxes
-set ve=all
-
 
 " Working directory per tab
 function! OnTabEnter(path)
@@ -267,10 +233,26 @@ endfunction()
 
 autocmd TabNewEntered * call OnTabEnter(expand("<amatch>"))
 
+autocmd BufRead *.md setlocal wrap linebreak
+
+
+" Abbreviations for speed coding
+:autocmd FileType python     :iabbrev <buffer> iff if:<left>
+:autocmd FileType javascript :iabbrev <buffer> iff if ()<left>
 
 " Log datetime
-map <Leader>l i<C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR><Esc>
-imap <C-l> <C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR>
+"map <Leader>l i<C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR><Esc>
+"imap <C-l> <C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR>
 
 
+" Welcome
+let g:startify_lists = [
+            \ { 'type': 'sessions',  'header': ['   Sessions']       },
+            \ { 'type': 'dir',       'header': ['   MRU '. getcwd()] },
+            \ { 'type': 'bookmarks', 'header': ['   Bookmarks']      },
+            \ { 'type': 'commands',  'header': ['   Commands']       },
+            \ ]
 
+set noswapfile
+
+set sessionoptions+=tabpages,globals

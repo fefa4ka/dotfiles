@@ -19,10 +19,11 @@ if hash bat; then
     alias cat="bat --theme=\$(defaults read -globalDomain AppleInterfaceStyle &> /dev/null && echo default || echo GitHub)"
 fi
 if hash exa; then
-    alias ls="exa -al --color=always --group-directories-first"
-    alias la="exa -a --color=always --group-directories-first"
-    alias ll="exa -l --color=always --group-directories-first"
-    alias lt="exa -aT --color=always --group-directories-first"
+    exa_exec="exa --color=always --group-directories-first"
+    alias ls="$exa_exec -al"
+    alias la="$exa_exec -a"
+    alias ll="$exa_eexa -l"
+    alias lt="$exa_exec --icons -aT"
 fi
 
 # Navigation
@@ -39,12 +40,12 @@ alias .5="cd .. && cd .. && cd .. && cd .. && cd .."
 
 
 # Config
-alias cfz="vi ~/dotfiles/zsh/zshrc.sh"
-alias cfb="vi ~/dotfiles/bashrc"
-alias cfv="vi ~/dotfiles/init.vim"
+alias cf="vi +\"SLoad config\""
+alias cfv="vi +\"SLoad vimrc\""
+alias cfz="vi +\"SLoad zshrc\""
 alias cfa="vi ~/.config/alacritty/alacritty.yml"
 alias cft="vi ~/dotfiles/tmux/tmux.conf"
-alias cfm="vi ~/.mutt/muttrc"
+alias cfm="vi ~/dotfiles/mutt/muttrc"
 alias cfr="vi ~/.config/ranger/"
 alias cff="vi ~/.config/vifm/vifmrc"
 alias cfk="vi ~/.config/skhd/skhdrc"
@@ -52,5 +53,11 @@ alias cfy="vi ~/.config/yabai/yabairc"
 
 
 # SignalQ alias
-alias qt="/Volumes/SignalQ/signalq-telnet.sh"
-alias qu="/Volumes/SignalQ/signalq-uart.sh"
+alias sqt="/Volumes/SignalQ/signalq-telnet.sh"
+alias squ="/Volumes/SignalQ/signalq-uart.sh"
+alias qt="/Volumes/SignalQ/q2/facility/controller/signalq-telnet.sh"
+alias qu="/Volumes/SignalQ/q2/facility/controller/signalq-uart.sh"
+
+# nnn
+alias nnn='NNN_FIFO="$(mktemp -u)" nnn'
+

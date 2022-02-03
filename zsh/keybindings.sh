@@ -47,7 +47,7 @@ bindkey "^p" open_editor
 
 # Notes
 open_notes() {
-    cd ~/notes && tree --charset=o -f | fzf --query "$LBUFFER" --delimiter='\./' --preview='([[ -f {2} ]] && (mdv {2} || cat {2})) || ([[ -d {2} ]] && (tree -C {2} | less)) || echo {2} 2> /dev/null | head -200' | awk '{split($0, a, "- ."); print a[2]}' | xargs -n1 -I{} notes add_to "~{}" _
+    cd ~/notes && lt -I "Bear*" | fzf --ansi --query "$LBUFFER" --delimiter='─ ' --preview='filename=$(find . -name {2});([[ -f $filename ]] && (mdv $filename || cat $filename)) || ([[ -d {2} ]] && (exa -aT {2} | less)) || echo {2} 2> /dev/null | head -200' | awk '{split($0, a, " "); print a[2]}' | xargs -n2 -I{2} echo {} _
 }
 zle -N open_notes
 bindkey "^n" open_notes

@@ -89,6 +89,7 @@ endfunction
 
 function! TmuxGoyo()
     silent !tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z
+    Twilight
     sleep 10m
     Goyo
 endfunction
@@ -96,3 +97,12 @@ endfunction
 let g:goyo_width = 146
 autocmd! User GoyoEnter nested call <SID>goyo_enter()
 autocmd! User GoyoLeave nested call <SID>goyo_leave()
+
+
+" eer
+function! EERComp(name)
+    let name="/Users/fefa4ka/Documents/ee-react/eer-apps/lego/".fnameescape(a:name)."/".fnameescape(a:name)
+    execute "e ".fnameescape(name).".c | lefta vsplit CMakeLists.txt | split ".fnameescape(name).".h"
+endfunction
+
+

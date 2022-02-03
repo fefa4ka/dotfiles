@@ -7,6 +7,7 @@ imap <C-K> <c-o>:pyf /usr/local/Cellar/clang-format/10.0.0/share/clang/clang-for
 
 " Remap for format selected region
 xmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
 
 
 " Use `:Format` to format current buffer

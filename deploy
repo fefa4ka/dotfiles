@@ -1,3 +1,5 @@
+#!/bin/sh
+
 prompt_install() {
 	echo -n "$1 is not installed. Would you like to install it? (y/n) " >&2
 	old_stty_cfg=$(stty -g)
@@ -69,21 +71,30 @@ else
 fi
 
 
+# Minimal
 check_for_software zsh
 echo
 check_for_software neovim
 echo
 check_for_software tmux
 echo
+
+# Pretty basic
 check_for_software exa
 echo
 check_for_software bat
 echo
+
+# Terminal
 check_for_software alacritty
 echo
+
+# Useful tools
 check_for_software thefuck
 echo
 check_for_software tldr
+echo
+check_for_software lazygit
 echo
 
 check_default_shell
@@ -97,7 +108,7 @@ stty $old_stty_cfg
 if echo "$answer" | grep -iq "^y" ;then
 	mv ~/.zshrc ~/.zshrc.old
 	mv ~/.tmux.conf ~/.tmux.conf.old
-	mv ~/.vimrc ~/.vimrc.old
+	mv ~/.config/nvim/init.vim ~/.config/nvim/init.vim.old
 else
 	echo -e "\nNot backing up old dotfiles."
 fi
@@ -108,7 +119,7 @@ fi
 npm install -g dockerfile-language-server-nodejs
 
 printf "source '$HOME/dotfiles/zsh/zshrc_manager.sh'" > ~/.zshrc
-printf "so $HOME/dotfiles/vim/vimrc.vim" > ~/.vimrc
+printf "so $HOME/dotfiles/nvim/init.vim" > ~/.config/nvim/init.vim
 printf "source-file $HOME/dotfiles/tmux/tmux.conf" > ~/.tmux.conf
 
 echo

@@ -6,13 +6,33 @@ let g:which_key_map = {}
 let g:mapleader = "\<Space>"
 " let g:maplocalleader = ','
 nnoremap <silent> <leader>      :<c-u>WhichKey '<Space>'<CR>
+
+
 " nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
 
+" Remap ESC
+nnoremap jk dd
+inoremap jk <ESC>
+inoremap <ESC> <nop>
+map ол jk
+
+" Input mode
+inoremap <C-z> <esc>ua
+inoremap <C-Z> <esc>Ua
+inoremap <C-v> <esc>pa
+
+
+" Force train
+nnoremap <Left> <nop>
+nnoremap <Right> <nop>
+nnoremap <Up> <nop>
+nnoremap <Down> <nop>
 
 " File Navigation
 noremap <silent> <C-E> :call ToggleNetrw()<CR><Paste>
 nmap <C-g> :GFiles<CR>
-nmap <C-p> :Files<CR>
+nmap <ESC> :Files<CR>
+nmap <C-p> :Commands<CR>
 nmap <C-b> :Buffers<CR>
 nmap <C-t> :TagbarToggle<CR>
 
@@ -24,11 +44,13 @@ nnoremap ; :
 vnoremap ; :
 nnoremap U <C-r>
 
+" Delete
+inoremap <C-d> <esc>ddi
 
 " Smart way to move between windows
 map <C-_> <C-W>S
 map <C-\> <C-W>v
-map <C-q> <C-W>q
+map <C-q> <C-W>q <C-W>q
 map <C-j> <C-W>j
 map <C-k> <C-W>k
 map <C-h> <C-W>h
@@ -53,15 +75,11 @@ nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
 
-" Use K to show documentation in preview window
-nnoremap <silent> H :call <SID>show_documentation()<CR>
-
-
 " Add note related to file and line
 map # :NotesPromptCommand<CR>
 
 " Create reminder related to file and line
-map @ :ReminderPromptCommand<CR>
+map <C-2> :ReminderPromptCommand<CR>
 
 
 " Toggle dark/light theme
@@ -106,8 +124,8 @@ let g:which_key_map.d = 'help'
 
 
 " Search in workdir
-nmap <silent> <leader>f <Plug>CtrlSFPrompt
-let g:which_key_map.f = 'find'
+nmap <silent> <leader>/ <Plug>CtrlSFPrompt
+" let g:which_key_map./ = 'find'
 
 nmap <silent> <leader>w <Plug>CtrlSFCwordPath
 let g:which_key_map.w = 'find-word'
@@ -132,3 +150,20 @@ let g:which_key_map.i = 'blame'
 map <leader>vimrc :tabe ~/dotfiles/nvim/init.vim<cr>
 autocmd bufwritepost init.vim source $MYVIMRC
 let g:which_key_map.v = { 'name' : '+vimrc' }
+
+
+nnoremap '.  :exe ":FZF " . expand("%:h")<CR>
+
+
+vnoremap b <Plug>nvim-magic-append-completion
+
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+
+augroup mygroup
+  autocmd!
+  " Setup formatexpr specified filetype(s).
+  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  " Update signature help on jump placeholder.
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
