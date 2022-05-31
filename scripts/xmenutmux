@@ -1,0 +1,17 @@
+#!/bin/sh
+
+# Open screen connection to choosen tty 
+projects=`tmuxinator list | tail -1 | sed 's/  */ /g' | tr ' ' "\n"`
+available=`tmux list-sessions -F "#{session_name}" 2>/dev/null | tr ' ' "\n"`
+
+all="$available\n$projects"
+
+# Get needed session 
+request=$(echo "$all" | xmenu -i -fn "FiraCode Nerd Font" -p "tmux session:")
+
+# Exit if none chosen.
+[ -z "$request" ] && exit
+
+command="tmuxinator start $request || tm $request"
+
+/Applications/Alacritty.app/Contents/MacOS/alacritty -e "zsh" -c "source ~/.zshrc; $command"

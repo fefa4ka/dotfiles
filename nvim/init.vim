@@ -160,9 +160,6 @@ set signcolumn=number
 " Draw Vienn Boxes
 set ve=all
 
-" Ignore case
-set ignorecase
-
 " Highlight symbol under cursor on CursorHold
 set cursorline
 hi CursorLine term=bold cterm=bold guibg=Grey40

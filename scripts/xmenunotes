@@ -1,0 +1,25 @@
+#!/bin/sh
+
+# Add note from xmenu
+notes=`find ~/notes -name \*.md -print |
+perl -l -ne '
+    $_{$_} = -M;  # store file age (mtime - now)
+    END {
+        $,="\n";
+        @sorted = sort {$_{$a} <=> $_{$b}} keys %_;  # sort by increasing age
+        print @sorted[0..9];
+    }' | sed "s/${HOME//\//\\\/}\/notes\///" | sed "s/\.md//"` 
+# Get user selection via dmenu from notes
+
+note=`(echo '' | xmenu -fn "FiraCode Nerd Font" -p "note:")`
+# Exit if none chosen.
+
+chosen=$(echo "$notes" | xmenu -i -fn "FiraCode Nerd Font" -p "notes:")
+
+[[ -z "$note" && -z "$chosen" ]] && exit
+
+if [ -z "$note" ]; then
+   /Applications/Alacritty.app/Contents/MacOS/alacritty -e "zsh" -c "source ~/.zshrc && notes add_to "$HOME/$chosen" _"
+else
+   notes add_to "$chosen" "$note"
+fi

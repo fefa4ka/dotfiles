@@ -19,10 +19,6 @@ option.sendmail    = "/usr/bin/msmtp"
 
 -- Maildir settings
 option.mbox_type   = "Maildir"
-option.folder      = "~/Mail/"
-option.spoolfile   = "+INBOX"
-option.mbox        = "+[Gmail]/All Mail"
-option.postponed   = "+[Gmail]/Drafts"
 
 -- Pager View Options
 option.date_format       = "%b %d %Y, %I:%M"
@@ -96,15 +92,11 @@ notmuch.default_uri="notmuch://"..maildir..""
 
 -- Define all the email tag to be used for the sidebar and the index
 local tags = {
-    {name = "inbox"       , display_tag = false,                               },
-    {name = "sent"        , display_tag = true                                 },
-    {name = "archive"     , display_tag = false,                               },
-    {name = "Mutt"        , display_tag = true ,                               },
-    {name = "newsletters" , display_tag = true ,                               },
-    {name = "KDE"         , display_tag = true , bg = "color20" , fg="color255"},
-    {name = "GitHub"      , display_tag = true , bg = "color248", fg = "color0"},
-    {name = "Awesome"     , display_tag = true , bg = "color34" , fg = "color0"},
-    {name = "Voicemail"   , display_tag = true , bg = "color34" , fg = "color0"},
+--    {name = "inbox"       , display_tag = false,                               },
+--    {name = "sent"        , display_tag = true                                 },
+--    {name = "archive"     , display_tag = false,                               },
+--    {name = "newsletters" , display_tag = true ,                               },
+--    {name = "Awesome"     , display_tag = true , bg = "color34" , fg = "color0"},
 }
 
 --TODO create an helper for this
@@ -118,6 +110,10 @@ option.index_format = " %-30.30F│ %s %> " .. theme.generate_tags(tags) .. "│
 keybindings.add {
     keybindings.macro {{"index"}, {}, "/", "<vfolder-from-query>", "Indexed search"},
     keybindings.macro {{"index"}, {}, "t", "<vfolder-from-query>tag:", "Select tag"},
+    keybindings.macro {{"index", "pager"}, {"control"}, "b", "<sidebar-toggle-visible>", "Toggle sidebar"},
+    keybindings.macro {{"index", "pager"}, {"control"}, "j", "<sidebar-next>", "Next mailbox"},
+    keybindings.macro {{"index", "pager"}, {"control"}, "k", "<sidebar-prev>", "Prev mailbox"},
+    keybindings.macro {{"index", "pager"}, {"control"}, "l", "<sidebar-open>", "Open mailbox"},
 }
 
 ------------------------------------

@@ -1,0 +1,5 @@
+#!/bin/sh
+
+/Applications/Alacritty.app/Contents/MacOS/alacritty --title "Finder" -e "sh" -c 'vifm'
+
+

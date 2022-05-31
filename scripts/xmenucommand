@@ -1,0 +1,8 @@
+#!/bin/sh
+
+chosen=$(cat ~/notes/.zsh_history | cut -f2 -d';' | sort | uniq | awk '{ print length, $0 }' | sort -n -s | cut -d" " -f2- | xmenu -i -fn "FiraCode Nerd Font" -p "command:")
+
+# Exit if none chosen.
+[ -z "$chosen" ] && exit
+
+$chosen

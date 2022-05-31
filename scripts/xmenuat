@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# Add reminder 
+remind=$(echo '' | xmenu -i -fn "FiraCode Nerd Font" -p "remind ")
+
+# Exit if none chosen.
+[ -z "$remind" ] && exit
+
+remind "$remind"

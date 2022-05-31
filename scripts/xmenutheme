@@ -1,0 +1,9 @@
+
+#!/bin/sh
+
+chosen=$(alacritty_theme -list | xmenu -i -fn "FiraCode Nerd Font" -p "tty:")
+
+# Exit if none chosen.
+[ -z "$chosen" ] && exit
+
+alacritty_theme -set $chosen

@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# bash and not just sh because we are using some bash-specific syntax
+FILE=$1
+
+if [[ $1 == *"youtube.com/watch"* ]]; then
+    nohup ~/.local/bin/youtube-wl "$1" &
+    exit 0
+fi
+
+if [[ "$1" == "http"* ]]; then
+    /Applications/Brave\ Browser.app/Contents/MacOS/Brave\ Browser --app="$1" --window-position=2000,2000 --window-size=0,0
+    exit 1
+fi
+
+if file "$FILE" |grep -qE 'image|bitmap'; then
+    open -b "drabweb.macfeh" "$FILE" &
+    exit 0
+fi
+
+if file "$FILE" | grep -qE 'PDF'; then
+    zathura $FILE
+    exit 0
+fi
+
+if file "$FILE" | grep -qE 'text'; then
+    /Applications/Alacritty.app/Contents/MacOS/alacritty --title "Edit $@" -e "sh" -c "$EDITOR \"$FILE\"" &
+    exit 0
+fi
+
+open "$FILE"
+
