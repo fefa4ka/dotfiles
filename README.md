@@ -96,7 +96,7 @@ Each plugin is sensitive to where you are and what you're doing, they reveal the
 | -------------------| ---------------------------------------------------------- |
 | `Alt-[Zz]`         | Fullscreen / Section fullscreen                            |
 | `Alt-b`            | Toggle bar                                                 |
-| `Ctrl-Alt-R`       | Reload yabai, skhd, spacebar                               |
+| `meh-R`            | Reload yabai, skhd, spacebar                               |
 
 | Vim                |                                                            |
 | -------------------| ---------------------------------------------------------- |
@@ -106,8 +106,8 @@ Each plugin is sensitive to where you are and what you're doing, they reveal the
 #### Vim
 | Vim / Navigation   |                                                            |
 | -------------------| ---------------------------------------------------------- |
-| `[c ]c`             | Hunks navigation                                          |
-| `[g ]g`             | Diagnostics navigation                                    |
+| `[c ]c`            | Hunks navigation                                          |
+| `[g ]g`            | Diagnostics navigation                                    |
 
 | Vim / Git            |                                                          |
 | ---------------------| ---------------------------------------------------------|

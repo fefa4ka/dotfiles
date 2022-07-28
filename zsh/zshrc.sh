@@ -2,7 +2,8 @@
 stty -ixon
 
 source ~/dotfiles/.env
-
+source ~/.local/share/python/bin/activate
+source ~/.cargo/env
 source ~/dotfiles/zsh/alias.sh
 source ~/dotfiles/zsh/toolchain.sh
 
@@ -46,7 +47,7 @@ alias \#\#="dash_comment _"
 alias \#~="notes ag"
 
 plugins=(… zsh-completions)
-autoload -U compinit && compinit
+autoload -U compinit && compinit -d ~/.local/share/zsh/.zcompdump
 
 # Tmux
 tm() {
