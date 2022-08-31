@@ -1,0 +1,62 @@
+window:
+  position:
+    x: 2559
+    'y': 100
+  padding:
+    x: 6
+    'y': 6
+  dynamic_padding: true
+  decorations: none
+  startup_mode: Windowed
+font:
+  normal:
+    family: FiraCode Nerd Font
+    style: Light
+  bold:
+    family: FiraCode Nerd Font
+    style: Retina
+  size: 12
+colors:
+  primary:
+    background: '0xfbf1c7'
+    foreground: '0x3c3836'
+    dim_foreground: '0xeff0f1'
+    bright_foreground: '0xffffff'
+    dim_background: '0x31363b'
+    bright_background: '0x000000'
+  normal:
+    black: '0xfbf1c7'
+    red: '0xcc241d'
+    green: '0x98971a'
+    yellow: '0xd79921'
+    blue: '0x458588'
+    magenta: '0xb16286'
+    cyan: '0x689d6a'
+    white: '0x7c6f64'
+  bright:
+    black: '0x928374'
+    red: '0x9d0006'
+    green: '0x79740e'
+    yellow: '0xb57614'
+    blue: '0x076678'
+    magenta: '0x8f3f71'
+    cyan: '0x427b58'
+    white: '0x3c3836'
+  cursor:
+    text: '0x020221'
+    cursor: '0xffe8c0'
+  dim:
+    black: '0x31363b'
+    red: '0x783228'
+    green: '0x17a262'
+    yellow: '0xb65619'
+    blue: '0x1b668f'
+    magenta: '0x614a73'
+    cyan: '0x186c60'
+    white: '0x63686d'
+dynamic_title: true
+mouse:
+  url:
+    launcher:
+      program: opener
+      args: []
