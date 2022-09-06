@@ -24,7 +24,6 @@ Plug 'majutsushi/tagbar'
 Plug 'dyng/ctrlsf.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-Plug '/usr/local/opt/fzf'
 
 " LSP
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
@@ -160,9 +159,6 @@ set signcolumn=number
 " Draw Vienn Boxes
 set ve=all
 
-" Ignore case
-set ignorecase
-
 " Highlight symbol under cursor on CursorHold
 set cursorline
 hi CursorLine term=bold cterm=bold guibg=Grey40
@@ -216,7 +212,7 @@ autocmd VimEnter * silent !tmux set status on
 autocmd VimEnter * silent !tmux list-panes -F '\#F' | grep -q Z && tmux resize-pane -Z
 
 
-call which_key#register('<Space>', "g:which_key_map")
+"autocmd VimEnter * call which_key#register('<Space>', "g:which_key_map")
 
 " Navigation
 let g:any_jump_disable_default_keybindings = 1

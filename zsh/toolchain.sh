@@ -5,6 +5,7 @@ alias get_idf='. $HOME/Toolchain/esp-idf/export.sh'
 export PATH="/usr/local/opt/node@14/bin:$PATH"
 export PATH="/usr/local/opt/binutils/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
+export PATH="/Users/fefa4ka/Toolchain/xpack-riscv-none-embed-gcc-10.2.0-1.2/bin:$PATH"
 
 # Zephyr
 export ZEPHYR_TOOLCHAIN_VARIANT=gnuarmemb

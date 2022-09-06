@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# Open screen connection to choosen tty 
+windows=`yabai -m query --windows | jq '.[].title' -r`
+
+all="$windows"
+
+# Get needed session 
+request=$(echo "$all" | xmenu -i -fn "FiraCode Nerd Font" -p "switch:")
+
+# Exit if none chosen.
+[ -z "$request" ] && exit
+
+~/.local/bin/swith_window $request 
+

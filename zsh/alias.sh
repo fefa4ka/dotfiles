@@ -53,11 +53,19 @@ alias cfy="vi ~/.config/yabai/yabairc"
 
 
 # SignalQ alias
-alias sqt="/Volumes/SignalQ/signalq-telnet.sh"
-alias squ="/Volumes/SignalQ/signalq-uart.sh"
-alias qt="/Volumes/SignalQ/q2/facility/controller/signalq-telnet.sh"
-alias qu="/Volumes/SignalQ/q2/facility/controller/signalq-uart.sh"
+alias sqt="/Volumes/Development/signalq-telnet.sh"
+alias squ="/Volumes/Development/signalq-uart.sh"
+alias qt="/Volumes/Development/signalq2/facility/controller/signalq-telnet.sh"
+alias qu="/Volumes/Development/signalq2/facility/controller/signalq-uart.sh"
 
 # nnn
 alias nnn='NNN_FIFO="$(mktemp -u)" nnn'
 
+# install python package globally
+gpip() {
+    PIP_REQUIRE_VIRTUALENV="" pip "$@"
+}
+
+gpip3() {
+    PIP_REQUIRE_VIRTUALENV="" pip3 "$@"
+}

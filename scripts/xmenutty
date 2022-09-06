@@ -1,0 +1,17 @@
+#!/bin/sh
+
+# Open screen connection to choosen tty 
+
+# Get user selection via dmenu from /dev/tty.*
+chosen=$(ls /dev/tty.* | xmenu -i -fn "FiraCode Nerd Font" -p "tty:")
+
+# Exit if none chosen.
+[ -z "$chosen" ] && exit
+
+baudrates="115200 9600 110 300 600 1200 2400 4800 14400 19200 38400 57600 115200 128000 256000"
+baudrate=`(echo $baudrates | tr ' ' '\n' | xmenu -fn "FiraCode Nerd Font" -p "baudrate:")`
+# TODO: add baudrate selection
+
+
+/Applications/Alacritty.app/Contents/MacOS/alacritty -e sh -c "screen $chosen $baudrate"
+

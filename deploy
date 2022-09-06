@@ -78,6 +78,8 @@ check_for_software neovim
 echo
 check_for_software tmux
 echo
+check_for_software fzf
+echo
 
 # Pretty basic
 check_for_software exa

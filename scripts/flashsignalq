@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# Open screen connection to choosen tty 
+title=$1 || "Firmware Selection"
+# Get user selection via dmenu from /dev/tty.*
+ttys=$(ls -1 ~/Downloads/*.elf | cat -n)
+chosen=$(dialog --title "$title" \
+  --menu "Firmware:" 10 40 4 \
+  ${ttys} 3>&1 1>&2 2>&3 3>&1)
+chosen=$(echo "$ttys" | sed -n ${chosen}p | cut -d$'\t' -f2)
+
+# Exit if none chosen.
+[ -z "$chosen" ] && exit
+
+echo $chosen

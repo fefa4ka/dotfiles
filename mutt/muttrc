@@ -12,6 +12,28 @@ unhdr_order *                           # some distros order things by default
 hdr_order from: to: cc: date: subject:  # and in this order
 
 
-lua package.path = package.path..";"..os.getenv("HOME").."/.mutt/?.lua"
+lua package.path = package.path..";"..os.getenv("HOME").."/dotfiles/mutt/?.lua"
 
-lua dofile(os.getenv("HOME").."/.mutt/rc.lua")
+lua dofile(os.getenv("HOME").."/dotfiles/mutt/rc.lua")
+
+
+
+
+
+source ~/.config/mutt/accounts/yandex-team
+folder-hook 'yandex-team' 'source ~/.config/mutt/accounts/yandex-team'
+#source ~/.config/mutt/accounts/gmail
+folder-hook 'gmail' 'source ~/.config/mutt/accounts/gmail'
+#source ~/.config/mutt/accounts/yandex
+#folder-hook 'yandex' 'source ~/.config/mutt/accounts/yandex'
+#source ~/.config/mutt/accounts/alexander
+#folder-hook 'alexander' 'source ~/.config/mutt/accounts/alexander'
+
+macro index,pager <f2> '<sync-mailbox><enter-command>source ~/.config/mutt/accounts/yandex-team<enter><change-folder>!<enter>'
+macro index,pager <f3> '<sync-mailbox><enter-command>source ~/.config/mutt/accounts/gmail<enter><change-folder>!<enter>'
+#macro index,pager <f4> '<sync-mailbox><enter-command>source ~/.config/mutt/accounts/alexander<enter><change-folder>!<enter>'
+#macro index,pager <f5> '<sync-mailbox><enter-command>source ~/.config/mutt/accounts/yandex<enter><change-folder>!<enter>'
+
+auto_view text/html
+alternative_order text/enriched text/html text/plain text
+

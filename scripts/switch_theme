@@ -1,0 +1,14 @@
+#!/bin/bash
+theme=$(cat ~/.config/theme)
+
+if [ "$theme" == "set background=light" ]; then
+    echo "set background=dark" > ~/.config/theme
+    alacritty_theme -set gruvbox_dark
+    tmux source-file ~/dotfiles/tmux/tmux.dark.theme
+    osascript -l JavaScript -e "Application('System Events').appearancePreferences.darkMode = true"
+else
+    echo "set background=light" > ~/.config/theme
+    alacritty_theme -set gruvbox_light
+    tmux source-file ~/dotfiles/tmux/tmux.light.theme
+    osascript -l JavaScript -e "Application('System Events').appearancePreferences.darkMode = false"
+fi

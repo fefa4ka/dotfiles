@@ -32,9 +32,9 @@ config_path = File.join("#{ENV['HOME']}", '.config','alacritty','alacritty.yml')
 CURRENT_CONFIG = YAML.load_file(config_path)
 CURRENT_CONFIG['colors'] = THEMES.dig(theme, 'colors')
 if theme.include? 'light'
-  CURRENT_CONFIG['background_opacity'] = 0.9
+  CURRENT_CONFIG['window']['opacity']= 0.9
 else
-  CURRENT_CONFIG['background_opacity'] = 0.75
+  CURRENT_CONFIG['window']['opacity'] = 0.75
 end
 
 File.open(config_path, 'w') do |file|

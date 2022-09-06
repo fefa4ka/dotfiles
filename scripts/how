@@ -1,0 +1,17 @@
+#!/bin/sh
+
+question=$(echo '' | xmenu -i -fn "FiraCode Nerd Font" -p "question:")
+
+# Exit if none chosen.
+[ -z "$question" ] && exit
+
+/Applications/Alacritty.app/Contents/MacOS/alacritty -e "zsh" -c "source ~/.zshrc; howdoi \"$question\" -c -n 5 | less" &
+PID=$!
+sleep 0.1
+osascript -e "display notification \"PID: $PID\" with title \"term\""
+WINDOW_ID=$(yabai -m query --windows | jq ".[] | select (.pid == $PID) | .id")
+yabai -m window --focus $WINDOW_ID
+yabai -m window --toggle float
+yabai -m window --toggle sticky
+yabai -m window --grid 6:6:1:0:3:3
+

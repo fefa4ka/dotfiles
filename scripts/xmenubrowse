@@ -1,0 +1,53 @@
+#!/bin/sh
+
+# Open screen connection to choosen tty
+
+# Get user selection via dmenu from /dev/tty.*
+bookmarks=$(echo `pbpaste` | cat - ~/.config/bookmarks.url)
+request=$(echo "$bookmarks" | xmenu -i -fn "FiraCode Nerd Font" -p "query:")
+
+# Exit if none chosen.
+[ -z "$request" ] && exit
+
+urlencode() {
+    # urlencode <string>
+    old_lc_collate=$LC_COLLATE
+    LC_COLLATE=C
+
+    local length="${#1}"
+    for (( i = 0; i < length; i++ )); do
+        local c="${1:i:1}"
+        case $c in
+            [a-zA-Z0-9.~_-]) printf "$c" ;;
+            *) printf '%%%02X' "'$c" ;;
+        esac
+    done
+
+    LC_COLLATE=$old_lc_collate
+}
+
+url=`[[ $request == *.* ]] && echo $request || echo "google.com/search?q=$request"`
+
+if [[ $request == *"youtube.com/watch"* ]]; then
+    ~/.local/bin/youtube-wl "$request"
+    exit 0
+fi
+
+if [[ $request == *.* ]]; then
+    request=`urlencode "$request"`
+    /Applications/Brave\ Browser.app/Contents/MacOS/Brave\ Browser --app=http://$url --window-position=2000,2000 --window-size=0,0
+else
+    if [[ ${request:0:1} != "-" ]]; then
+    osascript -e "display notification \"$request\""
+        request="\"$request\""
+    fi
+    /Applications/Alacritty.app/Contents/MacOS/alacritty --title="Google" -e bash -c "googler -n 5 $request --url-handler=/Users/fefa4ka/.local/bin/opener" &
+    PID=$!
+    sleep 1
+    WINDOW_ID=$(yabai -m query --windows | jq ".[] | select (.pid == $PID) | .id")
+    yabai -m window --focus $WINDOW_ID
+    yabai -m window --toggle float
+    yabai -m window --toggle sticky
+    yabai -m window --grid 6:6:1:0:3:3
+fi
+

@@ -1,0 +1,30 @@
+#!/bin/bash
+
+ACTION=$1
+LOG_FILE="deploy"
+PROJECT_PATH=`pwd`
+LOCAL_IP=`ifconfig | grep "inet " | grep -v 127.0.0.1 | cut -d\  -f2 | head -1`
+
+function send_command {
+    local system=$1
+    local command=`echo -e "$2\r"`
+    screen -S signalq_${system} -p 0 -X stuff "$command"
+}
+
+function reboot {
+    send_command linux reboot
+}
+
+function nfs_mount {
+    send_command linux "umount /tmp/nfs"
+    send_command linux "mkdir /tmp/nfs"
+    send_command linux "mount -t nfs -o nolock,rw $LOCAL_IP:$PROJECT_PATH /tmp/nfs"
+}
+
+function ls {
+    send_command linux "clear"
+    send_command linux "ls"
+    screen -S signalq_linux -p 0 -X hardcopy $(tty)
+}
+
+$1

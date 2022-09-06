@@ -12,9 +12,20 @@ nnoremap <silent> <leader>      :<c-u>WhichKey '<Space>'<CR>
 
 " Remap ESC
 nnoremap jk dd
+nnoremap ол dd
 inoremap jk <ESC>
+inoremap kj <ESC>
+" Cyrillyc doesn't work
+inoremap ол <ESC>
+inoremap ло <ESC>
+
+" Press i to enter insert mode, and ii to exit.
+inoremap ii <ESC>
 inoremap <ESC> <nop>
-map ол jk
+
+" Tabs
+nnoremap gtn :tabnew<CR>
+nnoremap gtc :tabclose<CR>
 
 " Input mode
 inoremap <C-z> <esc>ua
@@ -31,9 +42,9 @@ nnoremap <Down> <nop>
 " File Navigation
 noremap <silent> <C-E> :call ToggleNetrw()<CR><Paste>
 nmap <C-g> :GFiles<CR>
-nmap <ESC> :Files<CR>
+nmap <C-s> :Files<CR>
 nmap <C-p> :Commands<CR>
-nmap <C-b> :Buffers<CR>
+nmap <ESC> :Buffers<CR>
 nmap <C-t> :TagbarToggle<CR>
 
 
@@ -83,7 +94,7 @@ map <C-2> :ReminderPromptCommand<CR>
 
 
 " Toggle dark/light theme
-let g:which_key_map.d = 'toggle theme'
+let g:which_key_map.t = 'toggle theme'
 nnoremap <silent> <leader>t :call BgToggleSol()<cr>
 
 " Toggle zen mode
