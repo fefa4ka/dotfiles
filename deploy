@@ -21,6 +21,26 @@ prompt_install() {
 			sudo pacman -S $1
 
 		else
+			if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+				# ...
+			elif [[ "$OSTYPE" == "darwin"* ]]; then
+				sh -c "$(curl -fsSL https://raw.githubusercontent.com/guarinogabriel/mac-cli/master/mac-cli/tools/install)"
+				mac update
+				brew install mas
+				brew install alacritty
+				mas lucky Vimari
+				mas lucky HazeOver
+			elif [[ "$OSTYPE" == "cygwin" ]]; then
+				# POSIX compatibility layer and Linux environment emulation for Windows
+			elif [[ "$OSTYPE" == "msys" ]]; then
+				# Lightweight shell and GNU utilities compiled for Windows (part of MinGW)
+			elif [[ "$OSTYPE" == "win32" ]]; then
+				# I'm not sure this can happen.
+			elif [[ "$OSTYPE" == "freebsd"* ]]; then
+				# ...
+			else
+				# Unknown.
+			fi
 			echo "I'm not sure what your package manager is! Please install $1 on your own and run this deploy script again. Tests for package managers are in the deploy script you just ran starting at line 13. Feel free to make a pull request at https://github.com/parth/dotfiles :)"
 		fi
 	fi
@@ -78,6 +98,10 @@ check_for_software neovim
 echo
 check_for_software tmux
 echo
+check_for_software tmuxinator
+echo
+check_for_software lnav
+echo
 check_for_software fzf
 echo
 
@@ -114,6 +138,8 @@ if echo "$answer" | grep -iq "^y" ;then
 else
 	echo -e "\nNot backing up old dotfiles."
 fi
+
+git submodule update --init --recursive
 
 # Vim Plugins
 # ccls
