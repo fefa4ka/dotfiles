@@ -34,6 +34,7 @@ Plug 'sheerun/vim-polyglot'
 Plug 'rhysd/vim-gfm-syntax'
 Plug 'z0mbix/vim-shfmt'
 Plug 'jupyter-vim/jupyter-vim'
+Plug 'cyberkov/openhab-vim'
 
 " Debuglug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh \| UpdateRemotePlugins' }
 
@@ -60,7 +61,7 @@ let g:coc_global_extensions = [
             \ 'coc-eslint',
             \ 'coc-prettier',
             \ 'coc-json',
-            \ 'coc-ccls',
+            \ 'coc-clangd',
             \ 'coc-python',
             \ ]
 
@@ -94,8 +95,15 @@ require("twilight").setup {
             dimming = {
                 alpha = 0.25,
                 -- we try to get the foreground from the highlight groups or fallback color
-                color = { "Normal", "#ffffff" },
                 inactive = true, -- when true, other windows will be fully dimmed (unless they contain the same buffer)
+            },
+            context = 10,
+            treesitter = true,
+            expand = { -- for treesitter, we we always try to expand to the top-most ancestor with these types
+                "function",
+                "method",
+                "table",
+                "if_statement",
             }
     }
 }
@@ -252,3 +260,8 @@ let g:startify_lists = [
 set noswapfile
 
 set sessionoptions+=tabpages,globals
+
+
+" Shell formatting
+let g:shfmt_extra_args = '-i 4'
+

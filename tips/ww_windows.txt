@@ -1,0 +1,7 @@
+ | Window Management  |                                                            |
+| -------------------| ---------------------------------------------------------- |
+| Windows                                                                         |
+| `Alt-Shift-[hjkl]` | Move window                                                |
+| `Alt-Cmd-[hjkl]`   | Resize window                                              |
+| `Alt-Ctrl-[hjkl]`  | Warp window                                                |
+| `Alt-Shift-[qw]`   | Move window to near space                                  |

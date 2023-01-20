@@ -67,7 +67,6 @@ Each plugin is sensitive to where you are and what you're doing, they reveal the
 
 | Shell              | What It Does                                               |
 | ------------------ | ---------------------------------------------------------- |
-| `Ctrl-Alt-Shift`   | Meh                                                        |
 | `Ctrl-o`           | Open some file                                             |
 | `Ctrl-u`           | Runs `cd ..`                                               |
 | `Ctrl-g`           | Go to folder                                               |
@@ -79,24 +78,50 @@ Each plugin is sensitive to where you are and what you're doing, they reveal the
 | --------------------| ----------------------------------------------------------|
 | `Cmd-Return`        | Shell                                                     |
 | `Cmd-Shift-Return`  | Browser                                                   |
-| `Cmd-V`             | Vimr                                                      |
-| `Cmd-F`             | File Manager - Vifm                                       |
+| `Cmd-F` `RCmd-Ret`  | File Manager - Vifm                                       |
+| `Cmd-V`             | Vim                                                       |
 
 | Helpers            |                                                            |
 | -------------------| ---------------------------------------------------------- |
-| `Cmd-G`            | Browse or play Youtube                                     |
-| `Cmd-U`            | Serial ports                                               |
-| `Cmd-M`            | Tmux sessions                                              |
-| `Cmd-Y`            | Y.VM                                                       |
-| `Cmd-H`            | How Do I                                                   |
-| `Cmd-@`            | Remind                                                     |
-| `Cmd-#`            | Note                                                       |
+| `Cmd-Shift-U`      | Serial ports                                               |
+| `Cmd-Shift-M`      | Tmux sessions                                              |
+| `Cmd-Shift-Y`      | Y.VM                                                       |
+| `Cmd-Shift-H`      | How Do I                                                   |
+| `Cmd-Shift-@`      | Remind                                                     |
+| `Cmd-Shift-#`      | Note                                                       |
 
 | Window Management  |                                                            |
 | -------------------| ---------------------------------------------------------- |
+| `Ctrl-Alt-Shift`   | Meh                                                        |
 | `Alt-[Zz]`         | Fullscreen / Section fullscreen                            |
 | `Alt-b`            | Toggle bar                                                 |
 | `meh-R`            | Reload yabai, skhd, spacebar                               |
+| Arrange                                                                         |
+| `Alt-x`            | Mirrror x-axis                                             |
+| `Alt-y`            | Mirrror y-axis                                             |
+| `Alt-o`            | Toggle Split                                               |
+| Windows                                                                         |
+| `Alt-Shift-[hjkl]` | Move window                                                |
+| `Alt-Cmd-[hjkl]`   | Resize window                                              |
+| `Alt-Ctrl-[hjkl]`  | Warp window                                                |
+| `Alt-Shift-[qw]`   | Move window to near space                                  |
+| Floating Windows                                                                |
+| `Alt-Shift-Space`  | Toggle float Window                                        |
+| `Alt-[Ff]`         | Toggle float Space                                         |
+| `Alt-s`            | Toggle Stick                                               |
+| `Alt-t`            | Toggle Topmost                                             |
+| `Alt-p`            | Toggle PiP (stick, topmost, pip)                           |
+| `Alt-Shift-Cmd-[hjkl]` | Fill left/center/full/right                            |
+| Displays                                                                        |
+| `Ctrl-[123]`       | Focus display N                                            |
+| `Ctrl-Cmd-[qw]`    | Focus prev/next display                                    |
+| `Ctrl-Shift-[123]` | Move Space to N display                                    |
+| Spaces                                                                          |
+| `Alt-[1-9]`        | Select N Space                                             |
+| `Ctrl-Shift-[qw]`  | Move Space back/next                                       |
+| `Cmd-Shift-c`      | Create space                                               |
+| `Cmd-Alt-c`        | Create space for window                                    |
+| `Cmd-Shift-w`      | Destroy Space                                              |
 
 | Vim                |                                                            |
 | -------------------| ---------------------------------------------------------- |
@@ -106,8 +131,8 @@ Each plugin is sensitive to where you are and what you're doing, they reveal the
 #### Vim
 | Vim / Navigation   |                                                            |
 | -------------------| ---------------------------------------------------------- |
-| `[c ]c`            | Hunks navigation                                          |
-| `[g ]g`            | Diagnostics navigation                                    |
+| `[c ]c`            | Hunks navigation                                           |
+| `[g ]g`            | Diagnostics navigation                                     |
 
 | Vim / Git            |                                                          |
 | ---------------------| ---------------------------------------------------------|

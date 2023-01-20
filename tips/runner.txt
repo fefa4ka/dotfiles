@@ -1,0 +1,6 @@
+| Runners                   |                                                           |
+| --------------------------| ----------------------------------------------------------|
+| `Cmd-Return`              | Shell                                                     |
+| `Cmd-Shift-Return`        | Browser                                                   |
+| `Cmd-Shift-F` `RCmd-Ret`  | File Manager - Vifm                                       |
+| `Cmd-Shift-V`             | Vim                                                       |

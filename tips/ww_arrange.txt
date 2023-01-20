@@ -1,0 +1,6 @@
+ | Window Management  |                                                            |
+| -------------------| ---------------------------------------------------------- |
+| Arrange                                                                         |
+| `Alt-x`            | Mirrror x-axis                                             |
+| `Alt-y`            | Mirrror y-axis                                             |
+| `Alt-o`            | Toggle Split                                               |

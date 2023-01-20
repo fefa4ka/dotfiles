@@ -1,0 +1,8 @@
+| Shell              | What It Does                                               |
+| ------------------ | ---------------------------------------------------------- |
+| `Ctrl-o`           | Open some file                                             |
+| `Ctrl-u`           | Runs `cd ..`                                               |
+| `Ctrl-g`           | Go to folder                                               |
+| `Ctrl-p`           | Edit file in editor                                        |
+| `Ctrl-s`           | Add's `sudo` to the beginning of the buffer.               |
+| `Ctrl-n`           | Open notes                                                 |

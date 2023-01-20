@@ -1,11 +1,12 @@
 # For vim mappings:
 stty -ixon
 
+find ~/dotfiles/tips -type f -print0 | shuf -zn1 | xargs -0 glow
+
 source ~/dotfiles/.env
 source ~/.local/share/python/bin/activate
 source ~/.cargo/env
 source ~/dotfiles/zsh/alias.sh
-source ~/dotfiles/zsh/toolchain.sh
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
@@ -42,12 +43,15 @@ dash_comment() { notes add "$*" }
 dash_todo() { notes add "- [ ] $*" }
 alias @="remind"
 alias \#="dash_comment"
-alias \#!="dash_todo"
-alias \#\#="dash_comment _"
-alias \#~="notes ag"
+    alias \#!="dash_todo"
+    alias \#\#="dash_comment _"
+    alias \#~="notes ag"
 
-plugins=(… zsh-completions)
+    plugins=(… zsh-completions)
 autoload -U compinit && compinit -d ~/.local/share/zsh/.zcompdump
+
+source ~/dotfiles/zsh/toolchain.sh
+
 
 # Tmux
 tm() {
@@ -89,3 +93,20 @@ export MANPAGER='less -s -M +Gg'
 export LESS="--RAW-CONTROL-CHARS"
 lesscolors=$HOME/bin/.LESS_TERMCAP
 [[ -f $lesscolors ]] && . $lesscolors
+
+
+HISTSIZE=10000000
+SAVEHIST=10000000
+setopt BANG_HIST                 # Treat the '!' character specially during expansion.
+setopt EXTENDED_HISTORY          # Write the history file in the ":start:elapsed;command" format.
+setopt INC_APPEND_HISTORY        # Write to the history file immediately, not when the shell exits.
+setopt SHARE_HISTORY             # Share history between all sessions.
+setopt HIST_EXPIRE_DUPS_FIRST    # Expire duplicate entries first when trimming history.
+setopt HIST_IGNORE_DUPS          # Don't record an entry that was just recorded again.
+setopt HIST_IGNORE_ALL_DUPS      # Delete old recorded entry if new entry is a duplicate.
+setopt HIST_FIND_NO_DUPS         # Do not display a line previously found.
+setopt HIST_IGNORE_SPACE         # Don't record an entry starting with a space.
+setopt HIST_SAVE_NO_DUPS         # Don't write duplicate entries in the history file.
+setopt HIST_REDUCE_BLANKS        # Remove superfluous blanks before recording entry.
+setopt HIST_VERIFY               # Don't execute immediately upon history expansion.
+setopt HIST_BEEP                 # Beep when accessing nonexistent history.

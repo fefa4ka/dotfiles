@@ -14,3 +14,13 @@ export GNUARMEMB_TOOLCHAIN_PATH=/usr/local/
 export ZEPHYR_TOOLCHAIN_VARIANT="espressif"
 export ESPRESSIF_TOOLCHAIN_PATH="${HOME}/.espressif/tools/xtensa-esp32-elf/esp-2020r3-8.4.0/xtensa-esp32-elf"
 export PATH=$PATH:$ESPRESSIF_TOOLCHAIN_PATH/bin
+
+
+# Yandex Cloud
+
+# The next line updates PATH for Yandex Cloud CLI.
+if [ -f '/Users/fefa4ka/Toolchain/yandex-cloud/path.bash.inc' ]; then source '/Users/fefa4ka/Toolchain/yandex-cloud/path.bash.inc'; fi
+
+# The next line enables shell command completion for yc.
+if [ -f '/Users/fefa4ka/Toolchain/yandex-cloud/completion.zsh.inc' ]; then source '/Users/fefa4ka/Toolchain/yandex-cloud/completion.zsh.inc'; fi
+

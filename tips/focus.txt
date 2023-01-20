@@ -1,0 +1,5 @@
+Focus display
+alt
+  - u, i, o: focus the left display, the middle display, or the right display
+  - c:       focus the recently-focused display
+

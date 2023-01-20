@@ -1,0 +1,6 @@
+ | Window Management  |                                                            |
+| -------------------| ---------------------------------------------------------- |
+| `Ctrl-Alt-Shift`   | Meh                                                        |
+| `Alt-[Zz]`         | Fullscreen / Section fullscreen                            |
+| `Alt-b`            | Toggle bar                                                 |
+| `meh-R`            | Reload yabai, skhd, spacebar                               |

@@ -3,7 +3,7 @@
 # Open screen connection to choosen tty
 
 # Get user selection via dmenu from /dev/tty.*
-bookmarks=$(echo `pbpaste` | cat - ~/.config/bookmarks.url)
+bookmarks=$(cat - ~/.config/bookmarks.url)
 request=$(echo "$bookmarks" | xmenu -i -fn "FiraCode Nerd Font" -p "query:")
 
 # Exit if none chosen.
@@ -35,7 +35,9 @@ fi
 
 if [[ $request == *.* ]]; then
     request=`urlencode "$request"`
-    /Applications/Brave\ Browser.app/Contents/MacOS/Brave\ Browser --app=http://$url --window-position=2000,2000 --window-size=0,0
+#    /Applications/Brave\ Browser.app/Contents/MacOS/Brave\ Browser --app=http://$url --window-position=2000,2000 --window-size=0,0
+#    open -a Safari http://$url
+    osascript -e "tell application \"Safari\" to make new document with properties {URL:\"http://$url\"}"
 else
     if [[ ${request:0:1} != "-" ]]; then
     osascript -e "display notification \"$request\""

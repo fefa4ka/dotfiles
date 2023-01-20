@@ -1,8 +1,7 @@
 # Connection
-alias console='ssh $VM'
+alias console="yc compute instance list --format json | jq '.[] | select((.name == \"vm\") and (.status != \"RUNNING\")) | .id' | xargs -I _ yc compute instance start _ && ssh $VM"
 alias tty='ssh $VC'
 alias cam='telnet $Q2'
-
 
 # Utils
 alias grep='grep --color=auto'
@@ -28,8 +27,8 @@ fi
 
 # Navigation
 c() {
-    cd $1;
-    ls;
+    cd $1
+    ls
 }
 alias cd="c"
 alias ..="cd .."
@@ -37,7 +36,6 @@ alias ...="cd .. && cd .."
 alias .3="cd .. && cd .. && cd .."
 alias .4="cd .. && cd .. && cd .. && cd .."
 alias .5="cd .. && cd .. && cd .. && cd .. && cd .."
-
 
 # Config
 alias cf="vi +\"SLoad config\""
@@ -51,10 +49,9 @@ alias cff="vi ~/.config/vifm/vifmrc"
 alias cfk="vi ~/.config/skhd/skhdrc"
 alias cfy="vi ~/.config/yabai/yabairc"
 
-
 # SignalQ alias
-alias sqt="/Volumes/Development/signalq-telnet.sh"
-alias squ="/Volumes/Development/signalq-uart.sh"
+alias sqt="bash /Volumes/Development/signalq-telnet.sh"
+alias squ="bash /Volumes/Development/signalq-uart.sh"
 alias qt="/Volumes/Development/signalq2/facility/controller/signalq-telnet.sh"
 alias qu="/Volumes/Development/signalq2/facility/controller/signalq-uart.sh"
 

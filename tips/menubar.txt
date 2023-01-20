@@ -1,0 +1,4 @@
+ Shift + Command + /
+
+ It's the keyboard shortcut for a menu bar search
+

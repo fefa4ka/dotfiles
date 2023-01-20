@@ -1,0 +1,9 @@
+ | Window Management  |                                                            |
+| -------------------| ---------------------------------------------------------- |
+| Floating Windows                                                                |
+| `Alt-Shift-Space`  | Toggle float Window                                        |
+| `Alt-[Ff]`         | Toggle float Space                                         |
+| `Alt-s`            | Toggle Stick                                               |
+| `Alt-t`            | Toggle Topmost                                             |
+| `Alt-p`            | Toggle PiP (stick, topmost, pip)                           |
+| `Alt-Shift-Cmd-[hjkl]` | Fill left/center/full/right                            |

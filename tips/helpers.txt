@@ -1,0 +1,9 @@
+| Helpers            |                                                            |
+| -------------------| ---------------------------------------------------------- |
+| `Cmd-Shift-G`      | Browse or play Youtube                                     |
+| `Cmd-Shift-U`      | Serial ports                                               |
+| `Cmd-Shift-M`      | Tmux sessions                                              |
+| `Cmd-Shift-Y`      | Y.VM                                                       |
+| `Cmd-Shift-H`      | How Do I                                                   |
+| `Cmd-Shift-@`      | Remind                                                     |
+| `Cmd-Shift-#`      | Note                                                       |
