@@ -6,7 +6,7 @@ alias cam='telnet $Q2'
 # Utils
 alias grep='grep --color=auto'
 alias g="lazygit"
-if hash nvim; then
+if command -v nvim &> /dev/null; then
     alias v="nvim -p"
     alias vi="nvim -p"
     alias vim="nvim -p"
@@ -14,10 +14,10 @@ fi
 alias mutt="neomutt"
 alias h='function hdi(){ howdoi $* -c -n 5; }; hdi'
 eval $(thefuck --alias)
-if hash bat; then
+if command -v bat &> /dev/null; then
     alias cat="bat --theme=\$(defaults read -globalDomain AppleInterfaceStyle &> /dev/null && echo default || echo GitHub)"
 fi
-if hash exa; then
+if command -v exa &> /dev/null; then
     exa_exec="exa --color=always --group-directories-first"
     alias ls="$exa_exec -al"
     alias la="$exa_exec -a"
