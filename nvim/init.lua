@@ -1,0 +1,5 @@
+require("core.utils")
+require("config.keybindings")
+require("config.lazy")
+require("config.ui")
+require_vim("vim/netrw.vim")
