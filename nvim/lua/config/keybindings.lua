@@ -1,6 +1,9 @@
 local g = vim.g
 
-g.mapleader = " "
+vim.keymap.set("n", "<Space>", "<Nop>", { silent = true, remap = false })
+
+vim.g.mapleader = " "
+--g.mapleader = "<Space>"
 
 -- Define keymaps of Neovim and installed plugins.
 local function map(mode, lhs, rhs, opts)
@@ -22,9 +25,10 @@ map('', '<left>', '<nop>')
 map('', '<right>', '<nop>')
 
 -- Replace esc with letters
+map('n', 'jk', 'dd')
 map('i', 'jk', '<Esc>')
 map('i', 'kj', '<Esc>')
-map('i', 'ii', '<Esc>')
+-- map('i', 'ii', '<0Esc>')
 map('n', '<Esc>', '<nop>')
 
 -- Undo/Redo
@@ -35,28 +39,43 @@ map('i', '<C-Z>', '<Esc>Ua')
 map('i', '<C-v>', '<Esc>pa')
 
 -- Navigation
-map('', '<C-e>', ':call ToggleNetrw()<CR>', { silent = true })
+-- map('', '<C-e>', ':call ToggleNetrw()<CR>', { silent = true })
+map('', '<C-e>', ':Vifm<CR>', { silent = true })
+map('n', 'fs', ':SplitVifm<CR>', { silent = true })
+map('n', 'fv', ':VsplitVifm<CR>', { silent = true })
+map('n', 'ft', ':TabVifm<CR>', { silent = true })
+map('n', 'fd', ':DiffVifm<CR>', { silent = true })
+
 map('', '<C-t>', ':TagbarToggle<CR>')
-map('n', '<C-s>', ':Telescope find_files<CR>')
-map('n', '<C-p>', ':Telescope commands<CR>')
+map('n', '<C-p>', ':Telescope find_files<CR>')
+map('n', '<C-S-p>', ':Telescope commands<CR>')
 map('n', '<C-g>', ':Telescope git_files<CR>')
 map('n', '<Esc>', ':Telescope buffers<CR>')
+map('n', '<leader>ht', ':Telescope help_tags<CR>')
+
+-- LSP
+map('n', 'gr', ':Telescope lsp_references<CR>')
+map('n', 'gd', ':Telescope lsp_definitions<CR>')
+map('n', 'gl', '<cmd>lua vim.diagnostic.open_float()<cr>')
 
 -- Panes
-map('n', '<C-_>', '<C-W>S')
+map('n', '<C-_>', '<C-W>s')
+map('n', '<C-->', '<C-W>s')
 map('n', '<C-\\>', '<C-W>v')
 map('n', '<C-q>', '<C-W>q')
 map('n', '<C-k>', '<C-W>k')
 map('n', '<C-j>', '<C-W>j')
 map('n', '<C-h>', '<C-W>h')
 map('n', '<C-l>', '<C-W>l')
+map('n', 'W', ':pclose<CR>')
 
 -- Tabs
-map('n', 'gtn', ':tabnew<CR>')
-map('n', 'gtc', ':tabclose<CR>')
+map('n', 'tn', ':tabnew<CR>')
+map('n', 'tc', ':tabclose<CR>')
 
 -- Naviagate through text
---map('n', 's', ':HopChar1<CR>', { silent = true })
+map('n', 's', ':HopChar1<CR>', { silent = true })
+map('i', '<C-s>', '<Esc>:HopChar1<CR>', { silent = true })
 
 -- Reload configuration without restart nvim
 map('n', '<leader>r', ':so %<CR>')
@@ -76,6 +95,6 @@ map('n', '<leader>c', ':nohl<CR>')
 
 -- Toggle auto-indenting for code paste
 map('n', '<F2>', ':set invpaste paste?<CR>')
-vim.opt.pastetoggle = '<F2>'
+-- vim.opt.pastetoggle = '<F2>'
 
 

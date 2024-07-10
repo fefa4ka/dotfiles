@@ -25,19 +25,11 @@ end
 
 function BgToggleSol()
     if vim.o.background == "light" then
-        vim.cmd('set background=dark')
-        vim.cmd('silent !alacritty_theme -set gruvbox_dark')
-        vim.cmd('silent !tmux source-file ~/dotfiles/tmux/tmux.dark.theme')
-        vim.cmd('silent !echo "set background=dark"> ~/.config/theme')
-        vim.cmd('silent !osascript -l JavaScript -e "Application(\'System Events\').appearancePreferences.darkMode = true"')
-        vim.cmd('hi normal guibg=none ctermbg=none')
+--        vim.cmd('set background=dark')
+	vim.cmd("silent !/Users/fefa4ka/dotfiles/scripts/switch_theme")
     else
-        vim.cmd('set background=light')
-        vim.cmd('silent !alacritty_theme -set gruvbox_light')
-        vim.cmd('silent !tmux source-file ~/dotfiles/tmux/tmux.light.theme')
-        vim.cmd('silent !echo "set background=light"> ~/.config/theme')
-        vim.cmd('silent !osascript -l JavaScript -e "Application(\'System Events\').appearancePreferences.darkMode = false"')
-        vim.cmd('hi normal guibg=none ctermbg=none')
+	vim.cmd("silent !/Users/fefa4ka/dotfiles/scripts/switch_theme")
+        -- vim.cmd('hi normal guibg=none ctermbg=none')
     end
 end
 
