@@ -3,7 +3,7 @@
 # Open screen connection to choosen tty
 
 # Get user selection via dmenu from /dev/tty.*
-bookmarks=$(cat - ~/.config/bookmarks.url)
+bookmarks=$(echo `pbpaste` | cat - ~/.config/bookmarks.url)
 request=$(echo "$bookmarks" | xmenu -i -fn "FiraCode Nerd Font" -p "query:")
 
 # Exit if none chosen.

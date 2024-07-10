@@ -46,8 +46,8 @@ zle -N open_editor
 bindkey "^p" open_editor
 
 # Notes
-open_notes() {
-    cd ~/Documents/notes && lt -I "Bear*" | fzf --ansi --query "$LBUFFER" --delimiter='─ ' --preview='filename=$(find . -name {2});([[ -f $filename ]] && (mdv $filename || cat $filename)) || ([[ -d {2} ]] && (exa -aT {2} | less)) || echo {2} 2> /dev/null | head -200' | awk '{split($0, a, " "); print a[2]}' | xargs -n2 -I{2} echo {} _
-}
-zle -N open_notes
-bindkey "^n" open_notes
+# open_notes() {
+#     cd ~/Documents/notes && lt -I "Bear*" | fzf --ansi --query "$LBUFFER" --delimiter='─ ' --preview='filename=$(find . -name {2});([[ -f $filename ]] && (mdv $filename || cat $filename)) || ([[ -d {2} ]] && (exa -aT {2} | less)) || echo {2} 2> /dev/null | head -200' | awk '{split($0, a, " "); print a[2]}' | xargs -n2 -I{2} echo {} _
+# }
+# zle -N open_notes
+# bindkey "^n" open_notes

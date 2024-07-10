@@ -1,4 +1,3 @@
-#!/bin/bash
 
 MACOS_VLC_PATH="/Applications/VLC.app/Contents/MacOS/VLC" # This is the default VLC command in MacOS.
 LINUX_VLC_PATH="vlc" # This is the default VLC command in Linux.
@@ -10,7 +9,7 @@ else
 	vlcPath="$LINUX_VLC_PATH"
 fi
 
-youtubeDlCommand="$YOUTUBE_DL_PATH -ge --get-format $*"
+youtubeDlCommand="$YOUTUBE_DL_PATH -ge --format best $*"
 vlcCommand="$vlcPath --video-wallpaper"
 
 videoTitle=""
@@ -18,6 +17,7 @@ videoURL=""
 audioURL=""
 
 while read -r line; do
+	echo "! $line"
 	if [ "$videoTitle" = "" ]; then # -e option prints the title before the first URL.
 		videoTitle="$line"
 	elif [ "$videoURL" = "" ]; then
@@ -34,7 +34,8 @@ while read -r line; do
 	fi
 done <<< "$($youtubeDlCommand)" # youtube-dl runs here.
 
+		vlcCommand+=" \"$videoURL\" :meta-title=$videoTitleParsed :input-slave=\"$audioURL\""
 if [ "$vlcCommand" != "$vlcPath" ]; then
     killall VLC
-	eval <<< echo "$vlcCommand"
+	eval  "$vlcCommand"
 fi

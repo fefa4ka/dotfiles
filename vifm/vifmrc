@@ -5,6 +5,7 @@ if $TERM != 'linux'
 endif
 
 set vicmd='nvim -p'
+set trashdir='~/.Trash'
 
 " ignore case in search pattern unless it contains at least one uppercase letter
 set ignorecase
@@ -32,34 +33,34 @@ set findprg='find %s %a -print ,
 " don't display file user/group on Windows
 
 
-   " file types
-    set classify=' :dir:/, :exe:, :reg:, :link:'
-    " various file names
-    set classify+=' ::../::, ::*.sh::, ::*.[hc]pp,,*.cc,,*.hh::, ::*.[hc]::'
+" file types
+set classify=' :dir:/, :exe:, :reg:, :link:'
+" various file names
+set classify+=' ::../::, ::*.sh::, ::*.[hc]pp,,*.cc,,*.hh::, ::*.[hc]::'
 
-    set classify+=' ::/^copying|license$/::, ::.git/,,*.git/::/'
-    set classify+=' ::*.epub,,*.fb2,,*.djvu::, ::*.pdf::'
-    set classify+=' ::*.htm,,*.html,,**.[sx]html,,*.xml::'
-    " archives
-    set classify+=' ::*.7z,,*.ace,,*.arj,,*.bz2,,*.cpio,,*.deb,,*.dz,,*.gz,,
-                  \*.jar,,*.lzh,,*.lzma,,*.rar,,*.rpm,,*.rz,,*.tar,,*.taz,,
-                  \*.tb2,,*.tbz,,*.tbz2,,*.tgz,,*.tlz,,*.trz,,*.txz,,*.tz,,
-                  \*.tz2,,*.xz,,*.z,,*.zip,,*.zoo::'
-    " images
-    set classify+=' ::*.bmp,,*.gif,,*.jpeg,,*.jpg,,*.ico,,*.png,,*.ppm,,*.svg,,
-                  \*.svgz,,*.tga,,*.tif,,*.tiff,,*.xbm,,*.xcf,,*.xpm,,*.xspf,,
-                  \*.xwd::'
-    " audio
-    set classify+=' ::*.aac,,*.anx,,*.asf,,*.au,,*.axa,,*.flac,,*.m2a,,*.m4a,,
-                  \*.mid,,*.midi,,*.mp3,,*.mpc,,*.oga,,*.ogg,,*.ogx,,*.ra,,
-                  \*.ram,,*.rm,,*.spx,,*.wav,,*.wma,,*.ac3::'
-    " media
-    set classify+=' ::*.avi,,*.ts,,*.axv,,*.divx,,*.m2v,,*.m4p,,*.m4v,,.mka,,
-                  \*.mkv,,*.mov,,*.mp4,,*.flv,,*.mp4v,,*.mpeg,,*.mpg,,*.nuv,,
-                  \*.ogv,,*.pbm,,*.pgm,,*.qt,,*.vob,,*.wmv,,*.xvid,,*.webm::'
-    " office files
-    set classify+=' ::*.doc,,*.docx::, ::*.xls,,*.xls[mx]::'
-    set classify+=' ::*.pptx,,*.ppt::'
+set classify+=' ::/^copying|license$/::, ::.git/,,*.git/::/'
+set classify+=' ::*.epub,,*.fb2,,*.djvu::, ::*.pdf::'
+set classify+=' ::*.htm,,*.html,,**.[sx]html,,*.xml::'
+" archives
+set classify+=' ::*.7z,,*.ace,,*.arj,,*.bz2,,*.cpio,,*.deb,,*.dz,,*.gz,,
+	  \*.jar,,*.lzh,,*.lzma,,*.rar,,*.rpm,,*.rz,,*.tar,,*.taz,,
+	  \*.tb2,,*.tbz,,*.tbz2,,*.tgz,,*.tlz,,*.trz,,*.txz,,*.tz,,
+	  \*.tz2,,*.xz,,*.z,,*.zip,,*.zoo::'
+" images
+set classify+=' ::*.bmp,,*.gif,,*.jpeg,,*.jpg,,*.ico,,*.png,,*.ppm,,*.svg,,
+	  \*.svgz,,*.tga,,*.tif,,*.tiff,,*.xbm,,*.xcf,,*.xpm,,*.xspf,,
+	  \*.xwd::'
+" audio
+set classify+=' ::*.aac,,*.anx,,*.asf,,*.au,,*.axa,,*.flac,,*.m2a,,*.m4a,,
+	  \*.mid,,*.midi,,*.mp3,,*.mpc,,*.oga,,*.ogg,,*.ogx,,*.ra,,
+	  \*.ram,,*.rm,,*.spx,,*.wav,,*.wma,,*.ac3::'
+" media
+set classify+=' ::*.avi,,*.ts,,*.axv,,*.divx,,*.m2v,,*.m4p,,*.m4v,,.mka,,
+	  \*.mkv,,*.mov,,*.mp4,,*.flv,,*.mp4v,,*.mpeg,,*.mpg,,*.nuv,,
+	  \*.ogv,,*.pbm,,*.pgm,,*.qt,,*.vob,,*.wmv,,*.xvid,,*.webm::'
+" office files
+set classify+=' ::*.doc,,*.docx::, ::*.xls,,*.xls[mx]::'
+set classify+=' ::*.pptx,,*.ppt::'
 
 " Resize panes
 nnoremap < <c-w><
@@ -76,14 +77,58 @@ nnoremap q :!qlmanage -p %f > /dev/null 2>&1<cr>
 filetype * opener "%c:p" > /dev/null 2>&1
 
 " SSH fs
-:filetype *.ssh FUSE_MOUNT2|sshfs %PARAM %DESTINATION_DIR
+filetype *.ssh FUSE_MOUNT2|sshfs %PARAM %DESTINATION_DIR
+
+filetype *.zip,*.jar,*.war,*.ear,*.oxt
+       \ {Mount with fuse-zip}
+       \ FUSE_MOUNT|fuse-zip %SOURCE_FILE %DESTINATION_DIR,
 
 " Tree preview
-fileview */ exa -aT -L 1 --color=always --group-directories-first %c
+fileviewer */ exa -aT -L 1 --icons --color=always --group-directories-first %c
 
 " Markdown
-fileview */ mdv %c
+fileviewer {*.md} glow -s $(cat ~/.config/theme) %c
+fileviewer {*.zip} unzip -l %c
+fileviewer {*.rar} unrar l %c
+fileviewer {*.tar} tar -tvf %c
+fileviewer {*.tar.gz} tar -ztvf %c
+fileviewer {*.tar.bz2} tar -jtvf %c
+
+fileviewer {*.csv} xsv sample 50 %c | xsv table
+
+" Preview
+fileviewer {*.stl} 
+    \ visualpreview stl %pw %ph %px %py %c %N
+    \ %pc
+    \ visualpreview clear
+
+fileview <image/*>
+    \ visualpreview image %pw %ph %px %py %c %N
+    \ %pc
+    \ visualpreview clear
+
+fileviewer <video/*>
+    \ visualpreview video %pw %ph %px %py %c %N
+    \ %pc
+    \ visualpreview clear
+
+fileviewer <font/*>
+    \ visualpreview font %pw %ph %px %py %c %N
+    \ %pc
+    \ visualpreview clear
+
+fileviewer {*.pdf}
+    \ visualpreview pdf %pw %ph %px %py %c %N
+    \ %pc
+    \ visualpreview clear
+
+fileviewer {*.epub,*.mobi,*.azw,*.azw[0-9]},<application/epub+zip>,<application/x-mobipocket-ebook>,<application/vnd.amazon.ebook>
+    \ visualpreview epub %pw %ph %px %py %c %N
+    \ %pc
+    \ visualpreview clear
 
 fileview * defviewer %c
 
-view
+view!
+
+

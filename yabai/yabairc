@@ -8,25 +8,36 @@ yabai -m config status_bar_background_color  0xff354274 # 0xff202020
 yabai -m config status_bar_foreground_color  0xffDEE6E7 # 0xffa8a8a8
 
 # global settings
-yabai -m config mouse_follows_focus          on
+yabai -m config mouse_follows_focus          off
 yabai -m config focus_follows_mouse          off
+
+# visual
 yabai -m config insert_feedback_color        0xaad75f5f
+yabai -m config window_shadow float
 yabai -m config window_opacity               on
-yabai -m config active_window_opacity        0.5
-yabai -m config normal_window_opacity        0.9
-yabai -m config split_ratio                  0.5
+yabai -m config active_window_opacity        1.0
+yabai -m config normal_window_opacity        0.8
+yabai -m config split_ratio                  0.6
 yabai -m config auto_balance                 off
-yabai -m config mouse_modifier               fn
-yabai -m config mouse_action1                resize
-yabai -m config mouse_action2                move
+
+# bar settings
+## add 20 padding to the top and 0 padding to the bottom of every space located on the main display
+yabai -m config external_bar all:32:0
+# add 20 padding to the top and bottom of all spaces regardless of the display it belongs to
 
 # general space settings
 yabai -m config layout                       bsp
-yabai -m config top_padding                  26
+yabai -m config top_padding                  0 
 yabai -m config bottom_padding               0
 yabai -m config left_padding                 0
 yabai -m config right_padding                0
-yabai -m config window_gap                   0
+yabai -m config window_gap                   10 
+
+# mouse
+yabai -m config mouse_modifier               fn
+yabai -m config mouse_action1 move
+yabai -m config mouse_action2 resize
+
 
 # Spaces
 yabai -m space 1 --label "Coding"
@@ -38,13 +49,6 @@ yabai -m space 5 --label "Float"
 # Coding
 
 # Tools
-yabai -m rule --add app="^GitHub Desktop$" manage=off space=3
-yabai -m rule --add app="Sourcetree"            space=3
-yabai -m rule --add app="Finder"                space=3
-yabai -m rule --add app="Microsoft Word"        space=3
-yabai -m rule --add app="Sequel Pro"            space=3
-yabai -m rule --add app="Postman"               space=3
-
 yabai -m rule --add app="^System Preferences$" manage=off grid=7:4:1:1:2:2
 yabai -m rule --add app="^Books$" manage=off
 yabai -m rule --add app="^Dash$" manage=off
@@ -52,9 +56,14 @@ yabai -m rule --add app="^macfeh$" manage=off
 yabai -m rule --add app="^Digital Colou?r Meter$" sticky=on
 
 # Social
-yabai -m rule --add app="^Zoom$" manage=off space=4
-yabai -m rule --add app="^zoom.us$" space=4
-yabai -m rule --add app="^Telegram$" space=4
+yabai -m rule --add app="Telegram" scratchpad="telegram" grid=11:11:1:1:9:9
+yabai -m rule --add app="Obsidian" scratchpad="obsidian" grid=11:11:1:1:9:9
+yabai -m rule --add app="Calendar" scratchpad="calendar" grid=11:11:1:1:9:9
+yabai -m rule --add app="Chatbox" scratchpad="chatbot" grid=11:11:1:1:9:9
+yabai -m rule --add app="Vivaldi" scratchpad="browser" grid=1:1:0:0:1:1
+# yabai -m rule --add app="Alacritty" scratchpad="console" grid=1:1:0:0:1:1
+yabai -m rule --add title="console" app="kitty" scratchpad="console" grid=1:1:0:0:1:1
+
 yabai -m rule --add app="^Mail$" space=4
 
 # Floating

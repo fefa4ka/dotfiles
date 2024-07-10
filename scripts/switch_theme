@@ -1,14 +1,18 @@
 #!/bin/bash
 theme=$(cat ~/.config/theme)
 
-if [ "$theme" == "set background=light" ]; then
-    echo "set background=dark" > ~/.config/theme
-    alacritty_theme -set gruvbox_dark
+if [ "$theme" == "light" ]; then
+    echo "dark" > ~/.config/theme
+    cp ~/.config/alacritty/themes/themes/gruvbox_dark.toml ~/.config/alacritty/current_theme.toml && touch ~/.config/alacritty/alacritty.toml
+    cp ~/dotfiles/kitty/gruvbox_dark.conf ~/dotfiles/kitty/current_theme.conf && touch ~/.config/kitty/kitty.conf
+    /Applications/kitty.app/Contents/MacOS/kitty @ --to unix:/tmp/kitty-console set-colors --all --configured ~/dotfiles/kitty/gruvbox_dark.conf
     tmux source-file ~/dotfiles/tmux/tmux.dark.theme
     osascript -l JavaScript -e "Application('System Events').appearancePreferences.darkMode = true"
 else
-    echo "set background=light" > ~/.config/theme
-    alacritty_theme -set gruvbox_light
+    echo "light" > ~/.config/theme
+    cp ~/.config/alacritty/themes/themes/gruvbox_light.toml ~/.config/alacritty/current_theme.toml && touch ~/.config/alacritty/alacritty.toml
+    cp ~/dotfiles/kitty/gruvbox_light.conf ~/dotfiles/kitty/current_theme.conf && touch ~/.config/kitty/kitty.conf
+    /Applications/kitty.app/Contents/MacOS/kitty @ --to unix:/tmp/kitty-console set-colors --all --configured ~/dotfiles/kitty/gruvbox_light.conf
     tmux source-file ~/dotfiles/tmux/tmux.light.theme
     osascript -l JavaScript -e "Application('System Events').appearancePreferences.darkMode = false"
 fi

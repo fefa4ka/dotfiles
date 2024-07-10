@@ -28,7 +28,7 @@ fi
 # Navigation
 c() {
     cd $1
-    ls
+    lt -G
 }
 alias cd="c"
 alias ..="cd .."
@@ -38,25 +38,16 @@ alias .4="cd .. && cd .. && cd .. && cd .."
 alias .5="cd .. && cd .. && cd .. && cd .. && cd .."
 
 # Config
-alias cf="vi +\"SLoad config\""
-alias cfv="vi +\"SLoad vimrc\""
-alias cfz="vi +\"SLoad zshrc\""
-alias cfa="vi ~/.config/alacritty/alacritty.yml"
+#alias cf="vi +\"SLoad config\""
+alias cfv="vi ~/dotfiles/nvim/init.lua"
+alias cfz="vi ~/dotfiles/zsh/zshrc.sh"
+alias cfa="vi ~/.config/alacritty/alacritty.toml"
 alias cft="vi ~/dotfiles/tmux/tmux.conf"
 alias cfm="vi ~/dotfiles/mutt/muttrc"
 alias cfr="vi ~/.config/ranger/"
 alias cff="vi ~/.config/vifm/vifmrc"
 alias cfk="vi ~/.config/skhd/skhdrc"
 alias cfy="vi ~/.config/yabai/yabairc"
-
-# SignalQ alias
-alias sqt="bash /Volumes/Development/signalq-telnet.sh"
-alias squ="bash /Volumes/Development/signalq-uart.sh"
-alias qt="/Volumes/Development/signalq2/facility/controller/signalq-telnet.sh"
-alias qu="/Volumes/Development/signalq2/facility/controller/signalq-uart.sh"
-
-# nnn
-alias nnn='NNN_FIFO="$(mktemp -u)" nnn'
 
 # install python package globally
 gpip() {

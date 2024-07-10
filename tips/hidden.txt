@@ -1,0 +1,3 @@
+Hidden files in Finder
+
+Shift + Cmd + .

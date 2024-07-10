@@ -4,7 +4,7 @@ stty -ixon
 find ~/dotfiles/tips -type f -print0 | shuf -zn1 | xargs -0 glow
 
 source ~/dotfiles/.env
-source ~/.local/share/python/bin/activate
+#source ~/.local/share/python/bin/activate
 source ~/.cargo/env
 source ~/dotfiles/zsh/alias.sh
 
@@ -39,13 +39,13 @@ source ~/dotfiles/zsh/prompt.sh
 
 
 # Notes
-dash_comment() { notes add "$*" }
-dash_todo() { notes add "- [ ] $*" }
-alias @="remind"
-alias \#="dash_comment"
-    alias \#!="dash_todo"
-    alias \#\#="dash_comment _"
-    alias \#~="notes ag"
+#dash_comment() { notes add "$*" }
+#dash_todo() { notes add "- [ ] $*" }
+#alias @="remind"
+#alias \#="dash_comment"
+#alias \#!="dash_todo"
+#alias \#\#="dash_comment _"
+#alias \#~="notes ag"
 
     plugins=(… zsh-completions)
 autoload -U compinit && compinit -d ~/.local/share/zsh/.zcompdump
@@ -81,7 +81,7 @@ fi
 
 # Key bindings
 # ------------
-source "/usr/local/opt/fzf/shell/key-bindings.zsh"
+#source "/usr/local/opt/fzf/shell/key-bindings.zsh"
 
 # NVM
 #export NVM_DIR="$HOME/.nvm"
@@ -110,3 +110,6 @@ setopt HIST_SAVE_NO_DUPS         # Don't write duplicate entries in the history 
 setopt HIST_REDUCE_BLANKS        # Remove superfluous blanks before recording entry.
 setopt HIST_VERIFY               # Don't execute immediately upon history expansion.
 setopt HIST_BEEP                 # Beep when accessing nonexistent history.
+
+eval "$(atuin init zsh)"
+export WITH_TMUX=false

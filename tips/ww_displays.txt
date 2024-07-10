@@ -1,6 +1,7 @@
- | Window Management  |                                                            |
+| Window Managements |                                                            |
 | -------------------| ---------------------------------------------------------- |
 | Displays                                                                        |
 | `Ctrl-[123]`       | Focus display N                                            |
 | `Ctrl-Cmd-[qw]`    | Focus prev/next display                                    |
 | `Ctrl-Shift-[123]` | Move Space to N display                                    |
+| `Cmd-Shift-d`      | Swap window between displays 				  |
