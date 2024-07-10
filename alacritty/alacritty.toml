@@ -1,0 +1,101 @@
+import = [
+    "~/.config/alacritty/current_theme.toml"
+]
+
+[env]
+TERM = "xterm-256color"
+
+[font]
+size = 14
+
+[font.bold]
+family = "FiraCode Nerd Font"
+style = "Bold"
+
+[font.normal]
+family = "FiraCode Nerd Font"
+style = "Regular"
+
+[[keyboard.bindings]]
+chars = "`z"
+key = "Z"
+mods = "Command"
+
+[[keyboard.bindings]]
+chars = "`\u001B[C"
+key = "Left"
+mods = "Command"
+
+[[keyboard.bindings]]
+chars = "`\u001B[D"
+key = "Right"
+mods = "Command"
+
+[[keyboard.bindings]]
+chars = "`\u001B[A"
+key = "Up"
+mods = "Command"
+
+[[keyboard.bindings]]
+chars = "`\u001B[B"
+key = "Down"
+mods = "Command"
+
+[[keyboard.bindings]]
+chars = "\u001E"
+key = "Key6"
+mods = "Control"
+
+[[keyboard.bindings]]
+chars = "`x"
+key = "W"
+mods = "Command"
+
+[[keyboard.bindings]]
+chars = "\u001B[83;5u"
+key = "Escape"
+mods = "Command"
+
+[[keyboard.bindings]]
+chars = "\u001B[71;5u"
+key = "Escape"
+mods = "Command|Shift"
+
+[[keyboard.bindings]]
+chars = "gT"
+key = "Left"
+mods = "Command|Shift"
+
+[[keyboard.bindings]]
+chars = "gt"
+key = "Right"
+mods = "Command|Shift"
+
+[[keyboard.bindings]]
+chars = "tc"
+key = "Down"
+mods = "Command|Shift"
+
+[[keyboard.bindings]]
+chars = "tn"
+key = "Up"
+mods = "Command|Shift"
+
+[[keyboard.bindings]]
+chars = "\u001Bs"
+key = "S"
+mods = "Alt"
+
+[shell]
+program = "/bin/zsh"
+
+[window]
+decorations = "none"
+dynamic_padding = true
+dynamic_title = false 
+opacity = 0.9
+startup_mode = "Windowed"
+
+[window.padding]
+x = 2
+y = 1
