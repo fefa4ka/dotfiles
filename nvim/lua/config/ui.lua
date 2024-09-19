@@ -79,7 +79,7 @@ vim.api.nvim_create_autocmd('BufRead', {
 })
 
 -- Copilot
-vim.g.copilot_proxy = 'http://158.160.31.68:11435'
+vim.g.copilot_proxy = 'http://localhost:11435'
 vim.g.copilot_proxy_strict_ssl = false
 vim.keymap.set('i', '<C-A>', 'copilot#Accept("\\<CR>")', {
   expr = true,

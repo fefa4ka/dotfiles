@@ -2,6 +2,7 @@
 function up_widget() {
     BUFFER="cd .."
     zle accept-line
+zle reset-prompt
 }
 zle -N up_widget
 bindkey "^u" up_widget
