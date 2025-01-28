@@ -13,7 +13,6 @@ if command -v nvim &> /dev/null; then
 fi
 alias mutt="neomutt"
 alias h='function hdi(){ howdoi $* -c -n 5; }; hdi'
-eval $(thefuck --alias)
 if command -v bat &> /dev/null; then
     alias cat="bat --theme=\$(defaults read -globalDomain AppleInterfaceStyle &> /dev/null && echo default || echo GitHub)"
 fi
@@ -38,7 +37,7 @@ alias .4="cd .. && cd .. && cd .. && cd .."
 alias .5="cd .. && cd .. && cd .. && cd .. && cd .."
 
 # Config
-#alias cf="vi +\"SLoad config\""
+alias cf="vi +\"SLoad config\""
 alias cfv="vi ~/dotfiles/nvim/init.lua"
 alias cfz="vi ~/dotfiles/zsh/zshrc.sh"
 alias cfa="vi ~/.config/alacritty/alacritty.toml"

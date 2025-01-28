@@ -97,7 +97,7 @@ passthrough < hyper - x ; default
 ## Fullscreen Toggles
 alt - z              : yabai -m window --toggle zoom-parent
 alt + shift - z      : yabai -m window --toggle zoom-fullscreen
-alt - b              : [[ "$(spacebar -m config height)" == "0" ]] && (spacebar -m config height 32) || (spacebar -m config height 0)
+# alt - b              : [[ "$(spacebar -m config height)" == "0" ]] && (spacebar -m config height 32) || (spacebar -m config height 0)
 
 #cmd + shift - k      :  SPACE_ID=$(yabai -m query --spaces --space | jq '.index') && \
 #                        WIN_ID=$(yabai -m query --windows | jq '.[] | select(.title | contains("Telegram")) | .id') && \
@@ -147,14 +147,16 @@ cmd + shift - d              : xmenu_combined_run -fn 'FiraCode Nerd Font' -p 'r
 
 # toggle scratchpad windows or launch application if not running
 cmd + ctrl - t : yabai -m window --toggle telegram || open -a Telegram 
-cmd + ctrl - o : yabai -m window --toggle obsidian  || open -a Obsidian 
-cmd + ctrl - m : yabai -m window --toggle calendar || open -a Calendar
-cmd + ctrl - b : yabai -m window --toggle chatbot || open -a Chatbox 
-cmd + ctrl - b : yabai -m window --toggle chatbot || open -a Chatbox 
-alt - 0x32 : yabai -m window --toggle browser || open -a Vivaldi 
-cmd - 0x32 : yabai -m window --toggle console && (is_visible=$(yabai -m query --windows | jq '.[] | select(.title == "console") | ."is-visible"') && [ "$is_visible" = "true" ] && yabai -m window --grid 1:1:0:0:1:1 || true) || WITH_TMUX=true kitty --title console --listen-on unix:/tmp/kitty-console
-cmd + shift - 0x32 : open -na kitty 
-# cmd - 0x32 : yabai -m window --toggle console && (is_visible=$(yabai -m query --windows | jq '.[] | select(.title == "Alacritty") | ."is-visible"') && [ "$is_visible" = "true" ] && yabai -m window --grid 1:1:0:0:1:1 || true) || WITH_TMUX=true open -a Alacritty
+cmd + ctrl - o : yabai -m window --toggle obsidian && (is_visible=$(yabai -m query --windows | jq '.[] | select(.scratchpad == "obsidian") | ."is-visible"') && [ "$is_visible" = "true" ] && yabai -m window --grid 1:1:0:0:1:1 || true) || open -a Obsidian 
+cmd + ctrl - l : yabai -m window --toggle deepl || open -a DeepL
+cmd + ctrl - c : yabai -m window --toggle calendar || open -a Calendar
+cmd + ctrl - m : yabai -m window --toggle music || open -a "Яндекс Музыка"
+cmd + ctrl - b : yabai -m window --toggle openwebui || open -a "Open WebUI"
+cmd + ctrl - n : yabai -m window --toggle obsidian && skhd --key "ctrl - n"
+cmd - 0x32 : yabai -m window --toggle browser && (is_visible=$(yabai -m query --windows | jq '.[] | select(.scratchpad == "browser") | ."is-visible"') && [ "$is_visible" = "true" ] && yabai -m window --grid 1:1:0:0:1:1 || true) || open -a Vivaldi
+alt - 0x32 : yabai -m window --toggle console && (is_visible=$(yabai -m query --windows | jq '.[] | select(.title == "console") | ."is-visible"') && [ "$is_visible" = "true" ] && yabai -m window --grid 1:1:0:0:1:1 || true) || WITH_TMUX=true kitty --title console --listen-on unix:/tmp/kitty-console
+cmd - return: open -na Kitty
+# cmd - 0x32 : yabai -m window --toggle console && (is_visible=$(yabai -m query --windows | jq '.[] | select(.title == "Alacritty") | ."is-visible"') && [ "$is_visible" = "true" ] && yabai -m window --grid 1:1:0:0:1:1 || true) || WITH_TMUX=true open -a Kitty
 # cmd + shift - 0x32 : open -na Alacritty 
 
 
@@ -246,7 +248,6 @@ rcmd - q : open -a ScreenSaverEngine
     alt - p             :  yabai -m window --toggle sticky;\
                            yabai -m window --toggle topmost;\
                            yabai -m window --toggle pip
-
 # Displays
     # Navigation
     ctrl - 1 : yabai -m display --focus 1
@@ -264,8 +265,8 @@ rcmd - q : open -a ScreenSaverEngine
     shift + ctrl + cmd - q    : yabai -m space --display prev || yabai -m space --display last
     shift + ctrl + cmd - w    : yabai -m space --display next || yabai -m space --display first
 
-    lshift + cmd - d          : yabai -m space --display prev || yabai -m space --display last
-    rshift + cmd - d          : yabai -m space --display next || yabai -m space --display first
+    # lshift + cmd - d          : yabai -m space --display prev || yabai -m space --display last
+    # rshift + cmd - d          : yabai -m space --display next || yabai -m space --display first
 
     # Move window to display
     shift + alt + cmd - left  : (yabai -m window --display prev && yabai -m display --focus prev || yabai -m window --display last && yabai -m display --focus next)
@@ -275,9 +276,9 @@ rcmd - q : open -a ScreenSaverEngine
 
 # Spaces
     # Navigate space by label
-    alt + cmd - n : yabai -m space --focus note
-    alt + cmd - c : yabai -m space --focus code
-    alt + cmd - s : yabai -m space --focus surf
+    # alt + cmd - n : yabai -m space --focus note
+    # alt + cmd - c : yabai -m space --focus code
+    # alt + cmd - s : yabai -m space --focus surf
 
     # Spaces:  Alt + [NUM]
     #alt - tab : yabai -m space --focus recent

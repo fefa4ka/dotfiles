@@ -36,6 +36,10 @@ vim.g.show_spaces_that_precede_tabs = 1
 vim.g.better_whitespace_enabled = 0
 
 
+-- nowrap
+vim.opt.wrap = false
+
+vim.opt.virtualedit = 'all'
 
 -- Plugin: Startify
 -- Show startify when there is no opened buffers
@@ -79,12 +83,16 @@ vim.api.nvim_create_autocmd('BufRead', {
 })
 
 -- Copilot
-vim.g.copilot_proxy = 'http://localhost:11435'
-vim.g.copilot_proxy_strict_ssl = false
-vim.keymap.set('i', '<C-A>', 'copilot#Accept("\\<CR>")', {
-  expr = true,
-  replace_keycodes = false
-})
-vim.keymap.set('i', '<C-L>', '<Plug>(copilot-accept-word)')
-vim.keymap.set('i', '<C-J>', '<Plug>(copilot-accept-line)')
-vim.g.copilot_no_tab_map = true
+-- vim.g.copilot_proxy = 'http://localhost:11435'
+-- vim.g.copilot_proxy_strict_ssl = false
+-- vim.keymap.set('i', '<C-A>', 'copilot#Accept("\\<CR>")', {
+--   expr = true,
+--   replace_keycodes = false
+-- })
+-- vim.keymap.set('i', '<C-L>', '<Plug>(copilot-accept-word)')
+-- vim.keymap.set('i', '<C-J>', '<Plug>(copilot-accept-line)')
+-- vim.g.copilot_no_tab_map = true
+
+
+-- Sessions
+vim.g.startify_session_persistence = 1

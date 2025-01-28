@@ -61,6 +61,7 @@ cmp.setup {
     },
   },
   sources = {
+    { name = "supermaven" },
     { name = 'cmp_tabnine' },
     { name = 'nvim_lsp' },
     { name = 'luasnip' },

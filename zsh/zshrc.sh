@@ -10,7 +10,7 @@ source ~/dotfiles/zsh/alias.sh
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-source ~/dotfiles/tmux/tmuxinator.zsh
+#source ~/dotfiles/tmux/tmuxinator.zsh
 
 
 source ~/dotfiles/zsh/plugins/oh-my-zsh/lib/history.zsh

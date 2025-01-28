@@ -1,7 +1,7 @@
 return {{
     "David-Kunz/gen.nvim",
     opts = {
-        model = "codegeex4:9b-all-q8_0", -- The default model to use.
+        model = "qwq:32b-preview-q4_K_M", -- The default model to use.
         host = "localhost", -- The host running the Ollama service.
         port = "11434", -- The port on which the Ollama service is listening.
         quit_map = "q", -- set keymap for close the response window
@@ -23,4 +23,6 @@ return {{
         no_auto_close = false, -- Never closes the window automatically.
         debug = false -- Prints errors and the command which is run.
     }
-}, { "github/copilot.vim" }}
+},
+-- { "github/copilot.vim" }
+}

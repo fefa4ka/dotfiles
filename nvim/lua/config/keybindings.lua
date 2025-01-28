@@ -47,18 +47,21 @@ map('n', 'ft', ':TabVifm<CR>', { silent = true })
 map('n', 'fd', ':DiffVifm<CR>', { silent = true })
 
 map('', '<C-t>', ':TagbarToggle<CR>')
-map('n', '<C-p>', ':Telescope find_files<CR>')
-map('n', '<C-S-p>', ':Telescope commands<CR>')
-map('n', '<C-g>', ':Telescope git_files<CR>')
-map('n', '<Esc>', ':Telescope buffers<CR>')
-map('n', '<leader>ht', ':Telescope help_tags<CR>')
+map('n', '<C-S-p>', ':FzfLua commands<CR>')
+map('n', '<C-S-f>', ':FzfLua live_grep<CR>')
+map('n', '<C-g>', ':FzfLua git_files<CR>')
+map('n', '<Esc>', ":lua require('bafa.ui').toggle()<CR>")
+map('n', '<C-p>', ":FzfLua files<CR>")
+map('n', '<leader>ht', ':FzfLua help_tags<CR>')
+
+map('n', '<leader><leader>', ':nohlsearch<CR>')
+map('n', '<leader><leader><leader>', ':qa!<CR>')
 
 -- LSP
-map('n', 'gr', ':Telescope lsp_references<CR>')
-map('n', 'gd', ':Telescope lsp_definitions<CR>')
 map('n', 'gl', '<cmd>lua vim.diagnostic.open_float()<cr>')
 
 -- Panes
+-- #jo
 map('n', '<C-_>', '<C-W>s')
 map('n', '<C-->', '<C-W>s')
 map('n', '<C-\\>', '<C-W>v')
@@ -87,7 +90,7 @@ map('n', '<leader>t', ':lua BgToggleSol()<CR>')
 map('n', '<leader>q', ':qa!<CR>')
 
 -- Terminal mappings
-map('n', '<C-j>', ':terminal<CR>i', { noremap = true })  -- open
+map('n', '<C-S-j>', ':belowright split | terminal<CR>i', { noremap = true })  -- open
 map('t', '<Esc>', '<C-\\><C-n>')                    -- exit
 
 -- Clear search highlighting with <leader> and c
@@ -96,5 +99,8 @@ map('n', '<leader>c', ':nohl<CR>')
 -- Toggle auto-indenting for code paste
 map('n', '<F2>', ':set invpaste paste?<CR>')
 -- vim.opt.pastetoggle = '<F2>'
+
+vim.api.nvim_set_keymap('n', '<ScrollWheelLeft>', '5zh', {})
+vim.api.nvim_set_keymap('n', '<ScrollWheelRight>', '5zl', {})
 
 
