@@ -33,13 +33,13 @@ This script guides you through the following:
 
 Pretty convenient for configuring new servers.
 
-# Sumary of Changes
+# Summary of Changes
 
-## Basic runtime opperations
+## Basic runtime operations
 
 All default dotfiles (`.zshrc`, `init.vim`, etc) source something within the dotfiles repository. This helps separate changes that are synced across all your machines with system specific changes.
 
-Upon launching a new shell, the first thing that's evaulated is `zshrc_manager.sh`. This script first launches tmux. Then once zsh logs in, within tmux, it updates the dotfiles repository, and sources the changes.
+Upon launching a new shell, the first thing that's evaluated is `zshrc_manager.sh`. This script first launches tmux. Then once zsh logs in, within tmux, it updates the dotfiles repository, and sources the changes.
 
 ## [Zsh](https://en.wikipedia.org/wiki/Z_shell)
 
@@ -155,8 +155,19 @@ Each plugin is sensitive to where you are and what you're doing, they reveal the
 * Leader key has ben remapped to `<space>`
 
 ## [Tmux](https://en.wikipedia.org/wiki/Tmux)
-* `Ctrl-B` has been remapped to the backtick character (&#96;). If you want to type the actual backtick character (&#96;) itself, just hit the key twice.
-* `%` has been remapped to `v`.
-* Use vim movement keys for moving between panes.
-* Copy buffer is coppied to `xclip | pbcopy`.
-* Status bar tells you user, and hostname. Especially useful with nested ssh sessions.
+
+The tmux configuration has been completely refactored into a modular structure with theme support. See the [tmux README](tmux/README.md) for detailed documentation.
+
+Key features:
+* Prefix key is backtick (`) instead of Ctrl-B
+* Automatic theme switching based on macOS appearance (light/dark)
+* Vim-style navigation between panes with Ctrl+hjkl
+* Mouse support for scrolling, selecting, and resizing
+* Clipboard integration with system clipboard
+* Status bar shows session, user, and hostname
+
+All tmux configuration files are in the `tmux/` directory:
+* `tmux.conf` - Main configuration
+* `tmux-keybindings.conf` - All key bindings
+* `tmux-theme.conf` - Theme configuration
+* `tmux.dark.theme` and `tmux.light.theme` - Theme-specific settings
