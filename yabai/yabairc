@@ -27,11 +27,11 @@ yabai -m config external_bar all:32:0
 
 # general space settings
 yabai -m config layout                       bsp
-yabai -m config top_padding                  0 
+yabai -m config top_padding                  0
 yabai -m config bottom_padding               0
 yabai -m config left_padding                 0
 yabai -m config right_padding                0
-yabai -m config window_gap                   10 
+yabai -m config window_gap                   10
 
 # mouse
 yabai -m config mouse_modifier               fn
@@ -49,7 +49,6 @@ yabai -m space 5 --label "Float"
 # Coding
 
 # Tools
-yabai -m rule --add app="^System Preferences$" manage=off grid=7:4:1:1:2:2
 yabai -m rule --add app="^Books$" manage=off
 yabai -m rule --add app="^Dash$" manage=off
 yabai -m rule --add app="^macfeh$" manage=off
@@ -57,7 +56,7 @@ yabai -m rule --add app="^Digital Colou?r Meter$" sticky=on
 
 # Social
 yabai -m rule --add app="Telegram" scratchpad="telegram" grid=11:11:1:1:9:9
-yabai -m rule --add app="Obsidian" scratchpad="obsidian" grid=1:1:0:0:1:1 
+yabai -m rule --add app="Obsidian" scratchpad="obsidian" grid=1:1:0:0:1:1
 yabai -m rule --add app="DeepL" scratchpad="deepl" grid=11:11:1:1:9:9
 yabai -m rule --add app="Calendar" scratchpad="calendar" grid=11:11:1:1:9:9
 yabai -m rule --add app="Open WebUI" scratchpad="openwebui" grid=11:11:1:1:9:9
@@ -69,7 +68,7 @@ yabai -m rule --add title="console" scratchpad="console" grid=1:1:0:0:1:1
 yabai -m rule --add app="^Mail$" space=4
 
 # Floating
-yabai -m rule --add app="^System Preferences$" manage=off
+yabai -m rule --add app="^System Settings$" manage=off
 yabai -m rule --add app="^Archive Utility$" manage=off
 yabai -m rule --add label="Finder" app="^Finder$" title="(Co(py|nnect)|Move|Info|Pref)" manage=off
 yabai -m rule --add label="Safari" app="^Safari$" title="^(General|(Tab|Password|Website|Extension)s|AutoFill|Se(arch|curity)|Privacy|Advance)$" manage=off
@@ -86,5 +85,3 @@ yabai -m rule --add label="eqMac" app="^eqMac$" manage=off
 
 
 echo "yabai configuration loaded.."
-
-
