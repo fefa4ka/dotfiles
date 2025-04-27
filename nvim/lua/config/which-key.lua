@@ -28,6 +28,7 @@ wk.add({
 		mode = { "v" },
 		{ "<leader>a", group = "AI" },
 		{ "<leader>aa", "<cmd>'<,'>Gen Ask<CR>", desc = "Ask" },
+		{ "<leader>ac", "<cmd>'<,'>Gen Change_Code<CR>", desc = "Change" },
 		{ "<leader>ae", "<cmd>'<,'>Gen Enhance_Code<CR>", desc = "Enhance" },
 		{ "<leader>ag", "<cmd>'<,'>Gen Enhance_Grammar_Spelling<CR>", desc = "Grammar" },
 		{ "<leader>ar", "<cmd>'<,'>Gen Review_Code<CR>", desc = "Review" },
