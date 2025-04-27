@@ -34,6 +34,13 @@ require('lspconfig').ruff.setup {
     }
   }
 }
+-- typescript
+lsp.ts_ls.setup{}
+
+lsp.cmake.setup{
+filetypes = {'cmake', 'CMakeLists.txt'}
+}
+
 
 lsp.pylsp.setup {
 on_attach = custom_attach,
@@ -173,8 +180,19 @@ end
 
 
 require'nvim-treesitter.configs'.setup {
+   highlight = {
+    enable = true,
+    disable = {},
+  },
+  indent = {
+    enable = true,
+    disable = {},
+  },
+   autotag = {
+    enable = true,
+  },
   -- A list of parser names, or "all" (the five listed parsers should always be installed)
-  ensure_installed = { "c", "lua", "python", "vim", "vimdoc", "query", "json", "bash" },
+  ensure_installed = { "c", "lua", "python", "vim", "vimdoc", "query", "json", "bash", "tsx", "html", "css", "yaml", "toml" },
 
   -- Install parsers synchronously (only applied to `ensure_installed`)
   sync_install = false,
