@@ -59,6 +59,8 @@ map('n', '<leader><leader><leader>', ':qa!<CR>')
 
 -- LSP
 map('n', 'gl', '<cmd>lua vim.diagnostic.open_float()<cr>')
+map('n', '<leader>d', ':FzfLua diagnostics_document<CR>')
+map('n', '<leader>D', ':FzfLua diagnostics_workspace<CR>')
 
 -- Panes
 -- #jo

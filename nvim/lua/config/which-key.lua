@@ -110,6 +110,8 @@ wk.add({
   {
     mode = { "n" },
     { "<leader>c", group = "󰊢 VCS" },
+    { "<leader>d", ":FzfLua diagnostics_document<CR>", desc = "󱉶 Document Diagnostics" },
+    { "<leader>D", ":FzfLua diagnostics_workspace<CR>", desc = "󱉶 Workspace Diagnostics" },
     { "<leader>h", group = "󰋖 Help" },
     { "<leader>ht", ":FzfLua help_tags<CR>", desc = "󰋖 Help Tags" },
     { "<leader>hk", ":FzfLua keymaps<CR>", desc = "󰌌 Keymaps" },
