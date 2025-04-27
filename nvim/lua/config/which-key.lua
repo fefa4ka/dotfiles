@@ -32,9 +32,9 @@ wk.setup({
     -- ["<tab>"] = "TAB",
   },
   icons = {
-    breadcrumb = "»", -- symbol used in the command line area that shows your active key combo
-    separator = "➜", -- symbol used between a key and it's description
-    group = "+", -- symbol prepended to a group
+    breadcrumb = "", -- symbol used in the command line area that shows your active key combo
+    separator = "󰁔", -- symbol used between a key and it's description
+    group = "󰅧", -- symbol prepended to a group
   },
   popup_mappings = {
     scroll_down = "<c-d>", -- binding to scroll down inside the popup
@@ -83,23 +83,23 @@ require('gen').prompts['Comment_Code'] = {
 wk.add({
 	{
 		mode = { "n" },
-		{ "<leader>a", group = "AI" },
-		{ "<leader>ag", "<cmd>Gen Generate<CR>", desc = "Generate" },
-		{ "<leader>am", function() gen.select_model() end, desc = "Select model" },
+		{ "<leader>a", group = "󰘦 AI" },
+		{ "<leader>ag", "<cmd>Gen Generate<CR>", desc = "󰐥 Generate" },
+		{ "<leader>am", function() gen.select_model() end, desc = "󰆽 Select model" },
 	}
 })
 
 wk.add({
 	{
 		mode = { "v" },
-		{ "<leader>a", group = "AI" },
-		{ "<leader>aa", "<cmd>'<,'>Gen Ask<CR>", desc = "Ask" },
-		{ "<leader>ac", "<cmd>'<,'>Gen Change_Code<CR>", desc = "Change" },
-		{ "<leader>ae", "<cmd>'<,'>Gen Enhance_Code<CR>", desc = "Enhance" },
-		{ "<leader>ag", "<cmd>'<,'>Gen Enhance_Grammar_Spelling<CR>", desc = "Grammar" },
-		{ "<leader>ar", "<cmd>'<,'>Gen Review_Code<CR>", desc = "Review" },
-		{ "<leader>as", "<cmd>'<,'>Gen Make_Concise<CR>", desc = "Simple and consise" },
-		{ "<leader>aw", "<cmd>'<,'>Gen Enhance_Wording<CR>", desc = "Wording" },
+		{ "<leader>a", group = "󰘦 AI" },
+		{ "<leader>aa", "<cmd>'<,'>Gen Ask<CR>", desc = "󰭻 Ask" },
+		{ "<leader>ac", "<cmd>'<,'>Gen Change_Code<CR>", desc = "󰌢 Change" },
+		{ "<leader>ae", "<cmd>'<,'>Gen Enhance_Code<CR>", desc = "✨ Enhance" },
+		{ "<leader>ag", "<cmd>'<,'>Gen Enhance_Grammar_Spelling<CR>", desc = "󰓆 Grammar" },
+		{ "<leader>ar", "<cmd>'<,'>Gen Review_Code<CR>", desc = "󰱽 Review" },
+		{ "<leader>as", "<cmd>'<,'>Gen Make_Concise<CR>", desc = "󰏫 Simple and concise" },
+		{ "<leader>aw", "<cmd>'<,'>Gen Enhance_Wording<CR>", desc = "󰑬 Wording" },
 	},
 })
 
@@ -108,21 +108,21 @@ wk.add({
 wk.add({
 	{
 		mode = { "n" },
-		{ "<leader>c", group = "VCS" },
-		{ "<leader>h", group = "Help" },
-		{ "<leader>ht", ":FzfLua help_tags<CR>", desc = "Help Tags" },
-		{ "<leader>hk", ":FzfLua keymaps<CR>", desc = "Keymaps" },
-		{ "<leader>hm", ":messages<CR>", desc = "Messages" },
-		{ "<leader>ls", function() require('dropbar.api').pick() end, desc = "List Symbols"},
-		{ "<leader>q", ':qa!<CR>', desc = "Quit All" },
-		{ "<leader>r", ":so %<CR>", desc = "Reload Config" },
-		{ "<leader>t", ':lua BgToggleSol()<CR>', desc = "Toggle Theme" },
+		{ "<leader>c", group = "󰊢 VCS" },
+		{ "<leader>h", group = "󰋖 Help" },
+		{ "<leader>ht", ":FzfLua help_tags<CR>", desc = "󰋖 Help Tags" },
+		{ "<leader>hk", ":FzfLua keymaps<CR>", desc = "󰌌 Keymaps" },
+		{ "<leader>hm", ":messages<CR>", desc = "󰍡 Messages" },
+		{ "<leader>ls", function() require('dropbar.api').pick() end, desc = "󰊄 List Symbols"},
+		{ "<leader>q", ':qa!<CR>', desc = "󰅚 Quit All" },
+		{ "<leader>r", ":so %<CR>", desc = "󰑐 Reload Config" },
+		{ "<leader>t", ':lua BgToggleSol()<CR>', desc = "󰔎 Toggle Theme" },
 		{ "<leader>z", function()
 			require("zen-mode").toggle()
 			vim.cmd("highlight ZenBg guibg=0 guifg=0")
-		end, desc = "Zen Mode" },
-		{ "<leader><leader>", ":nohlsearch<CR>", desc = "No Highlight Search" },
-		{ "<leader><leader><leader><leader>", ":qa!<CR>", desc = "Quit All Force" },
+		end, desc = "󰍈 Zen Mode" },
+		{ "<leader><leader>", ":nohlsearch<CR>", desc = "󰅃 No Highlight Search" },
+		{ "<leader><leader><leader><leader>", ":qa!<CR>", desc = "󰅚 Quit All Force" },
 	}
 })
 
