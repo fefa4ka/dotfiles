@@ -69,17 +69,195 @@ references/definitions, live grep, etc.
 
 ## Dependencies
 
+### Core Requirements
+
 *   **Neovim:** A recent version (0.9+ recommended, 0.10+ required for `dropbar.nvim`).
+    ```bash
+    # macOS
+    brew install neovim
+    
+    # Linux
+    # Ubuntu/Debian
+    apt install neovim
+    # Arch
+    pacman -S neovim
+    ```
+
 *   **Git:** Required for `lazy.nvim` and Git features.
-*   **Nerd Font:** Required for icons in UI elements (e.g., `fzf-lua`, `dropbar`, custom netrw icons if used).
-*   **Language Servers:** Install the LSP servers for the languages you use (e.g., `clangd`, `python-lsp-server`, `ruff-lsp`, `typescript-language-server`, `cmake-language-server`).
-*   **Formatters/Linters:** Install tools used by LSP or plugins (e.g., `clang-format`, `ruff`).
-*   **Treesitter CLI:** May be needed for `nvim-treesitter` if `auto_install` is enabled and parsers aren't pre-compiled.
-*   **Ripgrep (rg):** Recommended for `telescope.nvim`'s live grep functionality.
-*   **fd:** Optional, can improve file finding performance with Telescope/fzf-lua.
-*   **Ollama:** Required for the `gen.nvim` AI features. Ensure the specified model (`qwq:latest`) is pulled (`ollama pull qwq:latest`).
-*   **Vifm:** Required for the file explorer integration.
-*   **External Theme Script:** The script `/Users/fefa4ka/dotfiles/scripts/switch_theme` is used for toggling light/dark mode.
+    ```bash
+    # macOS
+    brew install git
+    
+    # Linux
+    apt install git  # Ubuntu/Debian
+    ```
+
+*   **Nerd Font:** Required for icons in UI elements.
+    ```bash
+    # macOS
+    brew tap homebrew/cask-fonts
+    brew install --cask font-hack-nerd-font  # or any other nerd font
+    
+    # Manual installation for any OS
+    # Download from https://www.nerdfonts.com/font-downloads
+    ```
+
+*   **Ripgrep (rg):** Required for Telescope/fzf-lua search functionality.
+    ```bash
+    # macOS
+    brew install ripgrep
+    
+    # Linux
+    apt install ripgrep  # Ubuntu/Debian
+    ```
+
+*   **fd-find:** Improves file finding performance.
+    ```bash
+    # macOS
+    brew install fd
+    
+    # Linux
+    apt install fd-find  # Ubuntu/Debian
+    ```
+
+*   **Vifm:** Required for file explorer integration.
+    ```bash
+    # macOS
+    brew install vifm
+    
+    # Linux
+    apt install vifm  # Ubuntu/Debian
+    ```
+
+*   **Ollama:** Required for AI features with `gen.nvim`.
+    ```bash
+    # macOS
+    curl -fsSL https://ollama.com/install.sh | sh
+    
+    # After installation, pull the required model
+    ollama pull qwq:latest
+    ```
+
+*   **Universal Ctags:** Required for `tagbar` plugin.
+    ```bash
+    # macOS
+    brew install universal-ctags
+    
+    # Linux
+    apt install universal-ctags  # Ubuntu/Debian
+    ```
+
+### Language Servers
+
+*   **Python:**
+    ```bash
+    # Python LSP Server
+    pip install python-lsp-server
+    
+    # Ruff LSP (linter/formatter)
+    pip install ruff-lsp
+    
+    # MyPy for type checking
+    pip install mypy
+    ```
+
+*   **Lua:**
+    ```bash
+    # Lua Language Server
+    brew install lua-language-server  # macOS
+    # For Linux, download from GitHub: https://github.com/LuaLS/lua-language-server/releases
+    ```
+
+*   **C/C++:**
+    ```bash
+    # Clangd
+    brew install llvm  # macOS (includes clangd)
+    apt install clangd  # Ubuntu/Debian
+    
+    # CCLS (alternative C/C++ server)
+    brew install ccls  # macOS
+    apt install ccls  # Ubuntu/Debian
+    
+    # Clang-format (formatter)
+    brew install clang-format  # macOS
+    apt install clang-format  # Ubuntu/Debian
+    ```
+
+*   **TypeScript/JavaScript:**
+    ```bash
+    # TypeScript Language Server
+    npm install -g typescript typescript-language-server
+    ```
+
+*   **CMake:**
+    ```bash
+    # CMake Language Server
+    pip install cmake-language-server
+    ```
+
+*   **Vim/VimL:**
+    ```bash
+    # Vim Language Server
+    npm install -g vim-language-server
+    ```
+
+### Flutter Development (Optional)
+
+*   **Flutter SDK:**
+    ```bash
+    # macOS
+    brew install --cask flutter
+    
+    # Manual installation for any OS
+    # https://docs.flutter.dev/get-started/install
+    ```
+
+*   **Dart SDK:** (Usually included with Flutter)
+    ```bash
+    # If needed separately
+    brew install dart  # macOS
+    ```
+
+### Additional Tools
+
+*   **fzf:** Command-line fuzzy finder used by fzf-lua.
+    ```bash
+    # macOS
+    brew install fzf
+    
+    # Linux
+    apt install fzf  # Ubuntu/Debian
+    ```
+
+*   **Treesitter CLI:** For parser compilation.
+    ```bash
+    # macOS
+    brew install tree-sitter
+    
+    # Linux
+    npm install -g tree-sitter-cli
+    ```
+
+*   **External Theme Script:** The script `/Users/fefa4ka/dotfiles/scripts/switch_theme` is used for toggling light/dark mode. You may need to create your own version of this script or modify the configuration to use a different theme switching mechanism.
+
+### Python Virtual Environment Support (Optional)
+
+*   **Python venv:**
+    ```bash
+    # Already included with Python 3
+    # To create a virtual environment
+    python -m venv .venv
+    ```
+
+### AI Completion Tools (Optional)
+
+*   **TabNine:** For AI code completion.
+    ```bash
+    # Install via npm
+    npm install -g tabNine
+    ```
+
+*   **Supermaven:** Follow installation instructions at https://github.com/supermaven-inc/supermaven-nvim
 
 ## Keybindings
 
