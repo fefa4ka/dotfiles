@@ -10,6 +10,61 @@ This is a configuration for [yabai](https://github.com/koekeishiya/yabai), a til
 - **Organized Workspaces**: Predefined spaces with specific labels
 - **Scratchpad Support**: Quick access to frequently used applications
 
+## Keyboard Shortcuts
+
+### Window Management
+- **alt - z**: Toggle zoom parent
+- **alt + shift - z**: Toggle zoom fullscreen
+- **alt - r**: Rotate space 90 degrees
+- **alt + shift - space**: Toggle float and resize to grid
+- **alt - s**: Toggle sticky
+- **alt - t**: Toggle topmost
+- **alt - p**: Toggle sticky, topmost, and picture-in-picture
+- **alt - x**: Mirror space on x-axis
+- **alt - y**: Mirror space on y-axis
+- **alt - o**: Toggle split
+
+### Window Navigation
+- **alt - h/j/k/l** or **alt - arrow keys**: Focus window in direction
+- **alt + shift - h/j/k/l** or **alt + shift - arrow keys**: Move window in direction
+- **alt + cmd - h/j/k/l** or **alt + cmd - arrow keys**: Resize window
+- **alt + shift - q/w**: Move window to previous/next space
+- **alt + shift - [1-8]**: Move window to specific space
+
+### Space Navigation
+- **alt - [1-8]**: Focus specific space
+- **alt - q/w**: Focus previous/next space
+- **alt - f**: Set space layout to float
+- **alt + shift - f**: Set space layout to BSP
+- **shift + alt - c**: Create space and move window to it
+- **shift + cmd - c**: Create space and focus it
+- **cmd + shift - w**: Destroy space
+
+### Display Navigation
+- **ctrl - [1-3]**: Focus specific display
+- **ctrl + cmd - left/right**: Focus previous/next display
+- **shift + alt + cmd - left/right**: Move window to previous/next display
+
+### Scratchpad Applications
+- **cmd + ctrl - t**: Toggle Telegram
+- **cmd + ctrl - o**: Toggle Obsidian
+- **cmd + ctrl - l**: Toggle DeepL
+- **cmd + ctrl - c**: Toggle Calendar
+- **cmd + ctrl - m**: Toggle Yandex Music
+- **cmd + ctrl - b**: Toggle Open WebUI
+- **cmd + ctrl - n**: Toggle Obsidian with ctrl-n
+- **cmd - space**: Toggle Vivaldi browser
+- **alt - space**: Toggle console terminal
+
+### Other
+- **meh - r**: Restart skhd and yabai services
+- **cmd + shift - return**: Open Vivaldi
+- **cmd + shift - u**: Open terminal menu
+- **cmd + shift - g**: Open browser menu
+- **cmd + shift - y**: Open YouTube menu
+- **cmd + shift - d**: Open application launcher
+- **cmd + shift + alt - t**: Toggle dark/light theme
+
 ## Workspace Organization
 
 The configuration defines 5 spaces with specific purposes:
@@ -24,14 +79,14 @@ The configuration defines 5 spaces with specific purposes:
 
 The following applications are configured as scratchpads for quick access:
 
-- Telegram
-- Obsidian
-- DeepL
-- Calendar
-- Open WebUI
-- Vivaldi (browser)
-- Yandex Music
-- Terminal (with title "console")
+- Telegram (cmd + ctrl - t)
+- Obsidian (cmd + ctrl - o)
+- DeepL (cmd + ctrl - l)
+- Calendar (cmd + ctrl - c)
+- Open WebUI (cmd + ctrl - b)
+- Vivaldi browser (cmd - space)
+- Yandex Music (cmd + ctrl - m)
+- Terminal with title "console" (alt - space)
 
 ## Floating Windows
 
@@ -56,6 +111,23 @@ Some applications are configured to always float:
 
 - **fn + Left Click**: Move window
 - **fn + Right Click**: Resize window
+
+### Window Management Shortcuts
+
+#### Basic Controls
+- **alt + shift - space**: Toggle float and resize to grid
+- **alt - z**: Toggle zoom parent
+- **alt + shift - z**: Toggle zoom fullscreen
+- **alt - r**: Rotate space 90 degrees
+
+#### Window Navigation
+- **alt - h/j/k/l** or **arrow keys**: Focus window in direction
+- **alt + shift - h/j/k/l** or **arrow keys**: Move window in direction
+- **alt + cmd - h/j/k/l** or **arrow keys**: Resize window
+
+#### Space Navigation
+- **alt - [1-8]**: Focus specific space
+- **alt - q/w**: Focus previous/next space
 
 ### Status Bar
 
