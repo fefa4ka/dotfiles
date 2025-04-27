@@ -121,8 +121,9 @@ wk.add({
 		{ "<leader>z", function()
 			require("zen-mode").toggle()
 			vim.cmd("highlight ZenBg guibg=0 guifg=0")
-		end, desc = "Zoom" },
-
+		end, desc = "Zen Mode" },
+		{ "<leader><leader>", ":nohlsearch<CR>", desc = "No Highlight Search" },
+		{ "<leader><leader><leader>", ":qa!<CR>", desc = "Quit All Force" },
 	}
 })
 
