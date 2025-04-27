@@ -27,28 +27,27 @@ local function on_attach(client, bufnr)
   local wk = require("which-key")
   -- Use the new list-based spec for which-key
   wk.register({
-    { "<leader>f", function() vim.lsp.buf.format { async = true } end, desc = "Format Code", buffer = bufnr },
-    { "<leader>n", function() vim.lsp.buf.rename() end, desc = "Rename Symbol", buffer = bufnr },
-    { "<leader>w", group = "Workspace", buffer = bufnr },
-    { "<leader>wa", function() vim.lsp.buf.add_workspace_folder() end, desc = "Add Workspace Folder", buffer = bufnr },
-    { "<leader>wr", function() vim.lsp.buf.remove_workspace_folder() end, desc = "Remove Workspace Folder", buffer = bufnr },
-    { "<leader>wl", function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end, desc = "List Workspace Folders", buffer = bufnr },
-    { "<leader>h", group = "LSP Help", buffer = bufnr },
-    { "<leader>ha", "<cmd>FzfLua lsp_code_actions<CR>", desc = "Code Actions", buffer = bufnr },
-    -- Flutter specific command, conditionally shown if dartls is attached (though registered once)
-    { "<leader>hf", function()
+    ["<leader>f"] = { function() vim.lsp.buf.format { async = true } end, "Format Code" },
+    ["<leader>n"] = { function() vim.lsp.buf.rename() end, "Rename Symbol" },
+    ["<leader>w"] = { name = "Workspace" },
+    ["<leader>wa"] = { function() vim.lsp.buf.add_workspace_folder() end, "Add Workspace Folder" },
+    ["<leader>wr"] = { function() vim.lsp.buf.remove_workspace_folder() end, "Remove Workspace Folder" },
+    ["<leader>wl"] = { function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end, "List Workspace Folders" },
+    ["<leader>h"] = { name = "LSP Help" },
+    ["<leader>ha"] = { "<cmd>FzfLua lsp_code_actions<CR>", "Code Actions" },
+    ["<leader>hf"] = { function()
         if client.name == "dartls" then
           require('telescope').extensions.flutter.commands()
         else
           print("Flutter commands require Dart LSP")
         end
-      end, desc = "Flutter Commands", buffer = bufnr },
-    { "gr", "<cmd>FzfLua lsp_references<CR>", desc = "References", buffer = bufnr },
-    { "gd", "<cmd>FzfLua lsp_definitions<CR>", desc = "Definitions", buffer = bufnr },
-    { "gD", "<cmd>FzfLua lsp_type_definitions<CR>", desc = "Type Definitions", buffer = bufnr },
-    { "gi", "<cmd>FzfLua lsp_implementations<CR>", desc = "Implementations", buffer = bufnr },
-    { "K", vim.lsp.buf.hover, desc = "Hover Documentation", buffer = bufnr },
-    { "<C-S-k>", vim.lsp.buf.signature_help, desc = "Signature Help", buffer = bufnr }, -- Keep existing mapping if desired
+      end, "Flutter Commands" },
+    ["gr"] = { "<cmd>FzfLua lsp_references<CR>", "References" },
+    ["gd"] = { "<cmd>FzfLua lsp_definitions<CR>", "Definitions" },
+    ["gD"] = { "<cmd>FzfLua lsp_type_definitions<CR>", "Type Definitions" },
+    ["gi"] = { "<cmd>FzfLua lsp_implementations<CR>", "Implementations" },
+    ["K"] = { vim.lsp.buf.hover, "Hover Documentation" },
+    ["<C-S-k>"] = { vim.lsp.buf.signature_help, "Signature Help" },
   }, { buffer = bufnr })
 
 
