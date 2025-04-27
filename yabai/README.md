@@ -10,6 +10,19 @@ This is a configuration for [yabai](https://github.com/koekeishiya/yabai), a til
 - **Organized Workspaces**: Predefined spaces with specific labels
 - **Scratchpad Support**: Quick access to frequently used applications
 
+## Configuration Structure
+
+The yabairc file is organized into logical sections:
+
+1. **Initialization**: Loads the scripting addition
+2. **Status Bar Settings**: Configures the appearance of the status bar
+3. **Global Settings**: Sets focus behavior
+4. **Visual Settings**: Controls window appearance and opacity
+5. **Space Settings**: Configures layout, padding, and gaps
+6. **Mouse Settings**: Defines mouse actions
+7. **Space Labels**: Names each workspace
+8. **Application Rules**: Sets up rules for different applications
+
 ## Keyboard Shortcuts
 
 ### Window Management
@@ -111,23 +124,6 @@ Some applications are configured to always float:
 
 - **fn + Left Click**: Move window
 - **fn + Right Click**: Resize window
-
-### Window Management Shortcuts
-
-#### Basic Controls
-- **alt + shift - space**: Toggle float and resize to grid
-- **alt - z**: Toggle zoom parent
-- **alt + shift - z**: Toggle zoom fullscreen
-- **alt - r**: Rotate space 90 degrees
-
-#### Window Navigation
-- **alt - h/j/k/l** or **arrow keys**: Focus window in direction
-- **alt + shift - h/j/k/l** or **arrow keys**: Move window in direction
-- **alt + cmd - h/j/k/l** or **arrow keys**: Resize window
-
-#### Space Navigation
-- **alt - [1-8]**: Focus specific space
-- **alt - q/w**: Focus previous/next space
 
 ### Status Bar
 
