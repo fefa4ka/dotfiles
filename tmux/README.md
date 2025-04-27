@@ -32,7 +32,8 @@ This directory contains my personal tmux configuration files that provide a cust
 | `Ctrl + h/j/k/l` | Navigate panes (works with Vim integration) |
 | `Shift + Left/Right` | Switch windows |
 | `Prefix + Tab` | Switch to last window |
-| `Ctrl + Shift + Arrow` | Resize pane |
+| `Ctrl + Shift + Arrow` | Resize pane | 
+
 | `Shift + Arrow` | Swap panes |
 | `Escape` | Enter copy mode |
 | `Prefix + b` | List buffers |
