@@ -2,6 +2,40 @@
 
 This is a configuration for [yabai](https://github.com/koekeishiya/yabai), a tiling window manager for macOS.
 
+## Hotkey Mnemonics
+
+### Window Management
+- **alt - h/j/k/l**: Think "**H**orizontal and **V**ertical" for left/right/up/down navigation
+- **alt + shift - h/j/k/l**: "**S**hift windows" in direction
+- **alt + cmd - h/j/k/l**: "**C**hange size" (cmd is for Control/Change)
+- **alt - z**: "**Z**oom to parent" (like zooming out to see parent container)
+- **alt + shift - z**: "**Z**oom to fullscreen" (shift makes it more powerful)
+- **alt - r**: "**R**otate" the space
+- **alt - f**: "**F**loat" layout
+- **alt + shift - f**: "**F**ix back to BSP" layout
+- **alt - s**: "**S**ticky" window toggle
+- **alt - t**: "**T**op" window toggle
+- **alt - p**: "**P**icture-in-picture" mode
+
+### Space Navigation
+- **alt - [1-8]**: "**1**st space, **2**nd space" etc. (direct access)
+- **alt - q/w**: "**Q**uit/previous" and "for**W**ard/next" space
+- **alt + shift - q/w**: "**Q**uit/previous" and "for**W**ard/next" with window
+
+### Scratchpad Applications
+- **cmd + ctrl - t**: "**T**elegram" (T for Telegram)
+- **cmd + ctrl - o**: "**O**bsidian" (O for Obsidian)
+- **cmd + ctrl - l**: "**L**anguage translator" (DeepL)
+- **cmd + ctrl - c**: "**C**alendar" (C for Calendar)
+- **cmd + ctrl - m**: "**M**usic" (M for Music)
+- **cmd + ctrl - b**: "**B**rowser UI" (Open WebUI)
+- **cmd - space**: "**Space** to browse" (browser)
+- **alt - space**: "**Space** for terminal" (console)
+
+### Display Navigation
+- **ctrl - [1-3]**: "**C**ontrol which display" (1st, 2nd, 3rd)
+- **ctrl + cmd - left/right**: "**C**ontrol and **C**hange display" focus
+
 ## Features
 
 - **Window Management**: Uses Binary Space Partitioning (BSP) layout
