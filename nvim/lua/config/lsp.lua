@@ -27,19 +27,19 @@ local function on_attach(client, bufnr)
   local wk = require("which-key")
   -- Use the new list-based spec for which-key
 
-    wk.add({
-        {'<leader>f', function() vim.lsp.buf.format { async = true } end, desc = "Format"},
-        {'<leader>n', function() vim.lsp.buf.rename() end, desc = "Rename"},
-        {'<leader>w', group = 'Workspace' },
-        {'<leader>wa', function() vim.lsp.buf.add_workspace_folder() end, desc ="Add Workspace Folder"},
-        {'<leader>wr', function() vim.lsp.buf.remove_workspace_folder() end, desc ="Remove Workspace Folder"},
-        {'<leader>wl', function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end, desc ="List Workspace Folders"},
-        {'<leader>ha',  "<cmd>FzfLua lsp_code_actions<CR>", desc ="Code Actions"},
-        {'gr', "<cmd>FzfLua lsp_references<CR>", desc ="References"},
-        {'gd', "<cmd>FzfLua lsp_definitions<CR>", desc ="Definitions"},
-        {'gD', "<cmd>FzfLua lsp_type_definitions<CR>", desc ="Type Definitions"},
-        {'gi', "<cmd>FzfLua lsp_implementations<CR>", desc ="Implementations"},
-})
+  wk.add({
+    { '<leader>f',  function() vim.lsp.buf.format { async = true } end,                      desc = "Format" },
+    { '<leader>n',  function() vim.lsp.buf.rename() end,                                     desc = "Rename" },
+    { '<leader>w',  group = 'Workspace' },
+    { '<leader>wa', function() vim.lsp.buf.add_workspace_folder() end,                       desc = "Add Workspace Folder" },
+    { '<leader>wr', function() vim.lsp.buf.remove_workspace_folder() end,                    desc = "Remove Workspace Folder" },
+    { '<leader>wl', function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end, desc = "List Workspace Folders" },
+    { '<leader>ha', "<cmd>FzfLua lsp_code_actions<CR>",                                      desc = "Code Actions" },
+    { 'gr',         "<cmd>FzfLua lsp_references<CR>",                                        desc = "References" },
+    { 'gd',         "<cmd>FzfLua lsp_definitions<CR>",                                       desc = "Definitions" },
+    { 'gD',         "<cmd>FzfLua lsp_type_definitions<CR>",                                  desc = "Type Definitions" },
+    { 'gi',         "<cmd>FzfLua lsp_implementations<CR>",                                   desc = "Implementations" },
+  })
 
 
 
@@ -74,7 +74,7 @@ lsp.lua_ls.setup {
       },
       diagnostics = {
         -- Get the language server to recognize the `vim` global
-        globals = {'vim'},
+        globals = { 'vim' },
       },
       workspace = {
         -- Make the server aware of Neovim runtime files
@@ -184,7 +184,8 @@ vim.api.nvim_create_autocmd("BufWritePre", {
     end
 
     if #actions > 0 then
-      vim.lsp.util.apply_text_edits(actions[1].edit.changes[params.textDocument.uri], args.buf, ruff_client.offset_encoding)
+      vim.lsp.util.apply_text_edits(actions[1].edit.changes[params.textDocument.uri], args.buf,
+        ruff_client.offset_encoding)
       vim.api.nvim_buf_call(args.buf, function()
         vim.cmd("noautocmd write") -- Save the buffer without triggering BufWritePre again
       end)
