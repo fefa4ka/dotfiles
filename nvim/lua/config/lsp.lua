@@ -78,8 +78,8 @@ lsp.ruff.setup {
   -- Note: The LspAttach autocmd below handles disabling hover if needed
 }
 
--- TypeScript / JavaScript
-lsp.tsserver.setup(default_setup)
+-- TypeScript / JavaScript (using ts_ls)
+lsp.ts_ls.setup(default_setup)
 
 -- CMake
 lsp.cmake.setup {
