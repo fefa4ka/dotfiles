@@ -7,7 +7,7 @@ vim.g.mapleader = " "
 
 -- Define keymaps of Neovim and installed plugins.
 local function map(mode, lhs, rhs, opts)
-  local options = { noremap=true, silent=true }
+  local options = { noremap = true, silent = true }
   if opts then
     options = vim.tbl_extend('force', options, opts)
   end
@@ -50,7 +50,7 @@ map('', '<C-t>', ':TagbarToggle<CR>')
 map('n', '<C-S-p>', ':FzfLua commands<CR>')
 map('n', '<C-S-f>', ':FzfLua live_grep<CR>')
 map('n', '<C-g>', ':FzfLua git_files<CR>')
-map('n', '<Esc>', ":lua require('bafa.ui').toggle()<CR>")
+map('n', '<Esc>', ":FzfLua buffers<CR>")
 map('n', '<C-p>', ":FzfLua files<CR>")
 map('n', '<leader>ht', ':FzfLua help_tags<CR>')
 
@@ -90,8 +90,8 @@ map('n', '<leader>t', ':lua BgToggleSol()<CR>')
 map('n', '<leader>q', ':qa!<CR>')
 
 -- Terminal mappings
-map('n', '<C-S-j>', ':belowright split | terminal<CR>i', { noremap = true })  -- open
-map('t', '<Esc>', '<C-\\><C-n>')                    -- exit
+map('n', '<C-S-j>', ':belowright split | terminal<CR>i', { noremap = true }) -- open
+map('t', '<Esc>', '<C-\\><C-n>')                                             -- exit
 
 -- Clear search highlighting with <leader> and c
 map('n', '<leader>c', ':nohl<CR>')
@@ -102,5 +102,3 @@ map('n', '<F2>', ':set invpaste paste?<CR>')
 
 vim.api.nvim_set_keymap('n', '<ScrollWheelLeft>', '5zh', {})
 vim.api.nvim_set_keymap('n', '<ScrollWheelRight>', '5zl', {})
-
-
