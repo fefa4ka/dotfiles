@@ -1,0 +1,47 @@
+" Tree preview
+fileviewer */ exa -aT -L 1 --icons --color=always --group-directories-first %c
+
+" Markdown
+fileviewer {*.md} glow -s $(cat ~/.config/theme) %c
+fileviewer {*.zip} unzip -l %c
+fileviewer {*.rar} unrar l %c
+fileviewer {*.tar} tar -tvf %c
+fileviewer {*.doc} catdocx.sh %c
+fileviewer {*.docx} catdocx.sh %c
+fileviewer {*.tar.gz} tar -ztvf %c
+fileviewer {*.tar.bz2} tar -jtvf %c
+
+fileviewer {*.csv} xsv sample 50 %c | xsv table
+
+" Preview
+fileviewer {*.stl} 
+    \ visualpreview stl %pw %ph %px %py %c %N
+    \ %pc
+    \ visualpreview clear
+
+fileview <image/*>
+    \ visualpreview image %pw %ph %px %py %c %N
+    \ %pc
+    \ visualpreview clear
+
+fileviewer <video/*>
+    \ visualpreview video %pw %ph %px %py %c %N
+    \ %pc
+    \ visualpreview clear
+
+fileviewer <font/*>
+    \ visualpreview font %pw %ph %px %py %c %N
+    \ %pc
+    \ visualpreview clear
+
+fileviewer {*.pdf}
+    \ visualpreview pdf %pw %ph %px %py %c %N
+    \ %pc
+    \ visualpreview clear
+
+fileviewer {*.epub,*.mobi,*.azw,*.azw[0-9]},<application/epub+zip>,<application/x-mobipocket-ebook>,<application/vnd.amazon.ebook>
+    \ visualpreview epub %pw %ph %px %py %c %N
+    \ %pc
+    \ visualpreview clear
+
+fileview * defviewer %c
