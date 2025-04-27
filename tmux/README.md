@@ -32,19 +32,32 @@ This directory contains my personal tmux configuration files that provide a cust
 | `Ctrl + h/j/k/l` | Navigate panes (works with Vim integration) |
 | `Shift + Left/Right` | Switch windows |
 | `Prefix + Tab` | Switch to last window |
-| `Ctrl + Shift + Arrow` | Resize pane | 
-
+| `Ctrl + Shift + Arrow` | Resize pane |
 | `Shift + Arrow` | Swap panes |
 | `Escape` | Enter copy mode |
 | `Prefix + b` | List buffers |
 | `Prefix + p` | Paste from buffer |
 | `Prefix + P` | Choose buffer to paste from |
+| `Prefix + C-s` | Save session |
+| `Prefix + C-r` | Restore session |
+| `Prefix + t` | Open quick popup terminal |
+| `Prefix + /` | Search backward |
+| `Prefix + C-f` | Search forward |
+| `Prefix + v` | Begin selection |
+| `Prefix + m` | Mark pane |
+| `Prefix + M` | Unmark pane |
+| `Prefix + i` | Swap with marked pane |
+| `Prefix + S` | Quick session switch |
+| `Prefix + X` | Kill session |
+| `Prefix + x` | Kill pane |
+| `Prefix + &` | Kill window |
+| `Prefix + K` | Clear screen |
 
 ## Installation
 
 1. Clone this repository:
    ```
-   git clone https://github.com/yourusername/dotfiles.git
+   git clone https://github.com/yourusername/tmux-config.git
    ```
 
 2. Create symlinks:
@@ -71,5 +84,7 @@ The theme automatically switches based on your macOS appearance settings. To man
 ## Dependencies
 
 - tmux 3.0+ 
-- reattach-to-user-namespace (for clipboard integration)
+- reattach-to-user-namespace (for clipboard integration on macOS)
+- zsh (for running theme-switch.sh)
+- tmuxinator (for tmux project management)
 - TPM (Tmux Plugin Manager)
