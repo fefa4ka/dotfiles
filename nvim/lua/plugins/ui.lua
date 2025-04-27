@@ -5,6 +5,7 @@ return {
 	{ "tiagovla/scope.nvim" },
 	{ "vifm/vifm.vim" },
 	{ "mhinz/vim-startify" },
+	{ "tpope/vim-obsession" },
 	{
 		'nvim-telescope/telescope.nvim', tag = '0.1.2',
 		-- or                              , branch = '0.1.x',
@@ -19,6 +20,7 @@ return {
 	config = function()
 		require('local-highlight').setup({
 			disable_file_types = {'tex'},
+			animate = false,
 			hlgroup = 'Search',
 			cw_hlgroup = nil,
 			-- Whether to display highlights in INSERT mode or not
@@ -41,18 +43,6 @@ return {
 		-- calling `setup` is optional for customization
 		require("fzf-lua").setup({})
 	end
-},
-{ 'mistweaverco/bafa.nvim',
-opts = {
-	width = 60,
-	height = 10,
-	title = "Opened",
-	title_pos = "center",
-	relative = "editor",
-	border = "rounded",
-	style = "minimal",
-	diagnostics = true,
-}
 },
 { -- or show symbols in the current file as breadcrumbs
 	'Bekaboo/dropbar.nvim',
