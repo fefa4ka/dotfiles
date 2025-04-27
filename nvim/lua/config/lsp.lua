@@ -20,39 +20,39 @@ local function on_attach(client, bufnr)
   vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
   vim.keymap.set('n', '<C-S-k>', vim.lsp.buf.signature_help, opts) -- Use Ctrl+Shift+K for signature help
 
-  -- Setup which-key for LSP specific keybindings
+  -- Setup which-key for LSP specific keybindings, only if not already done for this buffer
+  if vim.b[bufnr].lsp_which_key_registered then return end
+  vim.b[bufnr].lsp_which_key_registered = true
+
   local wk = require("which-key")
+  -- Use the new list-based spec for which-key
   wk.register({
-    ['<leader>'] = {
-      f = { function() vim.lsp.buf.format { async = true } end, "Format Code", buffer = bufnr },
-      n = { function() vim.lsp.buf.rename() end, "Rename Symbol", buffer = bufnr },
-      w = { name = '+Workspace', buffer = bufnr },
-      wa = { function() vim.lsp.buf.add_workspace_folder() end, "Add Workspace Folder", buffer = bufnr },
-      wr = { function() vim.lsp.buf.remove_workspace_folder() end, "Remove Workspace Folder", buffer = bufnr },
-      wl = { function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end, "List Workspace Folders", buffer = bufnr },
-      h = { name = '+LSP Help', buffer = bufnr },
-      ha = { "<cmd>FzfLua lsp_code_actions<CR>", "Code Actions", buffer = bufnr },
-    },
-    g = {
-      r = { "<cmd>FzfLua lsp_references<CR>", "References", buffer = bufnr },
-      d = { "<cmd>FzfLua lsp_definitions<CR>", "Definitions", buffer = bufnr },
-      D = { "<cmd>FzfLua lsp_type_definitions<CR>", "Type Definitions", buffer = bufnr },
-      i = { "<cmd>FzfLua lsp_implementations<CR>", "Implementations", buffer = bufnr },
-    },
+    { "<leader>f", function() vim.lsp.buf.format { async = true } end, desc = "Format Code", buffer = bufnr },
+    { "<leader>n", function() vim.lsp.buf.rename() end, desc = "Rename Symbol", buffer = bufnr },
+    { "<leader>w", group = "Workspace", buffer = bufnr },
+    { "<leader>wa", function() vim.lsp.buf.add_workspace_folder() end, desc = "Add Workspace Folder", buffer = bufnr },
+    { "<leader>wr", function() vim.lsp.buf.remove_workspace_folder() end, desc = "Remove Workspace Folder", buffer = bufnr },
+    { "<leader>wl", function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end, desc = "List Workspace Folders", buffer = bufnr },
+    { "<leader>h", group = "LSP Help", buffer = bufnr },
+    { "<leader>ha", "<cmd>FzfLua lsp_code_actions<CR>", desc = "Code Actions", buffer = bufnr },
+    -- Flutter specific command, conditionally shown if dartls is attached (though registered once)
+    { "<leader>hf", function()
+        if client.name == "dartls" then
+          require('telescope').extensions.flutter.commands()
+        else
+          print("Flutter commands require Dart LSP")
+        end
+      end, desc = "Flutter Commands", buffer = bufnr },
+    { "gr", "<cmd>FzfLua lsp_references<CR>", desc = "References", buffer = bufnr },
+    { "gd", "<cmd>FzfLua lsp_definitions<CR>", desc = "Definitions", buffer = bufnr },
+    { "gD", "<cmd>FzfLua lsp_type_definitions<CR>", desc = "Type Definitions", buffer = bufnr },
+    { "gi", "<cmd>FzfLua lsp_implementations<CR>", desc = "Implementations", buffer = bufnr },
+    { "K", vim.lsp.buf.hover, desc = "Hover Documentation", buffer = bufnr },
+    { "<C-S-k>", vim.lsp.buf.signature_help, desc = "Signature Help", buffer = bufnr }, -- Keep existing mapping if desired
   }, { buffer = bufnr })
 
-  -- Specific handling for Dart LSP (Flutter)
-  if client.name == "dartls" then
-    wk.register({
-      ['<leader>'] = {
-        h = {
-          f = { function() require('telescope').extensions.flutter.commands() end, "Flutter Commands", buffer = bufnr }
-        }
-      }
-    }, { buffer = bufnr, prefix = "<leader>" })
-  end
 
-  -- Disable hover for ruff if pyright is also attached (preference)
+  -- Disable hover for ruff if pyright/pylsp is also attached (preference)
   if client.name == 'ruff' then
     local pyright_client = vim.lsp.get_clients({ name = 'pyright', bufnr = bufnr })[1]
         or vim.lsp.get_clients({ name = 'pylsp', bufnr = bufnr })[1]

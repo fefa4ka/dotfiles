@@ -2,6 +2,7 @@ return {
 	-- add gruvbox
 	{ "ellisonleao/gruvbox.nvim" },
 	{ "f-person/auto-dark-mode.nvim" },
+  { "echasnovski/mini.icons", opts = {} }, -- Add mini.icons for which-key
 	{ "tiagovla/scope.nvim" },
 	{ "vifm/vifm.vim" },
 	{ "mhinz/vim-startify" },
