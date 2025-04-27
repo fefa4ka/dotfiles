@@ -1,186 +1,42 @@
-set tuioptions-=s
-if $TERM != 'linux'
-    " use Unicode ellipsis
-    set tuioptions+=u
-endif
+#!/bin/bash
 
-set vicmd='nvim -p'
-set trashdir='~/.Trash'
+# Default Viewer for vifm
+# Displays file content based on file type
 
-" ignore case in search pattern unless it contains at least one uppercase letter
-set ignorecase
-set smartcase
+# Configuration
+NLINES=150          # Upper limit of lines to display for text files
+NBYTES=2048         # Upper limit of bytes to display for binary files
+LANGUAGE=russian    # Language of text files
+ENCODING=utf-8      # Output encoding for text files
 
-" don't wrap long lines in preview pane
-set nowrap
+# Display usage if no arguments provided
+if [ "$#" -ne 1 ]; then
+    echo "Usage: $0 filename"
+    exit 1
+fi
 
-" what should be saved automatically between vifm runs
-set vifminfo=dhistory,savedirs,chistory,state,shistory,phistory,fhistory
-           \,dirstack,registers,bookmarks,bmarks
+# Determine file type
+info=$(head -$NLINES "$1" | file --mime -)
+charset=${info#*=}
 
-" hide .. directory everywhere
-set dotdirs=
+# Process file based on type
+if [ "x$charset" == "xbinary" ]; then
+    # Binary file handling
+    descr=$(file "$1" | cut -f2 -d: | xargs)
+    echo "$descr"
 
-" expand tabulation characters as two spaces
-set tabstop=2
+    # Show library dependencies for macOS binaries
+    otool -L "$1" | tail -n +2
 
-" ignore .git directory on :find
-set findprg='find %s %a -print ,
-            \ -type d \( ! -readable -o ! -executable -o -path "*/.git" \)
-            \ -prune'
-" custom status line look
+    # Show ELF header for Linux binaries
+    if echo "$descr" | grep -qE "ELF"; then
+        readelf -h "$1"
+    fi
 
-" don't display file user/group on Windows
-
-
-" file types
-set classify=' :dir:/, :exe:, :reg:, :link:'
-" various file names
-set classify+=' ::../::, ::*.sh::, ::*.[hc]pp,,*.cc,,*.hh::, ::*.[hc]::'
-
-set classify+=' ::/^copying|license$/::, ::.git/,,*.git/::/'
-set classify+=' ::*.epub,,*.fb2,,*.djvu::, ::*.pdf::'
-set classify+=' ::*.htm,,*.html,,**.[sx]html,,*.xml::'
-" archives
-set classify+=' ::*.7z,,*.ace,,*.arj,,*.bz2,,*.cpio,,*.deb,,*.dz,,*.gz,,
-	  \*.jar,,*.lzh,,*.lzma,,*.rar,,*.rpm,,*.rz,,*.tar,,*.taz,,
-	  \*.tb2,,*.tbz,,*.tbz2,,*.tgz,,*.tlz,,*.trz,,*.txz,,*.tz,,
-	  \*.tz2,,*.xz,,*.z,,*.zip,,*.zoo::'
-
-" Specific files
-set classify+=' ::.Xdefaults,,.Xresources,,.bashprofile,,.bash_profile,,.bashrc,,.dmrc,,.d_store,,.fasd,,.gitconfig,,.gitignore,,.jack-settings,,.mime.types,,.nvidia-settings-rc,,.pam_environment,,.profile,,.recently-used,,.selected_editor,,.xinitpurc,,.zprofile,,.yarnc,,.snclirc,,.tmux.conf,,.urlview,,.config,,.ini,,.user-dirs.dirs,,.mimeapps.list,,.offlineimaprc,,.msmtprc,,.Xauthority,,config::'
-set classify+=' ::dropbox::'
-set classify+=' ::favicon.*,,README,,readme::'
-set classify+=' ::.vim,,.vimrc,,.gvimrc,,.vifm::'
-set classify+=' ::gruntfile.coffee,,gruntfile.js,,gruntfile.ls::'
-set classify+=' ::gulpfile.coffee,,gulpfile.js,,gulpfile.ls::'
-set classify+=' ::ledger::'
-set classify+=' ::license,,copyright,,copying,,LICENSE,,COPYRIGHT,,COPYING::'
-set classify+=' ::node_modules::'
-set classify+=' ::react.jsx::'
-"
-" File extensions
-set classify+='λ ::*.ml,,*.mli::'
-set classify+=' ::*.styl::'
-set classify+=' ::*.scss::'
-set classify+=' ::*.py,,*.pyc,,*.pyd,,*.pyo::'
-set classify+=' ::*.php::'
-set classify+=' ::*.markdown,,*.md::'
-set classify+=' ::*.json::'
-set classify+=' ::*.js::'
-set classify+=' ::*.bmp,,*.gif,,*.ico,,*.jpeg,,*.jpg,,*.png,,*.svg,,*.svgz,,*.tga,,*.tiff,,*.xmb,,*.xcf,,*.xpm,,*.xspf,,*.xwd,,*.cr2,,*.dng,,*.3fr,,*.ari,,*.arw,,*.bay,,*.crw,,*.cr3,,*.cap,,*.data,,*.dcs,,*.dcr,,*.drf,,*.eip,,*.erf,,*.fff,,*.gpr,,*.iiq,,*.k25,,*.kdc,,*.mdc,,*.mef,,*.mos,,*.mrw,,*.obm,,*.orf,,*.pef,,*.ptx,,*.pxn,,*.r3d,,*.raf,,*.raw,,*.rwl,,*.rw2,,*.rwz,,*.sr2,,*.srf,,*.srw,,*.tif,,*.x3f,,*.webp,,*.avif,,*.jxl::'
-set classify+=' ::*.ejs,,*.htm,,*.html,,*.slim,,*.xml::'
-set classify+=' ::*.mustasche::'
-set classify+=' ::*.css,,*.less,,*.bat,,*.conf,,*.ini,,*.rc,,*.yml,,*.cfg::'
-set classify+=' ::*.rss::'
-set classify+=' ::*.coffee::'
-set classify+=' ::*.twig::'
-set classify+=' ::*.c++,,*.cpp,,*.cxx,,*.h::'
-set classify+=' ::*.cc,,*.c::'
-set classify+=' ::*.hs,,*.lhs::'
-set classify+=' ::*.lua::'
-set classify+=' ::*.jl::'
-set classify+=' ::*.go::'
-set classify+=' ::*.ts::'
-set classify+=' ::*.db,,*.dump,,*.sql::'
-set classify+=' ::*.sln,,*.suo::'
-set classify+=' ::*.exe::'
-set classify+=' ::*.diff,,*.sum,,*.md5,,*.sha512::'
-set classify+=' ::*.scala::'
-set classify+=' ::*.java,,*.jar::'
-set classify+=' ::*.xul::'
-set classify+=' ::*.clj,,*.cljc::'
-set classify+=' ::*.pl,,*.pm,,*.t::'
-set classify+=' ::*.cljs,,*.edn::'
-set classify+=' ::*.rb::'
-set classify+=' ::*.fish,,*.sh,,*.bash::'
-set classify+=' ::*.dart::'
-set classify+=' ::*.f#,,*.fs,,*.fsi,,*.fsscript,,*.fsx::'
-set classify+=' ::*.rlib,,*.rs::'
-set classify+=' ::*.d::'
-set classify+=' ::*.erl,,*.hrl::'
-set classify+=' ::*.ai::'
-set classify+=' ::*.psb,,*.psd::'
-set classify+=' ::*.jsx::'
-set classify+=' ::*.aac,,*.anx,,*.asf,,*.au,,*.axa,,*.flac,,*.m2a,,*.m4a,,*.mid,,*.midi,,*.mp3,,*.mpc,,*.oga,,*.ogg,,*.ogx,,*.ra,,*.ram,,*.rm,,*.spx,,*.wav,,*.wma,,*.ac3::'
-set classify+=' ::*.avi,,*.flv,,*.mkv,,*.mov,,*.mp4,,*.mpeg,,*.mpg,,*.webm,,*.av1::'
-set classify+=' ::*.epub,,*.pdf,,*.fb2,,*.djvu::'
-set classify+=' ::*.7z,,*.apk,,*.bz2,,*.cab,,*.cpio,,*.deb,,*.gem,,*.gz,,*.gzip,,*.lh,,*.lzh,,*.lzma,,*.rar,,*.rpm,,*.tar,,*.tgz,,*.xz,,*.zip,,*.zst::'
-set classify+=' ::*.cbr,,*.cbz::'
-set classify+=' ::*.log::'
-set classify+=' ::*.doc,,*.docx,,*.adoc::'
-set classify+=' ::*.xls,,*.xlsmx::'
-set classify+=' ::*.pptx,,*.ppt::'
-
-" Resize panes
-nnoremap < <c-w><
-nnoremap > <c-w>>
-
-" Yank current directory path into the clipboard
-nnoremap yd :!printf %d | pbcopy<cr>
-
-" Yank current file path into the clipboard
-nnoremap yf :!printf %c:p | pbcopy<cr>
-" View preview in Quick Look
-nnoremap q :!qlmanage -p %f > /dev/null 2>&1<cr>
-
-filetype * opener "%c:p" > /dev/null 2>&1
-
-" SSH fs
-filetype *.ssh FUSE_MOUNT2|sshfs %PARAM %DESTINATION_DIR
-
-filetype *.zip,*.jar,*.war,*.ear,*.oxt
-       \ {Mount with fuse-zip}
-       \ FUSE_MOUNT|fuse-zip %SOURCE_FILE %DESTINATION_DIR,
-
-" Tree preview
-fileviewer */ exa -aT -L 1 --icons --color=always --group-directories-first %c
-
-" Markdown
-fileviewer {*.md} glow -s $(cat ~/.config/theme) %c
-fileviewer {*.zip} unzip -l %c
-fileviewer {*.rar} unrar l %c
-fileviewer {*.tar} tar -tvf %c
-fileviewer {*.doc} catdocx.sh %c
-fileviewer {*.docx} catdocx.sh %c
-fileviewer {*.tar.gz} tar -ztvf %c
-fileviewer {*.tar.bz2} tar -jtvf %c
-
-fileviewer {*.csv} xsv sample 50 %c | xsv table
-
-" Preview
-fileviewer {*.stl} 
-    \ visualpreview stl %pw %ph %px %py %c %N
-    \ %pc
-    \ visualpreview clear
-
-fileview <image/*>
-    \ visualpreview image %pw %ph %px %py %c %N
-    \ %pc
-    \ visualpreview clear
-
-fileviewer <video/*>
-    \ visualpreview video %pw %ph %px %py %c %N
-    \ %pc
-    \ visualpreview clear
-
-fileviewer <font/*>
-    \ visualpreview font %pw %ph %px %py %c %N
-    \ %pc
-    \ visualpreview clear
-
-fileviewer {*.pdf}
-    \ visualpreview pdf %pw %ph %px %py %c %N
-    \ %pc
-    \ visualpreview clear
-
-fileviewer {*.epub,*.mobi,*.azw,*.azw[0-9]},<application/epub+zip>,<application/x-mobipocket-ebook>,<application/vnd.amazon.ebook>
-    \ visualpreview epub %pw %ph %px %py %c %N
-    \ %pc
-    \ visualpreview clear
-
-fileview * defviewer %c
-
-view!
-
-
+    echo ''
+    # Display hexdump of binary file
+    hexdump -e '"%08_ax: "' -e '8/1 "%02x " "  " 8/1 "%02x "' -e '" |" 16/1 "%_p"' -e '"\n"' -v -n $NBYTES "$1"
+else
+    # Text file handling with syntax highlighting
+    highlight -O xterm256 -s dante "$1"
+fi
