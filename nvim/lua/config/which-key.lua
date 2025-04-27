@@ -109,7 +109,6 @@ wk.add({
 	{
 		mode = { "n" },
 		{ "<leader>c", group = "VCS" },
-		{ "<leader>c", ":nohl<CR>", desc = "Clear Search Highlight"},
 		{ "<leader>h", group = "Help" },
 		{ "<leader>ht", ":FzfLua help_tags<CR>", desc = "Help Tags" },
 		{ "<leader>hk", ":FzfLua keymaps<CR>", desc = "Keymaps" },
@@ -123,7 +122,7 @@ wk.add({
 			vim.cmd("highlight ZenBg guibg=0 guifg=0")
 		end, desc = "Zen Mode" },
 		{ "<leader><leader>", ":nohlsearch<CR>", desc = "No Highlight Search" },
-		{ "<leader><leader><leader>", ":qa!<CR>", desc = "Quit All Force" },
+		{ "<leader><leader><leader><leader>", ":qa!<CR>", desc = "Quit All Force" },
 	}
 })
 
