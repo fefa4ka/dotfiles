@@ -109,16 +109,18 @@ wk.add({
 	{
 		mode = { "n" },
 		{ "<leader>c", group = "VCS" },
+		{ "<leader>c", ":nohl<CR>", desc = "Clear Search Highlight"},
 		{ "<leader>h", group = "Help" },
-		{ "<leader>r", ":so %<CR>", desc = "Reload config" },
-		{ "<leader>ht", ":FzfLua help_tags<CR>", desc = "Help" },
-		{ "<leader>hk", ":FzfLua keymaps<CR>", desc = "Keys" },
+		{ "<leader>ht", ":FzfLua help_tags<CR>", desc = "Help Tags" },
+		{ "<leader>hk", ":FzfLua keymaps<CR>", desc = "Keymaps" },
 		{ "<leader>hm", ":messages<CR>", desc = "Messages" },
+		{ "<leader>ls", function() require('dropbar.api').pick() end, desc = "List Symbols"},
+		{ "<leader>q", ':qa!<CR>', desc = "Quit All" },
+		{ "<leader>r", ":so %<CR>", desc = "Reload Config" },
 		{ "<leader>t", ':lua BgToggleSol()<CR>', desc = "Toggle Theme" },
-		{ "<leader>q", ':qa!<CR>', desc = "Quit" },
-		{ "<leader>z", function() 
+		{ "<leader>z", function()
 			require("zen-mode").toggle()
-			vim.cmd("highlight ZenBg guibg=0 guifg=0")	
+			vim.cmd("highlight ZenBg guibg=0 guifg=0")
 		end, desc = "Zoom" },
 
 	}
