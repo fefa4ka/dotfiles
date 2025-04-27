@@ -1,42 +1,35 @@
-#!/bin/bash
+" vifmrc - vifm configuration file
+" Modular configuration for better organization
 
-# Default Viewer for vifm
-# Displays file content based on file type
+" UI Options
+set tuioptions-=s
+if $TERM != 'linux'
+    " use Unicode ellipsis
+    set tuioptions+=u
+endif
 
-# Configuration
-NLINES=150          # Upper limit of lines to display for text files
-NBYTES=2048         # Upper limit of bytes to display for binary files
-LANGUAGE=russian    # Language of text files
-ENCODING=utf-8      # Output encoding for text files
+" Basic Settings
+set vicmd='nvim -p'
+set trashdir='~/.Trash'
+set ignorecase
+set smartcase
+set nowrap
+set dotdirs=
+set tabstop=2
 
-# Display usage if no arguments provided
-if [ "$#" -ne 1 ]; then
-    echo "Usage: $0 filename"
-    exit 1
-fi
+" Information to save between sessions
+set vifminfo=dhistory,savedirs,chistory,state,shistory,phistory,fhistory
+           \,dirstack,registers,bookmarks,bmarks
 
-# Determine file type
-info=$(head -$NLINES "$1" | file --mime -)
-charset=${info#*=}
+" Find command that ignores .git directories
+set findprg='find %s %a -print ,
+            \ -type d \( ! -readable -o ! -executable -o -path "*/.git" \)
+            \ -prune'
 
-# Process file based on type
-if [ "x$charset" == "xbinary" ]; then
-    # Binary file handling
-    descr=$(file "$1" | cut -f2 -d: | xargs)
-    echo "$descr"
+" Source modular configuration files
+source ~/.config/vifm/config/classify.vifm
+source ~/.config/vifm/config/mappings.vifm
+source ~/.config/vifm/config/filetypes.vifm
+source ~/.config/vifm/config/viewers.vifm
 
-    # Show library dependencies for macOS binaries
-    otool -L "$1" | tail -n +2
-
-    # Show ELF header for Linux binaries
-    if echo "$descr" | grep -qE "ELF"; then
-        readelf -h "$1"
-    fi
-
-    echo ''
-    # Display hexdump of binary file
-    hexdump -e '"%08_ax: "' -e '8/1 "%02x " "  " 8/1 "%02x "' -e '" |" 16/1 "%_p"' -e '"\n"' -v -n $NBYTES "$1"
-else
-    # Text file handling with syntax highlighting
-    highlight -O xterm256 -s dante "$1"
-fi
+view!
