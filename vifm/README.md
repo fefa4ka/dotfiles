@@ -46,7 +46,11 @@ This configuration relies on several external tools:
 ## Installation
 
 1. Clone this repository to `~/.config/vifm/`
-2. Ensure all dependencies are installed
+2. Run the dependency installation script:
+   ```
+   chmod +x ~/.config/vifm/scripts/install_deps.sh
+   ~/.config/vifm/scripts/install_deps.sh
+   ```
 3. Launch vifm
 
 ## Customization
