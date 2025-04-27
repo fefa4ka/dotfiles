@@ -26,29 +26,21 @@ local function on_attach(client, bufnr)
 
   local wk = require("which-key")
   -- Use the new list-based spec for which-key
-  wk.register({
-    ["<leader>f"] = { function() vim.lsp.buf.format { async = true } end, "Format Code" },
-    ["<leader>n"] = { function() vim.lsp.buf.rename() end, "Rename Symbol" },
-    ["<leader>w"] = { name = "Workspace" },
-    ["<leader>wa"] = { function() vim.lsp.buf.add_workspace_folder() end, "Add Workspace Folder" },
-    ["<leader>wr"] = { function() vim.lsp.buf.remove_workspace_folder() end, "Remove Workspace Folder" },
-    ["<leader>wl"] = { function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end, "List Workspace Folders" },
-    ["<leader>h"] = { name = "LSP Help" },
-    ["<leader>ha"] = { "<cmd>FzfLua lsp_code_actions<CR>", "Code Actions" },
-    ["<leader>hf"] = { function()
-        if client.name == "dartls" then
-          require('telescope').extensions.flutter.commands()
-        else
-          print("Flutter commands require Dart LSP")
-        end
-      end, "Flutter Commands" },
-    ["gr"] = { "<cmd>FzfLua lsp_references<CR>", "References" },
-    ["gd"] = { "<cmd>FzfLua lsp_definitions<CR>", "Definitions" },
-    ["gD"] = { "<cmd>FzfLua lsp_type_definitions<CR>", "Type Definitions" },
-    ["gi"] = { "<cmd>FzfLua lsp_implementations<CR>", "Implementations" },
-    ["K"] = { vim.lsp.buf.hover, "Hover Documentation" },
-    ["<C-S-k>"] = { vim.lsp.buf.signature_help, "Signature Help" },
-  }, { buffer = bufnr })
+
+    wk.add({
+        {'<leader>f', function() vim.lsp.buf.format { async = true } end, desc = "Format"},
+        {'<leader>n', function() vim.lsp.buf.rename() end, desc = "Rename"},
+        {'<leader>w', group = 'Workspace' },
+        {'<leader>wa', function() vim.lsp.buf.add_workspace_folder() end, desc ="Add Workspace Folder"},
+        {'<leader>wr', function() vim.lsp.buf.remove_workspace_folder() end, desc ="Remove Workspace Folder"},
+        {'<leader>wl', function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end, desc ="List Workspace Folders"},
+        {'<leader>ha',  "<cmd>FzfLua lsp_code_actions<CR>", desc ="Code Actions"},
+        {'gr', "<cmd>FzfLua lsp_references<CR>", desc ="References"},
+        {'gd', "<cmd>FzfLua lsp_definitions<CR>", desc ="Definitions"},
+        {'gD', "<cmd>FzfLua lsp_type_definitions<CR>", desc ="Type Definitions"},
+        {'gi', "<cmd>FzfLua lsp_implementations<CR>", desc ="Implementations"},
+})
+
 
 
   -- Disable hover for ruff if pyright/pylsp is also attached (preference)
