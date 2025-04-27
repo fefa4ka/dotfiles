@@ -3,7 +3,6 @@ local g = vim.g
 vim.keymap.set("n", "<Space>", "<Nop>", { silent = true, remap = false })
 
 vim.g.mapleader = " "
---g.mapleader = "<Space>"
 
 -- Define keymaps of Neovim and installed plugins.
 local function map(mode, lhs, rhs, opts)

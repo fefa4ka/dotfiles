@@ -1,1 +1,2 @@
 setw -g window-status-current-format ' #[fg=colour1]#F#[fg=colour237]: #W '
+set -g status-right '#[fg=colour1]#F#[fg=colour237] #{?window_zoomed_flag,🔍 ,}#(whoami)@#H'

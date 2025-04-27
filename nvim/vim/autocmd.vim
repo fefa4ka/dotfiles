@@ -15,10 +15,11 @@ endfunction
 "" Autosave session for pwd
 autocmd User        StartifyReady silent execute 'SLoad '  . GetUniqueSessionName()
 autocmd VimLeavePre *             silent execute 'SSave! ' . GetUniqueSessionName()
-"
 
-"set sessionoptions+=localoptions
-set sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+set sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions,options"
+
+" Ensure syntax highlighting is enabled after loading a session
+autocmd SessionLoadPost * filetype detect
 
 set equalalways
 autocmd VimResized * wincmd =

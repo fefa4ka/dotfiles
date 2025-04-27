@@ -13,10 +13,10 @@ o.relativenumber = true
 -- Set highlight for normal mode
 -- Check if 'termguicolors' option is supported
 if vim.fn.exists('+termguicolors') == 1 then
-     -- Enable 'termguicolors' option
-    vim.cmd('let &t_8f = "<Esc>[38;2;%lu;%lu;%lum"')
-    vim.cmd('let &t_8b = "<Esc>[48;2;%lu;%lu;%lum"')
-    vim.cmd('set termguicolors')
+  -- Enable 'termguicolors' option
+  vim.cmd('let &t_8f = "<Esc>[38;2;%lu;%lu;%lum"')
+  vim.cmd('let &t_8b = "<Esc>[48;2;%lu;%lu;%lum"')
+  vim.cmd('set termguicolors')
 end
 
 vim.cmd('colorscheme gruvbox')
@@ -47,8 +47,8 @@ vim.opt.virtualedit = 'all'
 local function show_startify()
   local tabpage_bufs = vim.api.nvim_tabpage_list_bufs(0)
   if #vim.tbl_filter(function(buf)
-    return not vim.api.nvim_buf_is_loaded(buf) or not vim.api.nvim_buf_get_option(buf, 'buflisted')
-  end, tabpage_bufs) == 0 and vim.fn.bufname('') == '' then
+        return not vim.api.nvim_buf_is_loaded(buf) or not vim.api.nvim_buf_get_option(buf, 'buflisted')
+      end, tabpage_bufs) == 0 and vim.fn.bufname('') == '' then
     vim.cmd('Startify')
   end
 end
@@ -58,15 +58,15 @@ end
 local auto_dark_mode = require('auto-dark-mode')
 
 auto_dark_mode.setup({
-	update_interval = 1000,
-	set_dark_mode = function()
-		vim.api.nvim_set_option('background', 'dark')
-		vim.cmd('colorscheme gruvbox')
-	end,
-	set_light_mode = function()
-		vim.api.nvim_set_option('background', 'light')
-		vim.cmd('colorscheme gruvbox')
-	end,
+  update_interval = 1000,
+  set_dark_mode = function()
+    vim.api.nvim_set_option('background', 'dark')
+    vim.cmd('colorscheme gruvbox')
+  end,
+  set_light_mode = function()
+    vim.api.nvim_set_option('background', 'light')
+    vim.cmd('colorscheme gruvbox')
+  end,
 })
 
 
@@ -76,7 +76,7 @@ require("telescope").load_extension("scope")
 
 -- Local highlight attach to any buffer
 vim.api.nvim_create_autocmd('BufRead', {
-  pattern = {'*.*'},
+  pattern = { '*.*' },
   callback = function(data)
     require('local-highlight').attach(data.buf)
   end
