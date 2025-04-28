@@ -18,7 +18,9 @@ alias mutt="neomutt"
 #------------------------------------------------------------------------------
 alias grep='grep --color=auto'
 alias g="lazygit"
-alias h='function hdi(){ howdoi $* -c -n 5; }; hdi'
+
+# Calendar view
+alias cal="cal -3"
 
 # Use bat instead of cat if available
 if command -v bat &>/dev/null; then
@@ -33,6 +35,19 @@ if command -v exa &>/dev/null; then
   alias ll="$exa_exec -l" # Fixed typo here
   alias lt="$exa_exec --icons -aT"
 fi
+
+# Find files by name (case insensitive)
+ff() { find . -type f -iname "*$1*" -print; }
+
+# Find directories by name (case insensitive)
+fd() { find . -type d -iname "*$1*" -print; }
+
+# Copy file contents to clipboard
+copy() { cat "$1" | pbcopy; }
+
+# Copy output to clipboard (macOS)
+alias clip="pbcopy"
+alias paste="pbpaste"
 
 #------------------------------------------------------------------------------
 # NAVIGATION ALIASES AND FUNCTIONS
@@ -50,6 +65,9 @@ alias ...="cd .. && cd .."
 alias .3="cd .. && cd .. && cd .."
 alias .4="cd .. && cd .. && cd .. && cd .."
 alias .5="cd .. && cd .. && cd .. && cd .. && cd .."
+
+# Copy current directory path to clipboard
+alias cpwd="pwd | tr -d '\n' | pbcopy && echo 'pwd copied to clipboard'"
 
 #------------------------------------------------------------------------------
 # CONFIG FILE SHORTCUTS
@@ -77,6 +95,15 @@ gpip3() {
   PIP_REQUIRE_VIRTUALENV="" pip3 "$@"
 }
 
+# Quick Python virtual environment
+alias venv="python3 -m venv .venv && source .venv/bin/activate"
+alias activate="source .venv/bin/activate"
+
+#------------------------------------------------------------------------------
+# DEVELOPMENT TOOLS
+#------------------------------------------------------------------------------
+alias serve="python3 -m http.server"
+
 #------------------------------------------------------------------------------
 # CONNECTION ALIASES
 #------------------------------------------------------------------------------
@@ -87,8 +114,8 @@ alias console="yc compute instance list --format json | jq '.[] | select((.name 
 #------------------------------------------------------------------------------
 # Aider with model selection using fzf
 aider-select() {
-  local model=$(yq '.models[].name' ~/.aider/.aider.model.settings.yml | fzf --height 40% --border)
-  if [[ -n "$model" ]]; then
+  local model=$(yq '.[].name' ~/.aider/.aider.model.settings.yml | fzf --height 40% --border)
+  if [[ -n $model ]]; then
     aider --model "$model" --cache-prompts --no-verify-ssl --env ~/.aider/.env --model-settings-file ~/.aider/.aider.model.settings.yml "$@"
   else
     echo "No model selected"
