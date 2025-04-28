@@ -12,7 +12,6 @@ source ~/dotfiles/zsh/alias.sh
 
 #source ~/dotfiles/tmux/tmuxinator.zsh
 
-
 source ~/dotfiles/zsh/plugins/oh-my-zsh/lib/history.zsh
 source ~/dotfiles/zsh/plugins/oh-my-zsh/lib/key-bindings.zsh
 source ~/dotfiles/zsh/plugins/oh-my-zsh/lib/completion.zsh
@@ -20,24 +19,23 @@ source ~/dotfiles/zsh/plugins/vi-mode.plugin.zsh
 source ~/dotfiles/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 source ~/dotfiles/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source ~/dotfiles/zsh/keybindings.sh
-source ~/dotfiles/zsh/plugins/zsh-llm-resolver/zsh-llm-resolver.plugin.zsh
+#source ~/dotfiles/zsh/plugins/zsh-llm-resolver/zsh-llm-resolver.plugin.zsh
 
 # Fix for arrow-key searching
 # start typing + [Up-Arrow] - fuzzy find history forward
-if [[ "${terminfo[kcuu1]}" != "" ]]; then
-    autoload -U up-line-or-beginning-search
-    zle -N up-line-or-beginning-search
-    bindkey "${terminfo[kcuu1]}" up-line-or-beginning-search
+if [[ ${terminfo[kcuu1]} != "" ]]; then
+  autoload -U up-line-or-beginning-search
+  zle -N up-line-or-beginning-search
+  bindkey "${terminfo[kcuu1]}" up-line-or-beginning-search
 fi
 # start typing + [Down-Arrow] - fuzzy find history backward
-if [[ "${terminfo[kcud1]}" != "" ]]; then
-    autoload -U down-line-or-beginning-search
-    zle -N down-line-or-beginning-search
-    bindkey "${terminfo[kcud1]}" down-line-or-beginning-search
+if [[ ${terminfo[kcud1]} != "" ]]; then
+  autoload -U down-line-or-beginning-search
+  zle -N down-line-or-beginning-search
+  bindkey "${terminfo[kcud1]}" down-line-or-beginning-search
 fi
 
 source ~/dotfiles/zsh/prompt.sh
-
 
 # Notes
 #dash_comment() { notes add "$*" }
@@ -48,37 +46,36 @@ source ~/dotfiles/zsh/prompt.sh
 #alias \#\#="dash_comment _"
 #alias \#~="notes ag"
 
-    plugins=(… zsh-completions)
+plugins=(… zsh-completions)
 autoload -U compinit && compinit -d ~/.local/share/zsh/.zcompdump
 
 source ~/dotfiles/zsh/toolchain.sh
 
-
 # Tmux
 tm() {
-    [[ -n "$TMUX" ]] && change="switch-client" || change="attach-session"
-    if [ $1 ]; then
-        tmux $change -t "$1" 2>/dev/null || (tmux new-session -d -s $1 && tmux $change -t "$1"); return
-    fi
-    session=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf --exit-0) &&  tmux $change -t "$session" || echo "No sessions found."
+  [[ -n $TMUX ]] && change="switch-client" || change="attach-session"
+  if [ $1 ]; then
+    tmux $change -t "$1" 2>/dev/null || (tmux new-session -d -s $1 && tmux $change -t "$1")
+    return
+  fi
+  session=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf --exit-0) && tmux $change -t "$session" || echo "No sessions found."
 }
-
 
 # Image frameless preview
 # https://github.com/DrabWeb/macfeh
 function feh() {
-    open -b "drabweb.macfeh" "$@"
+  open -b "drabweb.macfeh" "$@"
 }
 
 # Setup fzf
 # ---------
-if [[ ! "$PATH" == */usr/local/opt/fzf/bin* ]]; then
-    export PATH="${PATH:+${PATH}:}/usr/local/opt/fzf/bin"
+if [[ $PATH != */usr/local/opt/fzf/bin* ]]; then
+  export PATH="${PATH:+${PATH}:}/usr/local/opt/fzf/bin"
 fi
 
 # Auto-completion
 # ---------------
-[[ $- == *i* ]] && source "/usr/local/opt/fzf/shell/completion.zsh" 2> /dev/null
+[[ $- == *i* ]] && source "/usr/local/opt/fzf/shell/completion.zsh" 2>/dev/null
 
 # Key bindings
 # ------------
@@ -95,22 +92,21 @@ export LESS="--RAW-CONTROL-CHARS"
 lesscolors=$HOME/bin/.LESS_TERMCAP
 [[ -f $lesscolors ]] && . $lesscolors
 
-
 HISTSIZE=10000000
 SAVEHIST=10000000
-setopt BANG_HIST                 # Treat the '!' character specially during expansion.
-setopt EXTENDED_HISTORY          # Write the history file in the ":start:elapsed;command" format.
-setopt INC_APPEND_HISTORY        # Write to the history file immediately, not when the shell exits.
-setopt SHARE_HISTORY             # Share history between all sessions.
-setopt HIST_EXPIRE_DUPS_FIRST    # Expire duplicate entries first when trimming history.
-setopt HIST_IGNORE_DUPS          # Don't record an entry that was just recorded again.
-setopt HIST_IGNORE_ALL_DUPS      # Delete old recorded entry if new entry is a duplicate.
-setopt HIST_FIND_NO_DUPS         # Do not display a line previously found.
-setopt HIST_IGNORE_SPACE         # Don't record an entry starting with a space.
-setopt HIST_SAVE_NO_DUPS         # Don't write duplicate entries in the history file.
-setopt HIST_REDUCE_BLANKS        # Remove superfluous blanks before recording entry.
-setopt HIST_VERIFY               # Don't execute immediately upon history expansion.
-setopt HIST_BEEP                 # Beep when accessing nonexistent history.
+setopt BANG_HIST              # Treat the '!' character specially during expansion.
+setopt EXTENDED_HISTORY       # Write the history file in the ":start:elapsed;command" format.
+setopt INC_APPEND_HISTORY     # Write to the history file immediately, not when the shell exits.
+setopt SHARE_HISTORY          # Share history between all sessions.
+setopt HIST_EXPIRE_DUPS_FIRST # Expire duplicate entries first when trimming history.
+setopt HIST_IGNORE_DUPS       # Don't record an entry that was just recorded again.
+setopt HIST_IGNORE_ALL_DUPS   # Delete old recorded entry if new entry is a duplicate.
+setopt HIST_FIND_NO_DUPS      # Do not display a line previously found.
+setopt HIST_IGNORE_SPACE      # Don't record an entry starting with a space.
+setopt HIST_SAVE_NO_DUPS      # Don't write duplicate entries in the history file.
+setopt HIST_REDUCE_BLANKS     # Remove superfluous blanks before recording entry.
+setopt HIST_VERIFY            # Don't execute immediately upon history expansion.
+setopt HIST_BEEP              # Beep when accessing nonexistent history.
 
 eval "$(atuin init zsh)"
 export WITH_TMUX=false
@@ -131,9 +127,9 @@ overwrite_previous() {
 
   # Move the cursor up and clear each line
   echo ${total_lines}
-   for ((i=0; i<total_lines; i++)); do
-  print -n "\e[1A\e[K"
-   done
+  for ((i = 0; i < total_lines; i++)); do
+    print -n "\e[1A\e[K"
+  done
 }
 
 # Function to be called just before executing a command
