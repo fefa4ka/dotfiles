@@ -81,3 +81,17 @@ gpip3() {
 # CONNECTION ALIASES
 #------------------------------------------------------------------------------
 alias console="yc compute instance list --format json | jq '.[] | select((.name == \"vm\") and (.status != \"RUNNING\")) | .id' | xargs -I _ yc compute instance start _ && ssh $VM"
+
+#------------------------------------------------------------------------------
+# DEVELOPMENT TOOLS
+#------------------------------------------------------------------------------
+# Aider with model selection using fzf
+aider-select() {
+  local model=$(yq '.models[].name' ~/.aider/.aider.model.settings.yml | fzf --height 40% --border)
+  if [[ -n "$model" ]]; then
+    aider --model "$model" --cache-prompts --no-verify-ssl --env ~/.aider/.env --model-settings-file ~/.aider/.aider.model.settings.yml "$@"
+  else
+    echo "No model selected"
+  fi
+}
+alias ai="aider-select"
