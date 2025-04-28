@@ -6,6 +6,56 @@ ssh_info() {
   [[ "$SSH_CONNECTION" != '' ]] && echo "%(!.%{$fg[red]%}.%{$fg[yellow]%})%n%{$reset_color%}@%{$fg[green]%}%m%{$reset_color%}:" || echo ''
 }
 
+# Echoes information about Arc repository status when inside an Arc repository
+arc_info() {
+  # Exit if not inside an Arc repository
+  ! arc rev-parse --is-inside-work-tree > /dev/null 2>&1 && return
+
+  # Arc branch/tag, or name-rev if on detached head
+  local ARC_LOCATION=${$(arc symbolic-ref -q HEAD || arc name-rev --name-only --no-undefined --always HEAD)#(refs/heads/|tags/)}
+
+  local AHEAD="%{$fg[red]%}⇡NUM%{$reset_color%}"
+  local BEHIND="%{$fg[cyan]%}⇣NUM%{$reset_color%}"
+  local MERGING="%{$fg[magenta]%}⚡︎%{$reset_color%}"
+  local UNTRACKED="%{$fg[red]%}●%{$reset_color%}"
+  local MODIFIED="%{$fg[yellow]%}●%{$reset_color%}"
+  local STAGED="%{$fg[green]%}●%{$reset_color%}"
+
+  local -a DIVERGENCES
+  local -a FLAGS
+
+  local NUM_AHEAD="$(arc log --oneline @{u}.. 2> /dev/null | wc -l | tr -d ' ')"
+  if [ "$NUM_AHEAD" -gt 0 ]; then
+    DIVERGENCES+=( "${AHEAD//NUM/$NUM_AHEAD}" )
+  fi
+
+  local NUM_BEHIND="$(arc log --oneline ..@{u} 2> /dev/null | wc -l | tr -d ' ')"
+  if [ "$NUM_BEHIND" -gt 0 ]; then
+    DIVERGENCES+=( "${BEHIND//NUM/$NUM_BEHIND}" )
+  fi
+
+  local ARC_DIR="$(arc rev-parse --git-dir 2> /dev/null)"
+  if [ -n $ARC_DIR ] && test -r $ARC_DIR/MERGE_HEAD; then
+    FLAGS+=( "$MERGING" )
+  fi
+
+  if ! arc diff --quiet 2> /dev/null; then
+    FLAGS+=( "$MODIFIED" )
+  fi
+
+  if ! arc diff --cached --quiet 2> /dev/null; then
+    FLAGS+=( "$STAGED" )
+  fi
+
+  local -a ARC_INFO
+  ARC_INFO+=( "\033[38;5;15m⊙" )
+  [ -n "$ARC_STATUS" ] && ARC_INFO+=( "$ARC_STATUS" )
+  [[ ${#DIVERGENCES[@]} -ne 0 ]] && ARC_INFO+=( "${(j::)DIVERGENCES}" )
+  [[ ${#FLAGS[@]} -ne 0 ]] && ARC_INFO+=( "${(j::)FLAGS}" )
+  ARC_INFO+=( "\033[38;5;15m$ARC_LOCATION%{$reset_color%}" )
+  echo "${(j: :)ARC_INFO}"
+}
+
 # Echoes information about Git repository status when inside a Git repository
 git_info() {
   # Exit if not inside a Git repository
@@ -61,8 +111,17 @@ git_info() {
 
 }
 
+# Function to get version control info (Arc or Git)
+vcs_info() {
+  if arc rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+    arc_info
+  else
+    git_info
+  fi
+}
+
 # Use ❯ as the non-root prompt character; # for root
 # Change the prompt character color if the last command had a nonzero exit code
 PS1='
-$(ssh_info)%{$fg[magenta]%}%~%u $(git_info)
+$(ssh_info)%{$fg[magenta]%}%~%u $(vcs_info)
 %(?.%{$fg[blue]%}.%{$fg[red]%})%(!.#.❯)%{$reset_color%} '
