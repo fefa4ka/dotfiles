@@ -3,6 +3,9 @@ PROMPT_LINES=2
 typeset -g _LAST_COMMAND=""
 typeset -gi _LAST_COMMAND_LINES=0
 
+# Source the syntax highlighting module
+source "${0:A:h}/syntax_highlight.zsh"
+
 # Function to count lines of a command more accurately
 count_lines() {
   if [[ -z "$1" ]]; then
@@ -65,10 +68,10 @@ preexec_function() {
   # Try to overwrite previous prompt, with error handling
   {
     overwrite_previous "$cmd"
-    echo "$fg[blue]❯$reset_color $cmd"
+    echo "$fg[blue]❯$reset_color $(highlight_command "$cmd")"
   } 2>/dev/null || {
     # If something goes wrong, just print the command normally
-    echo "$fg[blue]❯$reset_color $cmd"
+    echo "$fg[blue]❯$reset_color $(highlight_command "$cmd")"
   }
 }
 
