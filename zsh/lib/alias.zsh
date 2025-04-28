@@ -3,13 +3,6 @@
 #==============================================================================
 
 #------------------------------------------------------------------------------
-# CONNECTION ALIASES
-#------------------------------------------------------------------------------
-alias console="yc compute instance list --format json | jq '.[] | select((.name == \"vm\") and (.status != \"RUNNING\")) | .id' | xargs -I _ yc compute instance start _ && ssh $VM"
-alias tty='ssh $VC'
-alias cam='telnet $Q2'
-
-#------------------------------------------------------------------------------
 # EDITOR ALIASES
 #------------------------------------------------------------------------------
 # Use neovim if available
@@ -83,3 +76,8 @@ gpip() {
 gpip3() {
   PIP_REQUIRE_VIRTUALENV="" pip3 "$@"
 }
+
+#------------------------------------------------------------------------------
+# CONNECTION ALIASES
+#------------------------------------------------------------------------------
+alias console="yc compute instance list --format json | jq '.[] | select((.name == \"vm\") and (.status != \"RUNNING\")) | .id' | xargs -I _ yc compute instance start _ && ssh $VM"
