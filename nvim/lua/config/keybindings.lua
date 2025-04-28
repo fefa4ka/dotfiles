@@ -63,8 +63,8 @@ map('n', 'gl', '<cmd>lua vim.diagnostic.open_float()<cr>')
 -- #jo
 map('n', '<C-_>', '<C-W>s') -- Horizontal split with Ctrl+_
 map('n', '<C-->', '<C-W>s') -- Horizontal split with Ctrl+-
+map('n', '<Esc>[45;5u', '<C-W>s') -- Horizontal split with remapped Ctrl+-
 map('n', '<C-\\>', '<C-W>v') -- Vertical split with Ctrl+\
-map('n', '<C-b>', '<C-W>v')  -- Alternative vertical split with Ctrl+b
 map('n', '<C-q>', '<C-W>q')
 map('n', '<C-k>', '<C-W>k')
 map('n', '<C-j>', '<C-W>j')
