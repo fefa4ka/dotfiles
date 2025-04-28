@@ -72,6 +72,12 @@ map('n', '<C-h>', '<C-W>h')
 map('n', '<C-l>', '<C-W>l')
 map('n', 'W', ':pclose<CR>')
 
+-- Resize panes
+map('n', '<A-h>', ':vertical resize -5<CR>')  -- Alt+h to decrease width
+map('n', '<A-l>', ':vertical resize +5<CR>')  -- Alt+l to increase width
+map('n', '<A-j>', ':resize +5<CR>')           -- Alt+j to increase height
+map('n', '<A-k>', ':resize -5<CR>')           -- Alt+k to decrease height
+
 -- Tabs
 map('n', 'tn', ':tabnew<CR>')
 map('n', 'tc', ':tabclose<CR>')
