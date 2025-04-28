@@ -122,3 +122,93 @@ aider-select() {
   fi
 }
 alias ai="aider-select"
+
+#------------------------------------------------------------------------------
+# GIT/ARC ALIASES
+#------------------------------------------------------------------------------
+# Smart version control function that detects Git or Arc
+function is_arc_repo() {
+  arc rev-parse --is-inside-work-tree &>/dev/null
+  return $?
+}
+
+function is_git_repo() {
+  git rev-parse --is-inside-work-tree &>/dev/null
+  return $?
+}
+
+# Smart status command that works with both Git and Arc
+function smart_status() {
+  if is_arc_repo; then
+    arc status "$@"
+  elif is_git_repo; then
+    git status "$@"
+  else
+    echo "Not in a Git or Arc repository"
+    return 1
+  fi
+}
+
+function smart_diff() {
+  if is_arc_repo; then
+    arc diff "$@"
+  elif is_git_repo; then
+    git diff "$@"
+  else
+    echo "Not in a Git or Arc repository"
+    return 1
+  fi
+}
+
+function smart_log() {
+  if is_arc_repo; then
+    arc log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit "$@"
+  elif is_git_repo; then
+    git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit "$@"
+  else
+    echo "Not in a Git or Arc repository"
+    return 1
+  fi
+}
+
+function smart_checkout() {
+  if is_arc_repo; then
+    arc checkout "$@"
+  elif is_git_repo; then
+    git checkout "$@"
+  else
+    echo "Not in a Git or Arc repository"
+    return 1
+  fi
+}
+
+function smart_push() {
+  if is_arc_repo; then
+    arc push "$@"
+  elif is_git_repo; then
+    git push "$@"
+  else
+    echo "Not in a Git or Arc repository"
+    return 1
+  fi
+}
+
+function smart_pull() {
+  if is_arc_repo; then
+    arc pull "$@"
+  elif is_git_repo; then
+    git pull "$@"
+  else
+    echo "Not in a Git or Arc repository"
+    return 1
+  fi
+}
+
+# Git/Arc aliases
+alias gs="smart_status"
+alias gd="smart_diff"
+alias gl="smart_log"
+alias gco="smart_checkout"
+alias gcb="smart_checkout -b"
+alias gp="smart_push"
+alias gpl="smart_pull"
