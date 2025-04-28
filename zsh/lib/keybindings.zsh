@@ -57,6 +57,26 @@ function add_sudo() {
 zle -N add_sudo
 bindkey "^s" add_sudo
 
+
+#------------------------------------------------------------------------------
+# PROCESS WIDGETS
+#------------------------------------------------------------------------------
+# Process viewer with kill capability with Ctrl+Shift+p
+process_viewer() {
+  local pid=$(ps aux | fzf --height 80% | awk '{print $2}')
+  if [[ -n "$pid" ]]; then
+    echo -n "Kill process $pid? (y/n): "
+    read answer
+    if [[ "$answer" == "y" ]]; then
+      kill -9 $pid
+      echo "Process $pid killed"
+    fi
+  fi
+  zle reset-prompt
+}
+zle -N process_viewer
+bindkey "^P" process_viewer
+
 #------------------------------------------------------------------------------
 # DISABLED/COMMENTED WIDGETS
 #------------------------------------------------------------------------------
