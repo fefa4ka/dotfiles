@@ -31,12 +31,12 @@ open_with_fzf() {
 zle -N open_with_fzf
 bindkey "^o" open_with_fzf
 
-# Open file with $EDITOR (Ctrl+p)
+# Open file with $EDITOR (Ctrl+e)
 open_editor() {
     fd -t f -H -I | fzf -m --preview="([[ -f {} ]] && (bat --style=numbers --color=always {} || cat {})) || ([[ -d {} ]] && (tree -C {} | less)) || echo {} 2> /dev/null | head -200" | xargs $EDITOR
 }
 zle -N open_editor
-bindkey "^p" open_editor
+bindkey "^e" open_editor
 
 #------------------------------------------------------------------------------
 # COMMAND MODIFICATION WIDGETS
