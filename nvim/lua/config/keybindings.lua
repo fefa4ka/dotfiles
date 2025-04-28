@@ -48,6 +48,8 @@ map('n', 'fd', ':DiffVifm<CR>', { silent = true })
 map('', '<C-t>', ':TagbarToggle<CR>')
 map('n', '<C-S-p>', ':FzfLua commands<CR>')
 map('n', '<C-S-f>', ':FzfLua live_grep<CR>')
+map('n', '<Esc>[95;6u', ':FzfLua commands<CR>')
+map('n', '<Esc>[96;6u', ':FzfLua live_grep<CR>')
 map('n', '<C-g>', ':FzfLua git_files<CR>')
 map('n', '<Esc>', ":FzfLua buffers<CR>")
 map('n', '<C-p>', ":FzfLua files<CR>")
@@ -78,6 +80,11 @@ map('n', '<C-S-l>', ':vertical resize +5<CR>')  -- Alt+l to increase width
 map('n', '<C-S-j>', ':resize +5<CR>')           -- Alt+j to increase height
 map('n', '<C-S-k>', ':resize -5<CR>')           -- Alt+k to decrease height
 
+map('n', '<Esc>[91;6u', ':vertical resize -5<CR>')  -- Alt+h to decrease width
+map('n', '<Esc>[94;6u', ':vertical resize +5<CR>')  -- Alt+l to increase width
+map('n', '<Esc>[92;6u', ':resize +5<CR>')           -- Alt+j to increase height
+map('n', '<Esc>[93;6u', ':resize -5<CR>')           -- Alt+k to decrease height
+
 -- Tabs
 map('n', 'tn', ':tabnew<CR>')
 map('n', 'tc', ':tabclose<CR>')
@@ -96,7 +103,7 @@ map('n', '<leader>t', ':lua BgToggleSol()<CR>')
 map('n', '<leader>q', ':qa!<CR>')
 
 -- Terminal mappings
-map('n', '<C-S-j>', ':belowright split | terminal<CR>i', { noremap = true }) -- open
+-- map('n', '<C-S-j>', ':belowright split | terminal<CR>i', { noremap = true }) -- open
 map('t', '<Esc>', '<C-\\><C-n>')                                             -- exit
 
 -- Clear search highlighting with <leader> and c
