@@ -10,6 +10,12 @@ require_vim("vim/autocmd.vim")
 require_vim("vim/vcscommand/plugin/vcscommand.vim")
 require_vim("vim/vcscommand/plugin/vcsarc.vim")
 
+vim.g.signify_sign_add               = '█' -- Full block
+vim.g.signify_sign_delete            = '█' -- Full block (will be colored differently)
+vim.g.signify_sign_delete_first_line = '▀' -- Upper half block
+vim.g.signify_sign_change            = '█' -- Full block (will be colored differently)
+vim.g.signify_sign_changedelete      = '▟' -- Quadrant lower right
+
 -- Ensure signify highlights are applied after the color scheme or plugin initialization
 vim.api.nvim_create_autocmd("ColorScheme", {
   pattern = "*",
