@@ -2,6 +2,7 @@
 -- This file exports common LSP functionality to be used by language-specific modules
 
 local M = {}
+local keymaps = require('config.keymaps')
 
 -- General LSP settings and capabilities
 M.capabilities = require('cmp_nvim_lsp').default_capabilities()
@@ -11,32 +12,8 @@ function M.on_attach(client, bufnr)
   -- Enable completion triggered by <c-x><c-o>
   vim.bo[bufnr].omnifunc = 'v:lua.vim.lsp.omnifunc'
 
-  -- Buffer local mappings.
-  -- See `:help vim.lsp.*` for documentation on any of the below functions
-  local opts = { buffer = bufnr, noremap = true, silent = true }
-  vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
-  vim.keymap.set('n', '<C-S-k>', vim.lsp.buf.signature_help, opts) -- Use Ctrl+Shift+K for signature help
-
-  -- Setup which-key for LSP specific keybindings, only if not already done for this buffer
-  if vim.b[bufnr].lsp_which_key_registered then return end
-  vim.b[bufnr].lsp_which_key_registered = true
-
-  local wk = require("which-key")
-  -- Use the new list-based spec for which-key
-
-  wk.add({
-    { '<leader>f',  function() vim.lsp.buf.format { async = true } end,                      desc = "Format" },
-    { '<leader>n',  function() vim.lsp.buf.rename() end,                                     desc = "Rename" },
-    { '<leader>w',  group = 'Workspace' },
-    { '<leader>wa', function() vim.lsp.buf.add_workspace_folder() end,                       desc = "Add Workspace Folder" },
-    { '<leader>wr', function() vim.lsp.buf.remove_workspace_folder() end,                    desc = "Remove Workspace Folder" },
-    { '<leader>wl', function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end, desc = "List Workspace Folders" },
-    { '<leader>ha', "<cmd>FzfLua lsp_code_actions<CR>",                                      desc = "Code Actions" },
-    { 'gr',         "<cmd>FzfLua lsp_references<CR>",                                        desc = "References" },
-    { 'gd',         "<cmd>FzfLua lsp_definitions<CR>",                                       desc = "Definitions" },
-    { 'gD',         "<cmd>FzfLua lsp_type_definitions<CR>",                                  desc = "Type Definitions" },
-    { 'gi',         "<cmd>FzfLua lsp_implementations<CR>",                                   desc = "Implementations" },
-  })
+  -- Apply LSP keybindings from the centralized keymaps module
+  keymaps.setup_lsp_keymaps(client, bufnr)
 
   -- Disable hover for ruff if pyright/pylsp is also attached (preference)
   if client.name == 'ruff' then
