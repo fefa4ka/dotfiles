@@ -37,14 +37,6 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 
 })
 
--- vim.api.nvim_create_autocmd("SessionLoadPost", {
---   callback = function()
--- --    vim.cmd(":SLoad" . GetUniqueSessionName() . "<CR>")
---
---     vim.cmd("doautocmd DirChanged")
---     vim.cmd("doautocmd VimResized")
---   end
--- })
 vim.api.nvim_create_autocmd("VimEnter", {
   callback = function()
     require("dropbar").setup()
