@@ -4,10 +4,10 @@ require('core.utils')
 -- Load all configuration
 require('config.init')
 
--- Load vim configuration files
+-- Load Lua configuration files
+require('config.layout')
+require('config.autocmd')
 require_vim("vim/netrw.vim")
-require_vim("vim/layout.vim")
-require_vim("vim/autocmd.vim")
 require_vim("vim/vcscommand/plugin/vcscommand.vim")
 require_vim("vim/vcscommand/plugin/vcsarc.vim")
 
