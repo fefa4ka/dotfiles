@@ -2,5 +2,5 @@
 require("config.options")  -- General Neovim options
 require("config.keybindings")  -- Key mappings
 require("config.lazy")     -- Plugin manager setup
-require("config.ui")       -- UI related settings
+require("config.ui").setup()  -- UI related settings
 require("config.which-key")  -- Which-key configuration
