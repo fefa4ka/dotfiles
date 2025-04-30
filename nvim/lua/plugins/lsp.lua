@@ -4,7 +4,7 @@ return {
   {
     'neovim/nvim-lspconfig',
     config = function()
-      require('config.lsp')
+      require('config.lsp.init')
     end,
     dependencies = {
       -- Add treesitter as a dependency to ensure it's loaded before LSP
