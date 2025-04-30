@@ -5,7 +5,11 @@ return {
     'neovim/nvim-lspconfig',
     config = function()
       require('config.lsp')
-    end
+    end,
+    dependencies = {
+      -- Add treesitter as a dependency to ensure it's loaded before LSP
+      'nvim-treesitter/nvim-treesitter',
+    }
   },
   { 'ranjithshegde/ccls.nvim' },
   { -- Autocomplete framework
