@@ -63,10 +63,10 @@ map('n', 'gl', '<cmd>lua vim.diagnostic.open_float()<cr>')
 
 -- Panes
 -- #jo
-map('n', '<C-_>', '<C-W>s') -- Horizontal split with Ctrl+_
-map('n', '<C-->', '<C-W>s') -- Horizontal split with Ctrl+-
+map('n', '<C-_>', '<C-W>s')       -- Horizontal split with Ctrl+_
+map('n', '<C-->', '<C-W>s')       -- Horizontal split with Ctrl+-
 map('n', '<Esc>[45;5u', '<C-W>s') -- Horizontal split with remapped Ctrl+-
-map('n', '<C-\\>', '<C-W>v') -- Vertical split with Ctrl+\
+map('n', '<C-\\>', '<C-W>v')      -- Vertical split with Ctrl+\
 map('n', '<C-q>', '<C-W>q')
 map('n', '<C-k>', '<C-W>k')
 map('n', '<C-j>', '<C-W>j')
@@ -75,15 +75,11 @@ map('n', '<C-l>', '<C-W>l')
 map('n', 'W', ':pclose<CR>')
 
 -- Resize panes
-map('n', '<C-S-h>', ':vertical resize -5<CR>')  -- Alt+h to decrease width
-map('n', '<C-S-l>', ':vertical resize +5<CR>')  -- Alt+l to increase width
-map('n', '<C-S-j>', ':resize +5<CR>')           -- Alt+j to increase height
-map('n', '<C-S-k>', ':resize -5<CR>')           -- Alt+k to decrease height
-
-map('n', '<Esc>[91;6u', ':vertical resize -5<CR>')  -- Alt+h to decrease width
-map('n', '<Esc>[94;6u', ':vertical resize +5<CR>')  -- Alt+l to increase width
-map('n', '<Esc>[92;6u', ':resize +5<CR>')           -- Alt+j to increase height
-map('n', '<Esc>[93;6u', ':resize -5<CR>')           -- Alt+k to decrease height
+-- Don't work in kitty, but works in alacritty
+map('n', '<C-S-h>', ':vertical resize -5<CR>')
+map('n', '<C-S-l>', ':vertical resize +5<CR>')
+map('n', '<C-S-j>', ':resize +5<CR>')
+map('n', '<C-S-k>', ':resize -5<CR>')
 
 -- Tabs
 map('n', 'tn', ':tabnew<CR>')
@@ -104,7 +100,7 @@ map('n', '<leader>q', ':qa!<CR>')
 
 -- Terminal mappings
 -- map('n', '<C-S-j>', ':belowright split | terminal<CR>i', { noremap = true }) -- open
-map('t', '<Esc>', '<C-\\><C-n>')                                             -- exit
+map('t', '<Esc>', '<C-\\><C-n>') -- exit
 
 -- Clear search highlighting with <leader> and c
 map('n', '<leader>c', ':nohl<CR>')
