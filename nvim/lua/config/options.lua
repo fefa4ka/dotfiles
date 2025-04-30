@@ -19,16 +19,15 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 -- Other common options
-opt.number = true         -- Show line numbers
-opt.relativenumber = true -- Show relative line numbers
-opt.wrap = false          -- Disable line wrap
 opt.swapfile = false      -- Don't use swapfile
 opt.backup = false        -- Don't create backup files
 opt.undofile = true       -- Enable persistent undo
 opt.ignorecase = true     -- Ignore case when searching
 opt.smartcase = true      -- Don't ignore case with capitals
-opt.termguicolors = true  -- True color support
 opt.scrolloff = 8         -- Lines of context
 opt.sidescrolloff = 8     -- Columns of context
 opt.splitright = true     -- Put new windows right of current
 opt.splitbelow = true     -- Put new windows below current
+opt.clipboard = 'unnamed' -- Use system clipboard
+opt.timeoutlen = 300      -- Time to wait for a mapped sequence to complete
+opt.virtualedit = 'all'   -- Allow cursor to move where there is no text

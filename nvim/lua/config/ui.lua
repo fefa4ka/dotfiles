@@ -1,27 +1,23 @@
-local o = vim.o
+local opt = vim.opt
 local hop = require('hop')
 
-o.timeoutlen = 300
-o.swapfile = false
-o.clipboard = 'unnamed'
+-- UI appearance settings
+opt.number = true         -- Show line numbers
+opt.relativenumber = true -- Show relative line numbers
+opt.wrap = false          -- Disable line wrap
+opt.termguicolors = true  -- True color support
 
-o.number = true
-o.relativenumber = true
-
--- Source ~/.config/theme
-
--- Set highlight for normal mode
--- Check if 'termguicolors' option is supported
+-- Terminal color support
 if vim.fn.exists('+termguicolors') == 1 then
-  -- Enable 'termguicolors' option
   vim.cmd('let &t_8f = "<Esc>[38;2;%lu;%lu;%lum"')
   vim.cmd('let &t_8b = "<Esc>[48;2;%lu;%lu;%lum"')
-  vim.cmd('set termguicolors')
 end
 
+-- Theme settings
 vim.cmd('colorscheme gruvbox')
 vim.cmd('hi normal guibg=none ctermbg=none')
 
+-- Hop plugin configuration
 hop.setup({ keys = 'etovxqpdygfblzhckisuran', jump_on_sole_occurrence = false })
 
 
@@ -36,10 +32,7 @@ vim.g.show_spaces_that_precede_tabs = 1
 vim.g.better_whitespace_enabled = 0
 
 
--- nowrap
-vim.opt.wrap = false
-
-vim.opt.virtualedit = 'all'
+-- These settings are now in options.lua
 
 -- Plugin: Startify
 -- Show startify when there is no opened buffers

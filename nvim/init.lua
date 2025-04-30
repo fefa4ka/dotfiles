@@ -4,6 +4,7 @@ require('core.utils')
 -- Load all configuration
 require('config.init')
 
+-- Load vim configuration files
 require_vim("vim/netrw.vim")
 require_vim("vim/layout.vim")
 require_vim("vim/autocmd.vim")
