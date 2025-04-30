@@ -1,7 +1,7 @@
 return {{
     "David-Kunz/gen.nvim",
     opts = {
-        model = "qwq:32b-preview-q4_K_M", -- The default model to use.
+        model = "qwq:latest", -- The default model to use.
         host = "localhost", -- The host running the Ollama service.
         port = "11434", -- The port on which the Ollama service is listening.
         quit_map = "q", -- set keymap for close the response window
