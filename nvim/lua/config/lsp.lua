@@ -176,35 +176,14 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
--- Autocommand for organizing imports on save (Python example using ruff)
 vim.api.nvim_create_autocmd("BufWritePre", {
-  group = vim.api.nvim_create_augroup('UserLspBufWritePre', { clear = true }),
-  pattern = "*.py", -- Only for Python files
-  callback = function(args)
-    -- Check if ruff is attached to the buffer
-    local ruff_client = vim.lsp.get_clients({ name = 'ruff', bufnr = args.buf })[1]
-    if not ruff_client then return end -- Only run if ruff is active
-
-    local params = vim.lsp.util.make_range_params()
-    params.context = { only = { "source.organizeImports" } }
-
-    local result = ruff_client.request_sync("textDocument/codeAction", params, 1000) -- Timeout 1 sec
-    if not result or vim.tbl_isempty(result) then return end
-
-    local actions = {}
-    for _, res in pairs(result) do
-      if res.edit then
-        vim.list_extend(actions, vim.lsp.util.transform_diagnostics(res))
-      end
-    end
-
-    if #actions > 0 then
-      vim.lsp.util.apply_text_edits(actions[1].edit.changes[params.textDocument.uri], args.buf,
-        ruff_client.offset_encoding)
-      vim.api.nvim_buf_call(args.buf, function()
-        vim.cmd("noautocmd write") -- Save the buffer without triggering BufWritePre again
-      end)
-    end
+  buffer = buffer,
+  callback = function()
+    vim.lsp.buf.code_action({
+      context = { only = { "source.organizeImports" } },
+      apply = true,
+    })
+    vim.wait(100)
   end,
 })
 
