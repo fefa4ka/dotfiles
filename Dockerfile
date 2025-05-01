@@ -11,14 +11,12 @@ RUN apt-get update && \
     git \
     curl \
     build-essential \
-    zsh \
     python3 \
     python3-pip \
     nodejs \
     npm \
     # Add any other essential system packages your deploy script *always* needs
     # For example, if fzf is always needed for basic setup:
-    fzf \
     # Clean up apt cache
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
@@ -45,4 +43,4 @@ WORKDIR ${HOME}/dotfiles
 
 # Default command to run the deploy script non-interactively
 # Pipes 'yes' to automatically answer prompts in the script
-CMD ["/bin/zsh", "-c", "yes | ./deploy"]
+CMD ["/bin/sh", "-c", "yes | ./deploy"]
