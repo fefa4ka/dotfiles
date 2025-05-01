@@ -1,164 +1,420 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
-prompt_install() {
-	echo -n "$1 is not installed. Would you like to install it? (y/n) " >&2
-	old_stty_cfg=$(stty -g)
-	stty raw -echo
-	answer=$( while ! head -c 1 | grep -i '[ny]' ;do true ;done )
-	stty $old_stty_cfg && echo
-	if echo "$answer" | grep -iq "^y" ;then
-		# This could def use community support
-		if [ -x "$(command -v apt-get)" ]; then
-			sudo apt install $1 -y
+# Exit immediately if a command exits with a non-zero status.
+set -e
+# Treat unset variables as an error when substituting.
+set -u
+# Cause pipelines to fail if any command fails, not just the last one.
+set -o pipefail
 
-		elif [ -x "$(command -v brew)" ]; then
-			brew install $1
+# --- Configuration ---
+DOTFILES_DIR=$(cd "$(dirname "$0")" && pwd)
+NVIM_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/nvim"
+NVIM_DATA_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/nvim"
 
-		elif [ -x "$(command -v pkg)" ]; then
-			sudo pkg install $1
+# List of essential packages
+REQUIRED_PACKAGES="zsh neovim tmux tmuxinator lnav fzf"
+# List of nice-to-have packages
+NICE_TO_HAVE_PACKAGES="exa bat alacritty thefuck tldr lazygit"
+# List of global npm packages
+NPM_GLOBALS="yarn dockerfile-language-server-nodejs"
 
-		elif [ -x "$(command -v pacman)" ]; then
-			sudo pacman -S $1
+# --- Helper Functions ---
 
-		else
-			if echo "$OSTYPE" | grep -iq "linux-gnu"; then
-				echo "ok"
-			elif echo "$OSTYPE" | grep -iq "darwin"; then
-				sh -c "$(curl -fsSL https://raw.githubusercontent.com/guarinogabriel/mac-cli/master/mac-cli/tools/install)"
-				mac update
-				brew install mas
-				brew install alacritty
-				mas lucky Vimari
-				mas lucky HazeOver
-				brew install koekeishiya/formulae/yabai
-				brew install koekeishiya/formulae/skhd
-				brew install cmacrae/formulae/spacebar
-				# Install cask repository
-				brew tap caskroom/fonts
-
-				# Install fonts
-				brew cask install font-fira-code
-				brew cask install font-firacode-nerd-font
-				brew cask install font-firacode-nerd-font-mono
-				brew cask install font-hack-nerd-font
-				brew cask install font-hack-nerd-font-mono
-				brew cask install font-sourcecodepro-nerd-font
-				brew cask install font-sourcecodepro-nerd-font-mono
-			fi
-			echo "I'm not sure what your package manager is! Please install $1 on your own and run this deploy script again. Tests for package managers are in the deploy script you just ran starting at line 13. Feel free to make a pull request at https://github.com/parth/dotfiles :)"
-		fi
-	fi
+# Check if a command exists
+command_exists() {
+	command -v "$1" >/dev/null 2>&1
 }
 
-check_for_software() {
-	echo "Checking to see if $1 is installed"
-	if ! [ -x "$(command -v $1)" ]; then
-		prompt_install $1
-	else
-		echo "$1 is installed."
-	fi
-}
-
-check_default_shell() {
-	if [ -z "${SHELL##*zsh*}" ] ;then
-			echo "Default shell is zsh."
-	else
-		echo -n "Default shell is not zsh. Do you want to chsh -s \$(which zsh)? (y/n)"
+# Prompt the user for a yes/no answer
+prompt_yes_no() {
+	local prompt_message="$1"
+	local answer
+	while true; do
+		printf "%s (y/n) " "$prompt_message" >&2
+		# Read a single character
 		old_stty_cfg=$(stty -g)
 		stty raw -echo
-		answer=$( while ! head -c 1 | grep -i '[ny]' ;do true ;done )
-		stty $old_stty_cfg && echo
-		if echo "$answer" | grep -iq "^y" ;then
-			chsh -s $(which zsh)
-		else
-			echo "Warning: Your configuration won't work properly. If you exec zsh, it'll exec tmux which will exec your default shell which isn't zsh."
+		answer=$(head -c 1)
+		stty "$old_stty_cfg"
+		printf "\n" # Move to the next line after input
+
+		case "$answer" in
+			[Yy]) return 0 ;; # Success (Yes)
+			[Nn]) return 1 ;; # Failure (No)
+			*) printf "Invalid input. Please enter y or n.\n" >&2 ;;
+		esac
+	done
+}
+
+# Detect the system's package manager
+get_package_manager() {
+	if command_exists apt-get; then
+		echo "apt-get"
+	elif command_exists brew; then
+		echo "brew"
+	elif command_exists pkg; then
+		echo "pkg"
+	elif command_exists pacman; then
+		echo "pacman"
+	elif command_exists dnf; then
+		echo "dnf"
+	elif command_exists yum; then
+		echo "yum"
+	elif command_exists zypper; then
+		echo "zypper"
+	else
+		echo "" # No known package manager found
+	fi
+}
+
+# Install a package using the detected package manager
+install_package() {
+	local package_name="$1"
+	local pm="$2"
+	local install_cmd=""
+
+	printf "Attempting to install %s using %s...\n" "$package_name" "$pm"
+
+	case "$pm" in
+		apt-get) install_cmd="sudo apt-get install -y $package_name" ;;
+		brew)    install_cmd="brew install $package_name" ;;
+		pkg)     install_cmd="sudo pkg install -y $package_name" ;;
+		pacman)  install_cmd="sudo pacman -S --noconfirm $package_name" ;;
+		dnf)     install_cmd="sudo dnf install -y $package_name" ;;
+		yum)     install_cmd="sudo yum install -y $package_name" ;;
+		zypper)  install_cmd="sudo zypper install -y $package_name" ;;
+		*)
+			printf "Error: Unsupported package manager '%s'. Cannot install '%s'.\n" "$pm" "$package_name" >&2
+			return 1
+			;;
+	esac
+
+	if $install_cmd; then
+		printf "%s installed successfully.\n" "$package_name"
+	else
+		printf "Error: Failed to install %s.\n" "$package_name" >&2
+		return 1
+	fi
+}
+
+# Install macOS specific extras (fonts, apps)
+install_macos_extras() {
+	if [[ "$(uname)" == "Darwin" ]] && command_exists brew; then
+		printf "Installing macOS specific extras...\n"
+
+		# Consider making these optional via prompt_yes_no
+		if prompt_yes_no "Install mac-cli, mas, and common GUI apps (Vimari, HazeOver)?"; then
+			sh -c "$(curl -fsSL https://raw.githubusercontent.com/guarinogabriel/mac-cli/master/mac-cli/tools/install)" || printf "Warning: mac-cli install failed.\n" >&2
+			mac update || printf "Warning: mac update failed.\n" >&2
+			brew install mas || printf "Warning: mas install failed.\n" >&2
+			mas lucky Vimari || printf "Warning: Vimari install failed.\n" >&2
+			mas lucky HazeOver || printf "Warning: HazeOver install failed.\n" >&2
+		fi
+
+		if prompt_yes_no "Install window manager tools (yabai, skhd, spacebar)?"; then
+			brew install koekeishiya/formulae/yabai || printf "Warning: yabai install failed.\n" >&2
+			brew install koekeishiya/formulae/skhd || printf "Warning: skhd install failed.\n" >&2
+			brew install cmacrae/formulae/spacebar || printf "Warning: spacebar install failed.\n" >&2
+		fi
+
+		if prompt_yes_no "Install Nerd Fonts (FiraCode, Hack, SourceCodePro)?"; then
+			brew tap homebrew/cask-fonts || printf "Warning: Tapping cask-fonts failed.\n" >&2
+			local fonts="font-fira-code-nerd-font font-hack-nerd-font font-source-code-pro-nerd-font"
+			for font in $fonts; do
+				brew install --cask "$font" || printf "Warning: Failed to install %s\n" "$font" >&2
+			done
 		fi
 	fi
 }
 
-echo "We're going to do the following:"
-echo "1. Check to make sure you have zsh, vim, and tmux installed"
-echo "2. We'll help you install them if you don't"
-echo "3. We're going to check to see if your default shell is zsh"
-echo "4. We'll try to change it if it's not"
+# Check and optionally install dependencies
+check_dependencies() {
+	local pm
+	pm=$(get_package_manager)
+	if [ -z "$pm" ]; then
+		printf "Warning: Could not detect a supported package manager (apt, brew, pkg, pacman, dnf, yum, zypper).\n" >&2
+		printf "Please install the following packages manually: %s %s\n" "$REQUIRED_PACKAGES" "$NICE_TO_HAVE_PACKAGES" >&2
+		if ! prompt_yes_no "Continue anyway?"; then
+			exit 1
+		fi
+		return # Skip installation attempts if no PM
+	fi
 
-echo "Let's get started? (y/n)"
-old_stty_cfg=$(stty -g)
-stty raw -echo
-answer=$( while ! head -c 1 | grep -i '[ny]' ;do true ;done )
-stty $old_stty_cfg
-if echo "$answer" | grep -iq "^y" ;then
-	echo
-else
-	echo "Quitting, nothing was changed."
-	exit 0
-fi
+	printf "Detected package manager: %s\n" "$pm"
+	local all_packages="$REQUIRED_PACKAGES $NICE_TO_HAVE_PACKAGES"
+	local package
+
+	for package in $all_packages; do
+		printf "\nChecking for %s...\n" "$package"
+		if ! command_exists "$package"; then
+			if prompt_yes_no "'$package' is not installed. Install it now?"; then
+				install_package "$package" "$pm" || printf "Warning: Installation of %s might have failed. Continuing...\n" "$package" >&2
+			else
+				# Check if it was a required package
+				case " $REQUIRED_PACKAGES " in
+					*" $package "*)
+						printf "Error: Required package '%s' was not installed. Aborting.\n" "$package" >&2
+						exit 1
+						;;
+					*)
+						printf "Skipping optional package '%s'.\n" "$package"
+						;;
+				esac
+			fi
+		else
+			printf "%s is already installed.\n" "$package"
+		fi
+	done
+
+	# Install macOS extras if on macOS and brew is available
+	install_macos_extras
+}
+
+# Check if the default shell is zsh and prompt to change if not
+check_default_shell() {
+	local current_shell
+	current_shell=$(basename "$SHELL")
+	printf "\nChecking default shell...\n"
+
+	if [ "$current_shell" = "zsh" ]; then
+		printf "Default shell is already zsh.\n"
+	else
+		printf "Default shell is '%s', not zsh.\n" "$current_shell"
+		if command_exists zsh; then
+			local zsh_path
+			zsh_path=$(command -v zsh)
+			if prompt_yes_no "Change default shell to zsh ($zsh_path)?"; then
+				if chsh -s "$zsh_path"; then
+					printf "Default shell changed. Please log out and back in for it to take effect.\n"
+				else
+					printf "Error: Failed to change default shell with chsh.\n" >&2
+					printf "You may need to do this manually.\n"
+				fi
+			else
+				printf "Warning: Keeping '%s' as the default shell.\n" "$current_shell"
+				printf "Your configuration might not work as expected.\n"
+			fi
+		else
+			printf "Warning: zsh command not found. Cannot change default shell.\n" >&2
+		fi
+	fi
+}
+
+# Backup existing dotfiles
+backup_dotfiles() {
+	printf "\n"
+	# Corrected the prompt message to accurately reflect potential init.lua backup
+	if prompt_yes_no "Backup existing dotfiles (~/.zshrc, ~/.tmux.conf, %s or init.lua)?\n(Moves them to *.backup_YYYYMMDDHHMMSS)" "$NVIM_CONFIG_DIR/init.vim"; then
+		local timestamp
+		timestamp=$(date +%Y%m%d%H%M%S)
+		local backup_suffix=".backup_$timestamp"
+		printf "Backing up existing files...\n"
+		# Use -f to avoid errors if files don't exist, || true is redundant with set -e but harmless
+		mv -f "$HOME/.zshrc" "$HOME/.zshrc$backup_suffix" 2>/dev/null || true
+		mv -f "$HOME/.tmux.conf" "$HOME/.tmux.conf$backup_suffix" 2>/dev/null || true
+		# Check for both init.vim and init.lua
+		if [ -f "$NVIM_CONFIG_DIR/init.vim" ]; then
+			mv -f "$NVIM_CONFIG_DIR/init.vim" "$NVIM_CONFIG_DIR/init.vim$backup_suffix" || true
+			printf "Backed up %s\n" "$NVIM_CONFIG_DIR/init.vim"
+		elif [ -f "$NVIM_CONFIG_DIR/init.lua" ]; then
+			mv -f "$NVIM_CONFIG_DIR/init.lua" "$NVIM_CONFIG_DIR/init.lua$backup_suffix" || true
+			printf "Backed up %s\n" "$NVIM_CONFIG_DIR/init.lua"
+		fi
+		printf "Backup complete (if files existed).\n"
+	else
+		printf "Skipping backup of existing dotfiles.\n"
+	fi
+}
+
+# Create symbolic links
+setup_symlinks() {
+	printf "\nSetting up symbolic links...\n"
+
+	# Ensure target directories exist
+	mkdir -p "$NVIM_CONFIG_DIR"
+
+	# Use ln -snf: s=symbolic, n=no-dereference (treat existing symlink as file), f=force (overwrite)
+	ln -snf "$DOTFILES_DIR/zsh/zshrc_manager.sh" "$HOME/.zshrc"
+	printf "Linked %s -> %s\n" "$HOME/.zshrc" "$DOTFILES_DIR/zsh/zshrc_manager.sh"
+
+	# Link the entire nvim config directory instead of just init.vim
+	# This assumes your nvim config is structured within dotfiles/nvim/
+	# Adjust if your structure is different (e.g., dotfiles/nvim/init.vim only)
+	# If you only want init.vim linked:
+	# ln -snf "$DOTFILES_DIR/nvim/init.vim" "$NVIM_CONFIG_DIR/init.vim"
+	# printf "Linked %s -> %s\n" "$NVIM_CONFIG_DIR/init.vim" "$DOTFILES_DIR/nvim/init.vim"
+	# If you want the whole directory:
+	ln -snf "$DOTFILES_DIR/nvim" "$NVIM_CONFIG_DIR"
+	printf "Linked %s -> %s\n" "$NVIM_CONFIG_DIR" "$DOTFILES_DIR/nvim"
 
 
-# Minimal
-check_for_software zsh
-echo
-check_for_software neovim
-echo
-check_for_software tmux
-echo
-check_for_software tmuxinator
-echo
-check_for_software lnav
-echo
-check_for_software fzf
-echo
+	ln -snf "$DOTFILES_DIR/tmux/tmux.conf" "$HOME/.tmux.conf"
+	printf "Linked %s -> %s\n" "$HOME/.tmux.conf" "$DOTFILES_DIR/tmux/tmux.conf"
 
-# Pretty basic
-check_for_software exa
-echo
-check_for_software bat
-echo
+	printf "Symbolic links created.\n"
+}
 
-# Terminal
-check_for_software alacritty
-echo
+# Install Vim/Neovim plugins (using vim-plug)
+install_vim_plugins() {
+	printf "\nInstalling Neovim plugins (vim-plug)...\n"
+	local plug_vim_path="$NVIM_DATA_DIR/site/autoload/plug.vim"
 
-# Useful tools
-check_for_software thefuck
-echo
-check_for_software tldr
-echo
-check_for_software lazygit
-echo
+	if [ ! -f "$plug_vim_path" ]; then
+		printf "Downloading vim-plug...\n"
+		if curl -fLo "$plug_vim_path" --create-dirs \
+			https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim; then
+			printf "vim-plug downloaded successfully.\n"
+		else
+			printf "Error: Failed to download vim-plug.\n" >&2
+			# Decide if this is fatal
+			# exit 1
+			return 1 # Indicate failure
+		fi
+	else
+		printf "vim-plug already exists.\n"
+	fi
 
-check_default_shell
+	# Check if nvim is available before running PlugInstall
+	if command_exists nvim; then
+		printf "Running :PlugInstall in Neovim (headless)...\n"
+		# Run PlugInstall non-interactively.
+		# Use --headless to avoid UI, +qa to quit after commands
+		if nvim --headless "+PlugInstall" +qa; then
+			printf "Neovim plugin installation command executed.\n"
+		else
+			printf "Warning: Neovim :PlugInstall command failed or exited with non-zero status.\n" >&2
+			printf "Check Neovim configuration or run ':PlugInstall' manually.\n"
+		fi
+	else
+		printf "Warning: 'nvim' command not found. Cannot run :PlugInstall automatically.\n" >&2
+		printf "Please run Neovim and execute ':PlugInstall' manually.\n"
+	fi
+}
 
-echo
-echo -n "Would you like to backup your current dotfiles? (y/n) "
-old_stty_cfg=$(stty -g)
-stty raw -echo
-answer=$( while ! head -c 1 | grep -i '[ny]' ;do true ;done )
-stty $old_stty_cfg
-if echo "$answer" | grep -iq "^y" ;then
-	mv ~/.zshrc ~/.zshrc.old
-	mv ~/.tmux.conf ~/.tmux.conf.old
-	mv ~/.config/nvim/init.vim ~/.config/nvim/init.vim.old
-else
-	echo -e "\nNot backing up old dotfiles."
-fi
+# Install global Node.js packages
+install_node_globals() {
+	printf "\nChecking for Node.js/npm...\n"
+	if ! command_exists npm; then
+		printf "npm not found. Attempting to install Node.js (which includes npm)...\n"
+		local pm
+		pm=$(get_package_manager)
+		if [ -n "$pm" ]; then
+			# Package names differ across managers
+			local node_pkg="nodejs" # Default for apt, pacman
+			if [ "$pm" = "brew" ]; then node_pkg="node"; fi
+			if [ "$pm" = "pkg" ]; then node_pkg="node"; fi # FreeBSD ports often use 'node'
+			# Add more specific names for dnf/yum/zypper if needed
 
-git submodule update --init --recursive
+			# Prompt before installing node/npm
+			if prompt_yes_no "Install Node.js (includes npm) using $pm?"; then
+				install_package "$node_pkg" "$pm" || {
+					printf "Error: Failed to install Node.js/npm. Cannot install global packages.\n" >&2
+					return 1
+				}
+				# Special case for some Linux distros needing 'npm' package separately
+				if [ "$pm" = "apt-get" ] && ! command_exists npm; then
+					install_package "npm" "$pm" || true # Try installing npm separately
+				fi
+			else
+				printf "Skipping Node.js/npm installation.\n"
+				return 1 # Cannot proceed without npm
+			fi
 
-brew install npm 
-npm install --global yarn
-# Vim Plugins
-sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
-       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 
-# ccls
-# bash lang
-npm install -g dockerfile-language-server-nodejs
+			# Re-check if npm is now available
+			if ! command_exists npm; then
+				printf "Error: npm still not found after installation attempt.\n" >&2
+				return 1
+			fi
+		else
+			printf "Error: Cannot automatically install Node.js/npm without a detected package manager.\n" >&2
+			printf "Please install Node.js and npm manually and re-run the script.\n"
+			return 1
+		fi
+	fi
 
-printf "source '$HOME/dotfiles/zsh/zshrc_manager.sh'" > ~/.zshrc
-printf "so $HOME/dotfiles/nvim/init.vim" > ~/.config/nvim/init.vim
-printf "source-file $HOME/dotfiles/tmux/tmux.conf" > ~/.tmux.conf
+	printf "npm found. Installing global packages: %s\n" "$NPM_GLOBALS"
+	local pkg
+	local failed_packages=""
+	for pkg in $NPM_GLOBALS; do
+		# Use npm list -g --depth=0 to check if already installed
+		if npm list -g --depth=0 "$pkg" > /dev/null 2>&1; then
+			printf "'%s' is already installed globally.\n" "$pkg"
+		else
+			printf "Installing global npm package '%s'...\n" "$pkg"
+			# Use sudo only if not running as root already
+			local npm_install_cmd="npm install --global $pkg"
+			if [ "$(id -u)" -ne 0 ]; then
+				npm_install_cmd="sudo $npm_install_cmd"
+			fi
+
+			if $npm_install_cmd; then
+				printf "'%s' installed successfully.\n" "$pkg"
+			else
+				printf "Error: Failed to install global npm package '%s'.\n" "$pkg" >&2
+				failed_packages="$failed_packages $pkg"
+			fi
+		fi
+	done
+
+	if [ -n "$failed_packages" ]; then
+		printf "Warning: Failed to install the following global npm packages:%s\n" "$failed_packages" >&2
+		# Decide if this is fatal or just a warning
+		# return 1 # Make it fatal
+		printf "Continuing despite failed global package installation(s).\n" >&2
+	fi
+}
 
 
-echo
-echo "Please log out and log back in for default shell to be initialized."
+# --- Main Execution ---
+
+main() {
+	printf "Dotfiles Deployment Script\n"
+	printf "==========================\n"
+	printf "This script will:\n"
+	printf "1. Check for and offer to install necessary software (%s).\n" "$REQUIRED_PACKAGES"
+	printf "2. Check for and offer to install useful software (%s).\n" "$NICE_TO_HAVE_PACKAGES"
+	printf "3. Check if your default shell is zsh and offer to change it.\n"
+	printf "4. Offer to back up existing configuration files.\n"
+	printf "5. Initialize git submodules.\n"
+	printf "6. Set up symbolic links for zsh, tmux, and neovim config directory.\n" # Updated description
+	printf "7. Install Neovim plugins using vim-plug.\n"
+	printf "8. Install global npm packages (%s).\n" "$NPM_GLOBALS"
+	printf "Dotfiles source directory: %s\n" "$DOTFILES_DIR"
+	printf "==========================\n\n"
+
+	if ! prompt_yes_no "Proceed with deployment?"; then
+		printf "Deployment cancelled.\n"
+		exit 0
+	fi
+
+	check_dependencies
+	check_default_shell
+	backup_dotfiles
+
+	printf "\nInitializing git submodules...\n"
+	if git submodule update --init --recursive; then
+		printf "Submodules initialized successfully.\n"
+	else
+		printf "Error: Failed to initialize git submodules.\n" >&2
+		# Consider exiting if submodules are critical
+		# exit 1
+	fi
+
+	setup_symlinks
+	install_vim_plugins || printf "Warning: Neovim plugin installation process reported issues.\n" >&2
+	install_node_globals || printf "Warning: Node global package installation process reported issues.\n" >&2
+
+	printf "\n==========================\n"
+	printf "Deployment process finished.\n"
+	printf "Notes:\n"
+	printf -- "- If your default shell was changed, please **log out and log back in** for it to take effect.\n"
+	printf -- "- If Neovim plugins didn't install correctly, run 'nvim' and execute ':PlugInstall' manually.\n"
+	printf -- "- If Node global packages failed, ensure Node.js/npm are installed correctly and try 'npm install -g <package>' manually (perhaps with sudo).\n"
+	printf -- "- Review any warnings or errors printed above.\n"
+	printf "==========================\n"
+}
+
+# Run the main function
+main
