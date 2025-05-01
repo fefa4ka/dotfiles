@@ -28,8 +28,11 @@ function M.setup_general_keymaps()
 
   -- Replace esc with letters
   map('n', 'jk', 'dd')
+  map('n', 'ол', 'dd')
   map('i', 'jk', '<Esc>')
   map('i', 'kj', '<Esc>')
+  map('i', 'ол', '<Esc>')
+  map('i', 'ло', '<Esc>')
   -- map('i', 'ii', '<0Esc>')
   map('n', '<Esc>', '<nop>')
 
@@ -282,13 +285,13 @@ function M.setup_lsp_keymaps(client, bufnr)
     { 'gd',         "<cmd>FzfLua lsp_definitions<CR>",                                       desc = "Definitions" },
     { 'gD',         "<cmd>FzfLua lsp_type_definitions<CR>",                                  desc = "Type Definitions" },
     { 'gi',         "<cmd>FzfLua lsp_implementations<CR>",                                   desc = "Implementations" },
+    { '<leader>A', ':AiderOpen --no-auto-commits --model anthropic/claude-3-7-sonnet-20250219 --cache-prompts --no-verify-ssl --model-settings-file ~/.aider/.aider.model.settings.yml<CR>', desc = "🤖 Aider" },
   })
 end
 
 -- Initialize all keymaps
 function M.setup()
   M.setup_general_keymaps()
-  M.setup_which_key()
 end
 
 return M
