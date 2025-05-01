@@ -219,8 +219,8 @@ ctrl + shift - 3       : yabai -m space --display 3
 # Move space position
 ctrl + shift - left    : yabai -m space --move prev || yabai -m space --move last
 ctrl + shift - right   : yabai -m space --move next || yabai -m space --move first
-ctrl + shift - h       : yabai -m space --move prev || yabai -m space --move last
-ctrl + shift - l       : yabai -m space --move next || yabai -m space --move first
+# ctrl + shift - h       : yabai -m space --move prev || yabai -m space --move last
+# ctrl + shift - l       : yabai -m space --move next || yabai -m space --move first
 ctrl + shift - q       : yabai -m space --move prev || yabai -m space --move last
 ctrl + shift - w       : yabai -m space --move next || yabai -m space --move first
 

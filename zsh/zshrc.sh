@@ -1,17 +1,12 @@
 # Display a random tip on startup
-if command -v glow >/dev/null; then
-  find ~/dotfiles/tips -type f -print0 | shuf -zn1 | xargs -0 glow
-fi
+# if command -v glow >/dev/null; then
+#   find ~/dotfiles/tips -type f -print0 | shuf -zn1 | xargs -0 glow
+# fi
 
 # Load environment variables and configurations
 source ~/dotfiles/.env
 source ~/.cargo/env
 export WITH_TMUX=false
-
-# Load core libraries
-for lib in ~/dotfiles/zsh/lib/*.zsh; do
-  source $lib
-done
 
 # Load plugins
 source ~/dotfiles/zsh/plugins/oh-my-zsh/lib/key-bindings.zsh
@@ -19,11 +14,11 @@ source ~/dotfiles/zsh/plugins/vi-mode.plugin.zsh
 source ~/dotfiles/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 source ~/dotfiles/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-# Load custom configurations
-source ~/dotfiles/zsh/alias.sh
-source ~/dotfiles/zsh/keybindings.sh
-source ~/dotfiles/zsh/prompt.sh
-source ~/dotfiles/zsh/toolchain.sh
+# Load core libraries
+for lib in ~/dotfiles/zsh/lib/*.zsh; do
+  source $lib
+done
+
 
 # Uncomment to enable these features
 #source ~/.local/share/python/bin/activate

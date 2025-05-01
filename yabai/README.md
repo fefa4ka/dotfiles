@@ -29,8 +29,6 @@ This is a configuration for [yabai](https://github.com/koekeishiya/yabai), a til
 - **cmd + ctrl - c**: "**C**alendar" (C for Calendar)
 - **cmd + ctrl - m**: "**M**usic" (M for Music)
 - **cmd + ctrl - b**: "**B**rowser UI" (Open WebUI)
-- **cmd - space**: "**Space** to browse" (browser)
-- **alt - space**: "**Space** for terminal" (console)
 
 ### Display Navigation
 - **ctrl - [1-3]**: "**C**ontrol which display" (1st, 2nd, 3rd)

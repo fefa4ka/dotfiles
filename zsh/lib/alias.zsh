@@ -37,10 +37,10 @@ if command -v exa &>/dev/null; then
 fi
 
 # Find files by name (case insensitive)
-ff() { find . -type f -iname "*$1*" -print; }
+# ff() { find . -type f -iname "*$1*" -print; }
 
 # Find directories by name (case insensitive)
-fd() { find . -type d -iname "*$1*" -print; }
+# fd() { find . -type d -iname "*$1*" -print; }
 
 # Copy file contents to clipboard
 copy() { cat "$1" | pbcopy; }
@@ -114,7 +114,7 @@ alias console="yc compute instance list --format json | jq '.[] | select((.name 
 #------------------------------------------------------------------------------
 # Aider with model selection using fzf
 aider-select() {
-  local model=$(yq '.[].name' ~/.aider/.aider.model.settings.yml | fzf --height 40% --border)
+  local model=$(yq '.[].name' ~/.aider/.aider.model.settings.yml | grep -v extra_params | fzf --height 40% --border)
   if [[ -n $model ]]; then
     aider --model "$model" --cache-prompts --no-verify-ssl --env ~/.aider/.env --model-settings-file ~/.aider/.aider.model.settings.yml "$@"
   else
@@ -162,7 +162,7 @@ function smart_diff() {
 
 function smart_log() {
   if is_arc_repo; then
-    arc log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit "$@"
+    arc log --graph --oneline "$@"
   elif is_git_repo; then
     git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit "$@"
   else

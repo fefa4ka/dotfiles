@@ -72,7 +72,6 @@ yabai -m rule --add app="^Mail$" space=4
 yabai -m rule --add app="^System Settings$" manage=off
 yabai -m rule --add app="^System Information$" manage=off
 yabai -m rule --add app="^Activity Monitor$" manage=off
-yabai -m rule --add app="^Console$" manage=off
 yabai -m rule --add app="^Disk Utility$" manage=off
 yabai -m rule --add app="^System Preferences$" manage=off
 
@@ -92,7 +91,6 @@ yabai -m rule --add app="^Dictionary$" manage=off
 yabai -m rule --add app="^Telephone" sticky=on manage=off
 yabai -m rule --add app="^eqMac$" manage=off
 yabai -m rule --add app="^VirtualBox$" manage=off
-yabai -m rule --add app="^Preview$" manage=off
 yabai -m rule --add app="^QuickTime Player$" manage=off
 yabai -m rule --add app="^Font Book$" manage=off
 

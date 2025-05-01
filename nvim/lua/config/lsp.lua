@@ -37,4 +37,5 @@ vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
 -- Load snippets (example using luasnip with vscode snippets)
 require('luasnip.loaders.from_vscode').lazy_load()
 
+
 return M

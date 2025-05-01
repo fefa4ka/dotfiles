@@ -1,0 +1,18 @@
+#!/usr/bin/env sh
+
+spacebar -m config position           top
+spacebar -m config height             32
+spacebar -m config display            main
+spacebar -m config title              off
+spacebar -m config spacing_left       0
+spacebar -m config spacing_right      0
+spacebar -m config text_font          "FiraCode Nerd Font:Retina:13.0"
+spacebar -m config icon_font          "FiraCode Nerd Font:Retina:15.0"
+spacebar -m config background_color   0xff282828
+spacebar -m config foreground_color   0xffebdbb2
+spacebar -m config clock_icon_color            0xffcc241d
+spacebar -m config space_icon_strip   I⠀ II⠀ III⠀ IV⠀ V⠀ VI⠀ VII⠀ VIII⠀ IX⠀ X⠀
+spacebar -m config clock_icon         "_　"
+spacebar -m config clock_format       "⠀%d %b | %R"
+
+echo "spacebar configuration loaded.."

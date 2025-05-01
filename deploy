@@ -160,6 +160,10 @@ check_dependencies() {
 	fi
 
 	printf "Detected package manager: %s\n" "$pm"
+  if [ "$pm" = "apt-get" ]; then
+    # Update apt-get cache
+    sudo apt-get update
+  fi
 	local all_packages="$REQUIRED_PACKAGES $NICE_TO_HAVE_PACKAGES"
 	local package
 
