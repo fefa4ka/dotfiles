@@ -50,44 +50,61 @@ Personal Neovim setup focused on Lua, Python, C/C++, Bash, CMake, TypeScript/Jav
 
 ## Installation
 
-1.  **Backup:** Backup your existing `~/.config/nvim`.
-2.  **Clone:** `git clone <repository-url> ~/.config/nvim`
-3.  **Launch Neovim:** Plugins should install automatically via `lazy.nvim`. Run `:Lazy sync` if needed.
-4.  **Install Dependencies:** Ensure external dependencies (listed below) are installed.
-5.  **Treesitter:** Run `:TSUpdate` in Neovim.
+1.  **Backup:** Backup your existing `~/.config/nvim` and other relevant dotfiles (`~/.zshrc`, `~/.tmux.conf`).
+2.  **Clone:** `git clone <repository-url> ~/dotfiles` (or your chosen location).
+3.  **Run Deploy Script:** Navigate to the cloned directory and run `./deploy`. This script will:
+    *   Check for and offer to install necessary system packages (Neovim, Zsh, Tmux, fzf, etc.).
+    *   Check for and offer to install common development tools and Neovim dependencies (`ripgrep`, `fd`, `ctags`, `python3`, `shfmt`, `clangd`, etc.).
+    *   Offer to install Node.js/npm if missing.
+    *   Install required global npm packages (including some LSPs like `typescript-language-server`, `bash-language-server`).
+    *   Offer to install Python 3/pip if missing.
+    *   Install required global pip packages (including LSPs like `python-lsp-server`, `ruff-lsp`, `cmake-language-server`, and tools like `aider-chat`).
+    *   Check for `ollama` and remind you to install it manually if needed.
+    *   Offer to back up existing dotfiles.
+    *   Create symbolic links for `nvim`, `zsh`, and `tmux` configurations.
+    *   Attempt to sync Neovim plugins using `lazy.nvim`.
+4.  **Launch Neovim:** If the deploy script didn't sync plugins (e.g., Neovim wasn't installed initially), launch `nvim` and run `:Lazy sync`.
+5.  **Treesitter:** Run `:TSUpdate` in Neovim to install/update parsers.
+6.  **Ollama Model:** If using Ollama, ensure you have pulled the model specified in `lua/plugins/ollama.lua` (e.g., `ollama pull qwq:latest`).
 
 ## Dependencies
 
-### Core Tools
+The `deploy` script attempts to install most dependencies. Manual installation might be required if the script fails or for optional components.
 
-*   **Neovim:** 0.9+ (0.10+ recommended for `dropbar.nvim`)
-*   **Package Manager:** Git
-*   **Font:** A Nerd Font (for icons)
+### Core Tools (Handled by `deploy` script where possible)
+
+*   **Neovim:** 0.9+ (0.10+ recommended)
+*   **Package Manager:** Git (Assumed present)
+*   **Font:** A Nerd Font (Optional install via `deploy` on macOS, manual otherwise)
 *   **Search:** Ripgrep (`rg`), fd (`fd`)
 *   **File Manager:** Vifm
-*   **AI Backend:** Ollama (install with `ollama pull qwq:latest`)
 *   **Code Outline:** Universal Ctags (`ctags`)
 *   **Fuzzy Finder Backend:** fzf
 *   **Syntax Parser:** Treesitter CLI (`tree-sitter`)
-*   **Scripting:** Python 3 (required by some LSPs, `pylsp`, `ruff`, etc.)
+*   **Scripting:** Python 3, pip3
 *   **Shell Formatter:** `shfmt`
+*   **Node.js/npm:** For installing JS/TS LSPs etc.
 
-### Language Servers & Linters (Install via package manager or manually)
+### Language Servers & Linters (Handled by `deploy` script via system packages, npm, or pip)
 
-*   **Python:** `python-lsp-server[all]`, `ruff-lsp`, `mypy` (or `pylsp` which bundles many)
-*   **Lua:** `lua-language-server` (sumneko_lua)
-*   **C/C++:** `clangd`, `ccls` (choose one or both), `clang-format`
-*   **TypeScript/JavaScript:** `typescript`, `typescript-language-server`
-*   **CMake:** `cmake-language-server`
-*   **VimL:** `vim-language-server`
-*   **Bash:** `bash-language-server`
+*   **Python:** `python-lsp-server[all]`, `ruff-lsp`, `mypy` (via pip)
+*   **Lua:** `lua-language-server` (via system package manager)
+*   **C/C++:** `clangd`, `clang-format` (via system package manager)
+    *   *Note:* `ccls` is configured but not installed by the script due to potential build complexities. Install manually if needed.
+*   **TypeScript/JavaScript:** `typescript`, `typescript-language-server` (via npm)
+*   **CMake:** `cmake-language-server` (via pip)
+*   **VimL:** `vim-language-server` (via npm)
+*   **Bash:** `bash-language-server` (via npm)
+
+### AI Tools
+
+*   **Ollama:** **Manual Install Required** from [ollama.com](https://ollama.com/). The `deploy` script will remind you if it's missing. Remember to pull the model (e.g., `ollama pull qwq:latest`).
+*   **Aider:** `aider-chat` (Installed via pip by `deploy` script). Requires separate configuration (API keys or local model setup) for actual use.
+*   **Supermaven:** Requires manual account setup/API key if using the cloud service.
 
 ### Optional / External
 
-*   **Flutter:** Flutter SDK, Dart SDK
-*   **AI Services:**
-    *   Supermaven account/API key (if using the cloud service)
-    *   Aider (`pip install aider-chat`) and potentially an OpenAI API key or compatible local model setup.
+*   **Flutter:** Flutter SDK, Dart SDK (**Manual Install Required**)
 *   **Theme Switching Script:** The `BgToggleSol` function in `lua/core/utils.lua` calls `/Users/fefa4ka/dotfiles/scripts/switch_theme`. Adapt or remove this if you don't use an external script for system-wide theme changes.
 
 ## Keybindings
@@ -116,3 +133,4 @@ Personal Neovim setup focused on Lua, Python, C/C++, Bash, CMake, TypeScript/Jav
     *   `layout.lua`: Keyboard layout mappings (e.g., Russian).
 *   `lua/plugins/`: `lazy.nvim` plugin specifications (grouped by functionality like `lsp.lua`, `ui.lua`, `ollama.lua`).
 *   `vim/`: Legacy Vimscript files (e.g., `netrw.vim`, `vcscommand`).
+*   `deploy`: Shell script to automate installation and setup.

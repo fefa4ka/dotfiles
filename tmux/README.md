@@ -55,23 +55,20 @@ This directory contains my personal tmux configuration files that provide a cust
 
 ## Installation
 
-1. Clone this repository:
-   ```
-   git clone https://github.com/yourusername/tmux-config.git
-   ```
+This configuration is typically managed as part of a larger dotfiles repository.
 
-2. Create symlinks:
-   ```
-   ln -s ~/dotfiles/tmux/tmux.conf ~/.tmux.conf
-   ```
-
-3. Install TPM (Tmux Plugin Manager):
-   ```
-   git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-   ```
-
-4. Start tmux and install plugins:
-   Press `Prefix + I` to install plugins
+1.  **Clone Dotfiles:** Ensure the dotfiles repository containing this tmux configuration is cloned (e.g., to `~/dotfiles`).
+2.  **Run Deploy Script:** Execute the main `deploy` script located in the root of the dotfiles repository. This script handles:
+    *   Installing `tmux` and `tmuxinator` if missing.
+    *   Backing up any existing `~/.tmux.conf`.
+    *   Creating a symbolic link from `~/dotfiles/tmux/tmux.conf` to `~/.tmux.conf`.
+3.  **Install TPM & Plugins:**
+    *   Install TPM (Tmux Plugin Manager) if you haven't already:
+        ```bash
+        git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+        ```
+    *   Launch `tmux`.
+    *   Press `Prefix + I` (Shift+I) to fetch and install plugins defined in `tmux.conf`.
 
 ## Theme Switching
 

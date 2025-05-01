@@ -14,10 +14,12 @@ NVIM_DATA_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/nvim"
 
 # List of essential packages
 REQUIRED_PACKAGES="zsh neovim tmux tmuxinator lnav fzf"
-# List of nice-to-have packages
-NICE_TO_HAVE_PACKAGES="exa bat alacritty thefuck tldr lazygit"
-# List of global npm packages
-NPM_GLOBALS="yarn dockerfile-language-server-nodejs"
+# List of nice-to-have packages (including nvim dependencies)
+NICE_TO_HAVE_PACKAGES="exa bat alacritty thefuck tldr lazygit ripgrep fd-find vifm universal-ctags tree-sitter-cli python3 shfmt lua-language-server clangd clang-format"
+# List of global npm packages (including LSP servers)
+NPM_GLOBALS="yarn dockerfile-language-server-nodejs typescript typescript-language-server vim-language-server bash-language-server"
+# List of global Python pip packages (including LSP servers & tools)
+PIP_GLOBALS="python-lsp-server[all] ruff-lsp mypy cmake-language-server aider-chat"
 
 # --- Helper Functions ---
 
@@ -68,13 +70,29 @@ get_package_manager() {
 	fi
 }
 
-# Install a package using the detected package manager
+# Install a package using the detected package manager, handling variations
 install_package() {
-	local package_name="$1"
+	local pkg_input="$1"
 	local pm="$2"
+	local package_name="$pkg_input" # Default to input name
 	local install_cmd=""
 
-	printf "Attempting to install %s using %s...\n" "$package_name" "$pm"
+	# --- Handle package name variations ---
+	# Add more variations as needed
+	if [ "$pkg_input" = "fd-find" ] && [ "$pm" = "brew" ]; then package_name="fd"; fi
+	if [ "$pkg_input" = "fd-find" ] && [ "$pm" = "pacman" ]; then package_name="fd"; fi
+	if [ "$pkg_input" = "fd-find" ] && [ "$pm" = "pkg" ]; then package_name="fd"; fi # FreeBSD
+	if [ "$pkg_input" = "universal-ctags" ] && [ "$pm" = "apt-get" ]; then package_name="universal-ctags"; fi # Debian/Ubuntu uses this
+	if [ "$pkg_input" = "universal-ctags" ] && [ "$pm" != "apt-get" ]; then package_name="ctags"; fi # Most others use 'ctags' for universal-ctags
+	if [ "$pkg_input" = "tree-sitter-cli" ] && [ "$pm" = "brew" ]; then package_name="tree-sitter"; fi # Brew calls it tree-sitter
+	if [ "$pkg_input" = "python3" ] && [ "$pm" = "pacman" ]; then package_name="python"; fi # Arch uses python
+	if [ "$pkg_input" = "python3" ] && [ "$pm" = "pkg" ]; then package_name="python3"; fi # FreeBSD often needs version suffix, check specific version if needed
+	if [ "$pkg_input" = "lua-language-server" ] && [ "$pm" = "pacman" ]; then package_name="lua-language-server"; fi # Arch package name
+	if [ "$pkg_input" = "lua-language-server" ] && [ "$pm" = "apt-get" ]; then package_name="lua-language-server"; fi # Debian/Ubuntu package name
+	if [ "$pkg_input" = "lua-language-server" ] && [ "$pm" = "brew" ]; then package_name="lua-language-server"; fi # Brew package name
+	# Add more specific names for dnf/yum/zypper if needed, e.g., python3.x
+
+	printf "Attempting to install %s (as %s) using %s...\n" "$pkg_input" "$package_name" "$pm"
 
 	case "$pm" in
 		apt-get) install_cmd="sudo apt-get install -y $package_name" ;;
@@ -85,7 +103,7 @@ install_package() {
 		yum)     install_cmd="sudo yum install -y $package_name" ;;
 		zypper)  install_cmd="sudo zypper install -y $package_name" ;;
 		*)
-			printf "Error: Unsupported package manager '%s'. Cannot install '%s'.\n" "$pm" "$package_name" >&2
+			printf "Error: Unsupported package manager '%s'. Cannot install '%s'.\n" "$pm" "$pkg_input" >&2
 			return 1
 			;;
 	esac
@@ -169,6 +187,17 @@ check_dependencies() {
 
 	# Install macOS extras if on macOS and brew is available
 	install_macos_extras
+
+	# Check for Ollama separately as it requires manual steps
+	printf "\nChecking for Ollama...\n"
+	if command_exists ollama; then
+		printf "Ollama is installed.\n"
+		printf "Ensure you have pulled the required model (e.g., 'ollama pull qwq:latest').\n"
+	else
+		printf "Warning: Ollama not found.\n" >&2
+		printf "Please install Ollama manually from https://ollama.com/\n" >&2
+		printf "Then pull the required model (e.g., 'ollama pull qwq:latest').\n" >&2
+	fi
 }
 
 # Check if the default shell is zsh and prompt to change if not
@@ -292,6 +321,129 @@ install_vim_plugins() {
 	fi
 }
 
+
+# Install global Python packages using pip3
+install_pip_globals() {
+	printf "\nChecking for Python 3 and pip3...\n"
+	local python_cmd="python3"
+	local pip_cmd="pip3"
+
+	if ! command_exists "$python_cmd"; then
+		printf "%s not found. Attempting to install...\n" "$python_cmd"
+		local pm
+		pm=$(get_package_manager)
+		if [ -n "$pm" ]; then
+			if prompt_yes_no "Install Python 3 using $pm?"; then
+				install_package "python3" "$pm" || {
+					printf "Error: Failed to install Python 3. Cannot install pip packages.\n" >&2
+					return 1
+				}
+				# Re-check if python3 is now available
+				if ! command_exists "$python_cmd"; then
+					printf "Error: %s still not found after installation attempt.\n" "$python_cmd" >&2
+					return 1
+				fi
+			else
+				printf "Skipping Python 3 installation.\n"
+				return 1 # Cannot proceed without python3
+			fi
+		else
+			printf "Error: Cannot automatically install Python 3 without a detected package manager.\n" >&2
+			printf "Please install Python 3 manually and ensure '%s' is in your PATH.\n" "$python_cmd"
+			return 1
+		fi
+	fi
+	printf "%s found.\n" "$python_cmd"
+
+	# Check for pip3
+	if ! command_exists "$pip_cmd"; then
+		printf "%s not found. Attempting to install/ensure pip...\n" "$pip_cmd"
+		# Try ensuring pip is available for the found python3
+		local ensure_pip_cmd="$python_cmd -m ensurepip --upgrade --user"
+		local install_pip_pkg_cmd=""
+		local pm
+		pm=$(get_package_manager)
+
+		# Attempt using ensurepip first
+		printf "Running '%s'...\n" "$ensure_pip_cmd"
+		if $ensure_pip_cmd; then
+			printf "pip ensured via ensurepip.\n"
+			# Add user bin path to PATH for this script execution if needed
+			if ! command_exists "$pip_cmd"; then
+				local user_bin_path="$($python_cmd -m site --user-base)/bin"
+				if [ -d "$user_bin_path" ] && [[ ":$PATH:" != *":$user_bin_path:"* ]]; then
+					printf "Adding %s to PATH for this session\n" "$user_bin_path"
+					export PATH="$user_bin_path:$PATH"
+				fi
+			fi
+		else
+			printf "ensurepip failed. Trying package manager...\n"
+			# Fallback to package manager
+			if [ -n "$pm" ]; then
+				local pip_pkg_name="python3-pip" # Common name for apt, dnf, zypper
+				if [ "$pm" = "brew" ]; then pip_pkg_name="python3" ; fi # pip comes with python3 on brew
+				if [ "$pm" = "pacman" ]; then pip_pkg_name="python-pip"; fi
+				if [ "$pm" = "pkg" ]; then pip_pkg_name="py3X-pip"; fi # Needs version, e.g. py39-pip. This is tricky.
+
+				if prompt_yes_no "Install pip package ($pip_pkg_name) using $pm?"; then
+					install_package "$pip_pkg_name" "$pm" || true # Try installing pip package
+				else
+					printf "Skipping pip installation.\n"
+				fi
+			fi
+		fi
+
+		# Final check for pip3
+		if ! command_exists "$pip_cmd"; then
+			printf "Error: %s still not found after installation attempts.\n" "$pip_cmd" >&2
+			printf "Please install pip for Python 3 manually.\n"
+			return 1
+		fi
+	fi
+	printf "%s found.\n" "$pip_cmd"
+
+
+	printf "Installing/Updating global pip packages: %s\n" "$PIP_GLOBALS"
+	local pkg
+	local failed_packages=""
+	# Use sudo only if not running as root and not installing to user site
+	local pip_install_cmd="$pip_cmd install --upgrade" # Use upgrade to get latest
+	# Consider --user flag instead of sudo? Depends on preference.
+	# pip_install_cmd="$pip_cmd install --upgrade --user"
+	if [ "$(id -u)" -ne 0 ]; then
+	 	# Check if we have write access to site-packages, if not, use sudo
+	 	# This is a heuristic, might not be perfect
+	 	local site_packages=$($python_cmd -c "import site; print(site.getsitepackages()[0])")
+	 	if [ ! -w "$site_packages" ]; then
+	 		printf "Using sudo for pip install.\n"
+	 		pip_install_cmd="sudo $pip_install_cmd"
+	 	else
+	 		printf "Installing pip packages to %s (writable).\n" "$site_packages"
+	 	fi
+	fi
+
+
+	for pkg in $PIP_GLOBALS; do
+		printf "Processing pip package '%s'...\n" "$pkg"
+		# Note: Checking if already installed globally with pip is less straightforward than npm.
+		# Using --upgrade handles both installation and update.
+		if $pip_install_cmd "$pkg"; then
+			printf "'%s' installed/updated successfully.\n" "$pkg"
+		else
+			printf "Error: Failed to install/update pip package '%s'.\n" "$pkg" >&2
+			failed_packages="$failed_packages $pkg"
+		fi
+	done
+
+	if [ -n "$failed_packages" ]; then
+		printf "Warning: Failed to install/update the following pip packages:%s\n" "$failed_packages" >&2
+		printf "Continuing despite failed pip package installation(s).\n" >&2
+		return 1 # Indicate partial failure
+	fi
+	return 0 # Indicate success
+}
+
+
 # Install global Node.js packages
 install_node_globals() {
 	printf "\nChecking for Node.js/npm...\n"
@@ -379,8 +531,9 @@ main() {
 	printf "4. Offer to back up existing configuration files.\n"
 	printf "5. Initialize git submodules.\n"
 	printf "6. Set up symbolic links for zsh, tmux, and neovim config directory.\n" # Updated description
-	printf "7. Install Neovim plugins using vim-plug.\n"
+	printf "7. Install Neovim plugins (requires Neovim).\n" # Changed from vim-plug specific
 	printf "8. Install global npm packages (%s).\n" "$NPM_GLOBALS"
+	printf "9. Install global Python pip packages (%s).\n" "$PIP_GLOBALS"
 	printf "Dotfiles source directory: %s\n" "$DOTFILES_DIR"
 	printf "==========================\n\n"
 
@@ -403,15 +556,34 @@ main() {
 	fi
 
 	setup_symlinks
-	install_vim_plugins || printf "Warning: Neovim plugin installation process reported issues.\n" >&2
+
+	# Install Neovim plugins (using whatever manager is configured, lazy.nvim in this case)
+	printf "\nAttempting to install/update Neovim plugins...\n"
+	if command_exists nvim; then
+		# Use Lazy sync command
+		printf "Running :Lazy sync in Neovim (headless)...\n"
+		if nvim --headless "+Lazy! sync" +qa; then
+			printf "Neovim plugin sync command executed.\n"
+		else
+			printf "Warning: Neovim ':Lazy sync' command failed or exited with non-zero status.\n" >&2
+			printf "Check Neovim configuration or run ':Lazy sync' manually.\n"
+		fi
+	else
+		printf "Warning: 'nvim' command not found. Cannot sync Neovim plugins automatically.\n" >&2
+		printf "Please run Neovim after installation to initialize plugins.\n"
+	fi
+
 	install_node_globals || printf "Warning: Node global package installation process reported issues.\n" >&2
+	install_pip_globals || printf "Warning: Python global package installation process reported issues.\n" >&2
 
 	printf "\n==========================\n"
 	printf "Deployment process finished.\n"
 	printf "Notes:\n"
 	printf -- "- If your default shell was changed, please **log out and log back in** for it to take effect.\n"
-	printf -- "- If Neovim plugins didn't install correctly, run 'nvim' and execute ':PlugInstall' manually.\n"
+	printf -- "- If Neovim plugins didn't sync correctly, run 'nvim' and execute ':Lazy sync' manually.\n"
 	printf -- "- If Node global packages failed, ensure Node.js/npm are installed correctly and try 'npm install -g <package>' manually (perhaps with sudo).\n"
+	printf -- "- If Python global packages failed, ensure Python 3/pip3 are installed correctly and try 'pip3 install --upgrade <package>' manually (perhaps with sudo or --user).\n"
+	printf -- "- Ollama requires manual installation from https://ollama.com/ and model pulling (e.g., 'ollama pull qwq:latest').\n"
 	printf -- "- Review any warnings or errors printed above.\n"
 	printf "==========================\n"
 }
