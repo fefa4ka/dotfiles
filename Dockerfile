@@ -41,6 +41,5 @@ USER ${USER}
 # Set the working directory
 WORKDIR ${HOME}/dotfiles
 
-# Default command to run the deploy script non-interactively
-# Pipes 'yes' to automatically answer prompts in the script
-CMD ["/bin/sh", "-c", "yes | ./deploy"]
+# Default command: Start an interactive zsh shell
+CMD ["/bin/sh"]
