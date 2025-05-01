@@ -15,7 +15,7 @@ NVIM_DATA_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/nvim"
 # List of essential packages
 REQUIRED_PACKAGES="zsh neovim tmux tmuxinator lnav fzf"
 # List of nice-to-have packages (including nvim dependencies)
-NICE_TO_HAVE_PACKAGES="exa bat alacritty thefuck tldr lazygit ripgrep fd-find vifm universal-ctags tree-sitter-cli python3 shfmt lua-language-server clangd clang-format"
+NICE_TO_HAVE_PACKAGES="exa bat thefuck tldr lazygit ripgrep fd-find vifm universal-ctags tree-sitter-cli python3 shfmt lua-language-server clangd clang-format"
 # List of global npm packages (including LSP servers)
 NPM_GLOBALS="yarn dockerfile-language-server-nodejs typescript typescript-language-server vim-language-server bash-language-server"
 # List of global Python pip packages (including LSP servers & tools)
