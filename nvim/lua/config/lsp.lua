@@ -17,10 +17,12 @@ function M.on_attach(client, bufnr)
 
   -- Disable hover for ruff if pyright/pylsp is also attached (preference)
   if client.name == 'ruff' then
-    local pyright_client = vim.lsp.get_clients({ name = 'pyright', bufnr = bufnr })[1]
-        or vim.lsp.get_clients({ name = 'pylsp', bufnr = bufnr })[1]
-    if pyright_client then
-      client.server_capabilities.hoverProvider = false
+    local pyright_client = vim.lsp.get_clients({ name = 'pyright' })[1]
+    local pylsp_client = vim.lsp.get_clients({ name = 'pylsp' })[1]
+    if pyright_client or pylsp_client then
+      if client.server_capabilities and client.server_capabilities.hoverProvider ~= nil then
+        client.server_capabilities.hoverProvider = false
+      end
     end
   end
 end

@@ -61,34 +61,39 @@ cmp.setup {
     },
   },
   sources = {
+    { name = 'path' },
     { name = "supermaven" },
     { name = 'cmp_tabnine' },
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
     { name = 'buffer' },
   },
+
 }
 
+-- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline({ '/', '?' }, {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = {
+    { name = 'buffer' }
+  }
+})
+
+-- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline(':', {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = cmp.config.sources({
+    { name = 'cmdline' }
+  }, {
+    { name = 'path' }
+  })
+})
+
 require("supermaven-nvim").setup({
-  log_level = "info", -- set to "off" to disable logging completely
+  log_level = "info",                -- set to "off" to disable logging completely
   disable_inline_completion = false, -- disables inline completion for use with cmp
-  disable_keymaps = true, -- disables built in keymaps for more manual control
+  disable_keymaps = true,            -- disables built in keymaps for more manual control
   condition = function()
     return false
   end -- condition to check for stopping supermaven, `true` means to stop supermaven when the condition is true.
 })
-
--- Enable some language servers with the additional completion capabilities
--- offered by nvim-cmp
--- LSP list:
---   ccls -> c/c++
---   rust_analyzer -> rust
---   pyright -> python
---   tsserver -> typescript
--- local servers = { 'ccls', 'rust_analyzer', 'pyright', 'tsserver' }
--- for _, lsp in ipairs(servers) do
---   lspconfig[lsp].setup {
---     -- on_attach = my_custom_on_attach,
---     capabilities = capabilities,
---   }
--- end

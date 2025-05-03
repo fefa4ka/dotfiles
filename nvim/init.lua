@@ -17,3 +17,4 @@ vim.g.signify_sign_delete            = '█' -- Full block (will be colored diff
 vim.g.signify_sign_delete_first_line = '▀' -- Upper half block
 vim.g.signify_sign_change            = '█' -- Full block (will be colored differently)
 vim.g.signify_sign_changedelete      = '▟' -- Quadrant lower right
+

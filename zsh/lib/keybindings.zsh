@@ -63,19 +63,21 @@ bindkey "^s" add_sudo
 #------------------------------------------------------------------------------
 # Process viewer with kill capability with Ctrl+Shift+p
 process_viewer() {
-  local pid=$(ps aux | fzf --height 80% | awk '{print $2}')
+  local pid=$(ps aux | grep -v "%MEM" | awk '{print $2, $11}' | fzf --delimiter=$' ' --with-nth=2 --height 100% --prompt="Select process: " --preview-window=right:60%:wrap \
+        --preview '
+          echo "=== PID {1} ===";
+          procs {1} -t --thread
+          echo;
+          echo "=== lsof -p {1} ===";
+          lsof -p {1} | head -n 20
+        ' | awk '{print $1}')
   if [[ -n "$pid" ]]; then
-    echo -n "Kill process $pid? (y/n): "
-    read answer
-    if [[ "$answer" == "y" ]]; then
       kill -9 $pid
-      echo "Process $pid killed"
-    fi
   fi
   zle reset-prompt
 }
 zle -N process_viewer
-bindkey "^P" process_viewer
+bindkey "^p" process_viewer
 
 #------------------------------------------------------------------------------
 # DISABLED/COMMENTED WIDGETS

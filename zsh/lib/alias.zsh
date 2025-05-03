@@ -28,12 +28,12 @@ if command -v bat &>/dev/null; then
 fi
 
 # Use exa instead of ls if available
-if command -v exa &>/dev/null; then
-  exa_exec="exa --color=always --group-directories-first"
-  alias ls="$exa_exec -al"
-  alias la="$exa_exec -a"
-  alias ll="$exa_exec -l" # Fixed typo here
-  alias lt="$exa_exec --icons -aT"
+if command -v eza &>/dev/null; then
+  eza_exec="eza --color=always --group-directories-first"
+  alias ls="$eza_exec -al --icons"
+  alias la="$eza_exec -a --icons"
+  alias ll="$eza_exec -l --icons" # Fixed typo here
+  alias lt="$eza_exec --icons -aT -L2"
 fi
 
 # Find files by name (case insensitive)
@@ -48,6 +48,7 @@ copy() { cat "$1" | pbcopy; }
 # Copy output to clipboard (macOS)
 alias clip="pbcopy"
 alias paste="pbpaste"
+alias cd="z"
 
 #------------------------------------------------------------------------------
 # NAVIGATION ALIASES AND FUNCTIONS

@@ -53,7 +53,7 @@ function M.setup_general_keymaps()
 
   map('', '<C-t>', ':TagbarToggle<CR>')
   map('n', '<C-S-p>', ':FzfLua commands<CR>')
-  map('n', '<C-S-f>', ':FzfLua live_grep<CR>')
+  map('n', '<C-f>', ':FzfLua live_grep<CR>')
   map('n', '<Esc>[95;6u', ':FzfLua commands<CR>')
   map('n', '<Esc>[96;6u', ':FzfLua live_grep<CR>')
   map('n', '<C-g>', ':FzfLua git_files<CR>')
@@ -95,21 +95,18 @@ function M.setup_general_keymaps()
   map('n', 's', ':HopChar1<CR>', { silent = true })
   map('i', '<C-s>', '<Esc>:HopChar1<CR>', { silent = true })
 
-  -- Reload configuration without restart nvim
-  map('n', '<leader>r', ':so %<CR>')
+  -- -- Reload configuration without restart nvim
+  -- map('n', '<leader>r', ':lua require("core.reload").reload_config()<CR>', { noremap = true, silent = false })
 
-  -- Toggle light/dark theme
-  map('n', '<leader>t', ':lua BgToggleSol()<CR>')
-
-  -- Close all windows and exit from Neovim with <leader> and q
-  map('n', '<leader>q', ':qa!<CR>')
+  -- -- Toggle light/dark theme
+  -- map('n', '<leader>t', ':lua BgToggleSol()<CR>')
+  --
+  -- -- Close all windows and exit from Neovim with <leader> and q
+  -- map('n', '<leader>q', ':qa!<CR>')
 
   -- Terminal mappings
   -- map('n', '<C-S-j>', ':belowright split | terminal<CR>i', { noremap = true }) -- open
   map('t', '<Esc>', '<C-\\><C-n>') -- exit
-
-  -- Clear search highlighting with <leader> and c
-  map('n', '<leader>c', ':nohl<CR>')
 
   -- Toggle auto-indenting for code paste
   map('n', '<F2>', ':set invpaste paste?<CR>')
@@ -204,28 +201,16 @@ function M.setup_which_key()
     extract = "```$filetype\n(.-)```"
   }
 
-  -- Normal mode AI keybindings
-  wk.add({
-    {
-      mode = { "n" },
-      { "<leader>a", group = "󰘦 AI" },
-      { "<leader>ag", "<cmd>Gen Generate<CR>", desc = "󰐥 Generate" },
-      { "<leader>am", function() gen.select_model() end, desc = "󰆽 Select model" },
-    }
-  })
-
   -- Visual mode AI keybindings
   wk.add({
     {
       mode = { "v" },
       { "<leader>a", group = "󰘦 AI" },
-      { "<leader>aa", "<cmd>'<,'>Gen Ask<CR>", desc = "󰭻 Ask" },
-      { "<leader>ac", "<cmd>'<,'>Gen Change_Code<CR>", desc = "󰌢 Change" },
-      { "<leader>ae", "<cmd>'<,'>Gen Enhance_Code<CR>", desc = "✨ Enhance" },
-      { "<leader>ag", "<cmd>'<,'>Gen Enhance_Grammar_Spelling<CR>", desc = "󰓆 Grammar" },
-      { "<leader>ar", "<cmd>'<,'>Gen Review_Code<CR>", desc = "󰱽 Review" },
-      { "<leader>as", "<cmd>'<,'>Gen Make_Concise<CR>", desc = "󰏫 Simple and concise" },
-      { "<leader>aw", "<cmd>'<,'>Gen Enhance_Wording<CR>", desc = "󰑬 Wording" },
+      { "<leader>aa", "<cmd>CodeCompanionChat Add<cr>", desc = "󰭻 Ask" },
+      { "<leader>af", "<cmd>'<,'>CodeCompanion /fix<CR>", desc = "󰌢 Fix" },
+      { "<leader>ae", "<cmd>'<,'>CodeCompanion /explain<CR>", desc = "󰱽 Explain" },
+      { "<leader>at", "<cmd>'<,'>CodeCompanion /tests<CR>", desc = "󰓆 Tests" },
+      { "<leader>da", "<cmd>'<,'>CodeCompanion /lsp<CR>", desc = "󱉶 Document AI Diagnostics" },
     },
   })
 
@@ -236,14 +221,15 @@ function M.setup_which_key()
       { "<leader>c", group = "󰊢 VCS" },
       { "<leader>d", ":lua vim.diagnostic.open_float()<CR>", desc = "󱉶 Line Diagnostic" },
       { "<leader>dd", ":FzfLua diagnostics_document<CR>", desc = "󱉶 Document Diagnostics" },
-      { "<leader>D", ":FzfLua diagnostics_workspace<CR>", desc = "󱉶 Workspace Diagnostics" },
+      { "<leader>da", "<cmd>CodeCompanion /lsp<CR>", desc = "󱉶 Document AI Diagnostics" },
+      { "<leader>dw", ":FzfLua diagnostics_workspace<CR>", desc = "󱉶 Workspace Diagnostics" },
       { "<leader>h", group = "󰋖 Help" },
       { "<leader>ht", ":FzfLua help_tags<CR>", desc = "󰋖 Help Tags" },
       { "<leader>hk", ":FzfLua keymaps<CR>", desc = "󰌌 Keymaps" },
       { "<leader>hm", ":messages<CR>", desc = "󰍡 Messages" },
       { "<leader>ls", function() require('dropbar.api').pick() end, desc = "󰊄 List Symbols" },
-      { "<leader>q", ':qa!<CR>', desc = "󰅚 Quit All" },
-      { "<leader>r", ":so %<CR>", desc = "󰑐 Reload Config" },
+      { "<leader>q", ':qa!<CR>', desc = "󰅚 Quit " },
+      { "<leader>r", ":lua require('core.reload').reload_config()<CR>", desc = "󰑐 Reload Config" },
       { "<leader>t", ':lua BgToggleSol()<CR>', desc = "󰔎 Toggle Theme" },
       {
         "<leader>z",
@@ -255,6 +241,10 @@ function M.setup_which_key()
       },
       { "<leader><leader>", ":nohlsearch<CR>", desc = "󰅃 No Highlight Search" },
       { "<leader><leader><leader><leader>", ":qa!<CR>", desc = "󰅚 Quit All Force" },
+      { "<leader>a", group = "󰘦 AI" },
+      { '<leader>aA', ':AiderOpen --no-auto-commits --model anthropic/claude-3-7-sonnet-20250219 --cache-prompts --no-verify-ssl --model-settings-file ~/.aider/.aider.model.settings.yml<CR>', desc = "🤖 Aider" },
+      { '<leader>ac', ':CodeCompanionChat Toggle<cr>', desc = "󰭻 Chat" },
+      { '<leader>aa', ':CodeCompanionActions<cr>', desc = "󰌢 Actions" },
     }
   })
 end
@@ -285,13 +275,19 @@ function M.setup_lsp_keymaps(client, bufnr)
     { 'gd',         "<cmd>FzfLua lsp_definitions<CR>",                                       desc = "Definitions" },
     { 'gD',         "<cmd>FzfLua lsp_type_definitions<CR>",                                  desc = "Type Definitions" },
     { 'gi',         "<cmd>FzfLua lsp_implementations<CR>",                                   desc = "Implementations" },
-    { '<leader>A', ':AiderOpen --no-auto-commits --model anthropic/claude-3-7-sonnet-20250219 --cache-prompts --no-verify-ssl --model-settings-file ~/.aider/.aider.model.settings.yml<CR>', desc = "🤖 Aider" },
+
   })
 end
 
 -- Initialize all keymaps
 function M.setup()
   M.setup_general_keymaps()
+
+  -- Setup which-key if available
+  local ok, _ = pcall(require, "which-key")
+  if ok then
+    M.setup_which_key()
+  end
 end
 
 return M

@@ -25,6 +25,8 @@ return {
       'saadparwaiz1/cmp_luasnip',
       -- Snippet engine of buffer words
       'hrsh7th/cmp-buffer',
+      'hrsh7th/cmp-path',
+      'hrsh7th/cmp-cmdline',
     },
     config = function()
       require('config.cmp')
